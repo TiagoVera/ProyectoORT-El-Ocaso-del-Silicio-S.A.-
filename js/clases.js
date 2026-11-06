@@ -1,5 +1,7 @@
 class administrador{
+static #ultimoId = 0;
 constructor(nombre,usuario,contraseña){
+this.id="TURING-" + administrador.#ultimoId++;
 this.nombre=nombre;
 this.usuario=usuario;
 this.contraseña=contraseña;
@@ -33,5 +35,12 @@ this.precio=precio;
 }
 
 class sistema{
+#administrador=[];
+#funcionario=[];
+#robot=[];
+#actividades=[];
 
+if () {
+    
+}
 }
