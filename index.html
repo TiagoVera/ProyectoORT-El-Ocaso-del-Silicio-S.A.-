@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pen</title>
+  </head>
+  <body>
+
+    <div id="contenedor">
+  <header>
+    <div id="marca">
+      <img id="logo" src="https://res.cloudinary.com/tgh2fcit/image/upload/f_auto,q_auto/ChatGPT_Image_Sep_18_2026_06_01_03_PM" alt="logo" />
+      <span id="nombreMarca">El Ocaso del Silicio S.A.</span>
+    </div>
+    <nav>
+      <ul id="navPrincipal">
+        <li>
+          <a>Sección 1</a>
+        </li>
+        <li>
+          <a>Sección 2</a>
+        </li>
+        <li>
+          <a>Cerrar sesión</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <!-- FIN CABEZAL -->
+  <main>
+    <section>
+      <!-- TITULOS -->
+      <h1>Titulo 1</h1>
+      <h2>Titulo 2</h2>
+      <h3>Titulo 3</h3>
+      <h4>Titulo 4</h4>
+      <hr>
+      <!-- INPUTS -->
+      <h3>Inputs</h3>
+      <label for="txtTexto">txtTexto</label>
+      <!-- Ejemplo agregando la clase error -->
+      <input type="text" id="txtTexto" class="error" placeholder="Ejemplo con error..." />
+      <label for="nbrNumero">nbrNumero</label>
+      <input type="number" id="nbrNumero" />
+      <label for="txtPass">txtPass</label>
+      <input type="password" id="txtPass" />
+      <label for="txtComentarios">Text Area</label>
+      <textarea id="txtComentarios"></textarea>
+      <label for="slcOpciones">Select</label>
+      <select id="slcOpciones">
+        <option value="1">opcion 1</option>
+        <option value="2">opcion 2</option>
+        <option value="3">opcion 3</option>
+      </select>
+      <input type="button" value="Enviar" /><br />
+      <hr />
+
+    </section>
+
+    <!-- TABLA DE ROBOTS ASIGNADOS (Ejemplo Perfil Funcionario) -->
+    <h3>Robots Asignados</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Imagen</th>
+          <th>Nombre</th>
+          <th>Modelo</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>HAL-1</td>
+          <td><img src="https://res.cloudinary.com/tgh2fcit/image/upload/v1789766051/ChatGPT_Image_Sep_18_2026_06_13_26_PM.png" alt="Robot Rust-E"></td>
+          <td>Rust-E</td>
+          <td>RX-90</td>
+          <td>
+            <input type="button" value="Baja" />
+            <input type="button" value="Actividades" />
+          </td>
+        </tr>
+        <tr>
+          <td>HAL-2</td>
+          <td><img src="https://res.cloudinary.com/tgh2fcit/image/upload/v1789766177/ChatGPT_Image_Sep_18_2026_06_15_24_PM.png" alt="Robot BEEP-BO"></td>
+          <td>BEEP-BO</td>
+          <td>MK-III</td>
+          <td>
+            <input type="button" value="Baja" />
+            <input type="button" value="Actividades" />
+          </td>
+        </tr>
+        <tr>
+          <td>HAL-3</td>
+          <td><img src="https://res.cloudinary.com/tgh2fcit/image/upload/v1789767546/ChatGPT_Image_Sep_18_2026_06_36_01_PM.png" alt="RAM-130372"></td>
+          <td>RAF</td>
+          <td>RAM-130372</td>
+          <td>
+            <input type="button" value="Baja" />
+            <input type="button" value="Actividades" />
+          </td>
+        </tr>
+          <tr>
+          <td>HAL-3</td>
+          <td><img src="       https://res.cloudinary.com/tgh2fcit/image/upload/v1789768114/ChatGPT_Image_Sep_18_2026_06_48_13_PM.png" alt="I'm a teapot"></td>
+          <td>Pots</td>
+          <td>IAT-418</td>
+          <td>
+            <input type="button" value="Baja" />
+            <input type="button" value="Actividades" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- TABLA DE ESTADÍSTICAS POR INDUSTRIA -->
+    <h3>Estadísticas por Industria</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Industria</th>
+          <th>Robots Aceptados</th>
+          <th>Robots Vendidos</th>
+          <th>Robots Rechazados</th>
+          <th>% del Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Doméstica</td>
+          <td>12</td>
+          <td>3</td>
+          <td>2</td>
+          <td>34%</td>
+        </tr>
+        <tr>
+          <td>Médica</td>
+          <td>8</td>
+          <td>1</td>
+          <td>1</td>
+          <td>20%</td>
+        </tr>
+        <tr>
+          <td>Agrícola</td>
+          <td>5</td>
+          <td>2</td>
+          <td>0</td>
+          <td>14%</td>
+        </tr>
+        <tr>
+          <td>Militar</td>
+          <td>10</td>
+          <td>4</td>
+          <td>1</td>
+          <td>30%</td>
+        </tr>
+        <tr>
+          <td>Genérico</td>
+          <td>1</td>
+          <td>0</td>
+          <td>0</td>
+          <td>2%</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      Donec dapibus arcu a diam commodo, vel vehicula orci volutpat.
+      Vestibulum convallis tempor mattis. Donec molestie semper leo vel
+      luctus. Curabitur quis nisi maximus, luctus lorem quis, dignissim
+      augue.
+    </p>
+    <hr />
+  </main>
+  <!-- FIN CONTENIDO -->
+  <footer>
+    <a href="https://www.ort.edu.uy">Terminal de Gestión V-84 // El Ocaso del Silicio S.A. - Centro de Retiro Tecnológico</a>
+  </footer>
+  <!-- FIN PIE -->
+</div>
+<!-- FIN CONTENEDOR -->
+  </body>
+</html>
