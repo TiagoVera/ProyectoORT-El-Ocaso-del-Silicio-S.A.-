@@ -40,7 +40,4 @@ class sistema{
 #robot=[];
 #actividades=[];
 
-if () {
-    
-}
 }
