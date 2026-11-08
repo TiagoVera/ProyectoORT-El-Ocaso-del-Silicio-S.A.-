@@ -11,10 +11,12 @@ class administrador {
 
 class funcionario {
     static #ultimoId = 0;
-    constructor(documento, contraseña) {
+    constructor(documento, telefono, nombre) {
         this.codigoFuncionario = "TURING-" + funcionario.#ultimoId++;
         this.documento = documento;
-        this.contraseña = contraseña;
+        this.nombre = nombre;
+        this.telefono = telefono;
+        this.codigoFuncionario = "pass-" + funcionario.documento;
     }
 }
 
@@ -56,5 +58,10 @@ class sistema {
             }
         }
         return null
+    }
+
+    registrarFuncionario(documento,nombre,telefono){
+        let nuevoFuncionario = new funcionario(documento,nombre,telefono);
+        this.#funcionario.push(nuevoFuncionario); 
     }
 }

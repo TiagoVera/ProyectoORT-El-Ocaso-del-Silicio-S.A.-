@@ -6,6 +6,6 @@ function sonIgualesTexto(textoA,textoB){
     return textoA.trim().toLowerCase() == textoB.trim().toLowerCase();
 }
 
-function esFuncionario(user){
-    return user.includes("TURING-")
+function esFuncionario(usuario){
+    return usuario.includes("TURING-")
 }
