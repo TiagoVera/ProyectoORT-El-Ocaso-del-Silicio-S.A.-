@@ -1,16 +1,19 @@
 class administrador{
 static #ultimoId = 0;
 constructor(nombre,usuario,contraseña){
-this.id="TURING-" + administrador.#ultimoId++;
+this.id=administrador.#ultimoId++;
 this.nombre=nombre;
 this.usuario=usuario;
 this.contraseña=contraseña;
 }
+
 }
 
 class funcionario{
-constructor(codigoFuncionario,contraseña){
-this.codigoFuncionario=codigoFuncionario;
+static #ultimoId = 0;
+constructor(documento,contraseña){
+this.codigoFuncionario="TURING-" + funcionario.#ultimoId++;
+this.documento=documento;
 this.contraseña=contraseña;
 }
 }
@@ -40,4 +43,13 @@ class sistema{
 #robot=[];
 #actividades=[];
 
+
+iniciarSesion(){
+    if(){
+    let administrador = this.#administrador[i];
+            if (sonIgualesTexto(usuario.username, username) && usuario.contrasena == contrasena){
+                return usuario;
+            }
+        }
+}
 }
