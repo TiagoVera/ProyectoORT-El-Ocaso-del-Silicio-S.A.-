@@ -5,3 +5,7 @@ function estaVacio(texto){
 function sonIgualesTexto(textoA,textoB){
     return textoA.trim().toLowerCase() == textoB.trim().toLowerCase();
 }
+
+function esFuncionario(user){
+    return user.includes("TURING-")
+}
