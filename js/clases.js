@@ -11,7 +11,7 @@ class administrador {
 
 class funcionario {
     static #ultimoId = 0;
-    constructor(documento, telefono, nombre) {
+    constructor(documento, nombre, telefono) {
         this.codigoFuncionario = "TURING-" + funcionario.#ultimoId++;
         this.documento = documento;
         this.nombre = nombre;
@@ -65,6 +65,10 @@ class sistema {
         let nuevoFuncionario = new funcionario(documento,nombre,telefono);
         this.#funcionario.push(nuevoFuncionario); 
     }
+        registrarAdministrador(nombre,usuario,contraseña){
+        let nuevoAdministrador = new administrador(nombre,usuario,contraseña);
+        this.#administrador.push(nuevoAdministrador); 
+    }
 
         obtenerFuncionarios(){
         let listaFuncionarios = [];
@@ -74,4 +78,26 @@ class sistema {
         }
         return listaFuncionarios;
     }
+
+
+
+
+
+
+
+
+
+         // PRECARGA DE DATOS
+    precargaDatos(){
+        this.registrarAdministrador("Tiago Vera", "Sovera", "1234");
+        this.registrarAdministrador("Alex", "Alexito", "1234");
+    
+
+        this.registrarFuncionario("53662578","Matias Botero", "092758379");
+        this.registrarFuncionario("34556589", "Alejandro Montenegro" , "094234192");
+        this.registrarFuncionario("47283941", "Anastasia Blanco" , "091278382");
+        this.registrarFuncionario("63984234", "Luisa Suarez" , "098562974");
+        this.registrarFuncionario("78590431", "Carlos Gardel" , "092453672");
+    }
+
 }
