@@ -48,10 +48,13 @@ class sistema {
         if (esFuncionario(usuario)) {
 
         } else {
-            let administrador = this.#administrador[i];
-            if (sonIgualesTexto(administrador.usuario, usuario) && administrador.contraseña == contraseña) {
-                return administrador;
+            for (let i = 0; i < this.#administrador.length; i++) {
+                let administrador = this.#administrador[i];
+                if (sonIgualesTexto(administrador.usuario, usuario) && administrador.contraseña == contraseña) {
+                    return administrador;
+                }
             }
         }
+        return null
     }
 }
