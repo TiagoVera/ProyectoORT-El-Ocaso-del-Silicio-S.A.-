@@ -17,6 +17,7 @@ class funcionario {
         this.nombre = nombre;
         this.telefono = telefono;
         this.codigoFuncionario = "pass-" + funcionario.documento;
+        this.robotsAceptados = 0;
     }
 }
 
@@ -63,5 +64,14 @@ class sistema {
     registrarFuncionario(documento,nombre,telefono){
         let nuevoFuncionario = new funcionario(documento,nombre,telefono);
         this.#funcionario.push(nuevoFuncionario); 
+    }
+
+        obtenerFuncionarios(){
+        let listaFuncionarios = [];
+        for (let i=0; i < this.#funcionario.length; i++){
+                listaFuncionarios.push(this.#funcionario[i])
+            
+        }
+        return listaFuncionarios;
     }
 }
