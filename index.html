@@ -3,7 +3,6 @@
 
 <head>
   <meta charset="UTF-8">
-  <script src="js/script.js"></script>
   <script src="js/clases.js"></script>
   <script src="js/validaciones.js"></script>
   <script src=""></script>
@@ -28,7 +27,7 @@
             <a>Iniciar sesion</a>
           </li>
           <li>
-            <a>Sección 2</a>
+            <button id="btnTablaFuncionarios">Mostrar Tabla Funcionarios</button>
           </li>
           <li>
             <a>Cerrar sesión</a>
@@ -38,7 +37,7 @@
     </header>
     <!-- FIN CABEZAL -->
     <main>
-      <section id="IniciarSesion">
+      <section id="secIniciarSesion">
         <h2>Iniciar sesion</h2>
         <label for="usuario">Usuario</label>
         <input type="text" id="usuario" />
@@ -49,7 +48,7 @@
 
       </section>
 
-      <section id="registroFuncionario">
+      <section id="secRegistroFuncionario">
         <hr>
         <h3>Registrar Funcionario</h3>
         <label for="documento">Documento</label>
@@ -63,34 +62,14 @@
 
       </section>
 
-      <section>
-        <!-- TITULOS -->
-        <h1>Titulo 1</h1>
-        <h2>Titulo 2</h2>
-        <h3>Titulo 3</h3>
-        <h4>Titulo 4</h4>
+      <section id="secTablaFuncionarios">
         <hr>
-        <!-- INPUTS -->
-        <h3>Inputs</h3>
-        <label for="txtTexto">txtTexto</label>
-        <!-- Ejemplo agregando la clase error -->
-        <input type="text" id="txtTexto" class="error" placeholder="Ejemplo con error..." />
-        <label for="nbrNumero">nbrNumero</label>
-        <input type="number" id="nbrNumero" />
-        <label for="txtPass">txtPass</label>
-        <input type="password" id="txtPass" />
-        <label for="txtComentarios">Text Area</label>
-        <textarea id="txtComentarios"></textarea>
-        <label for="slcOpciones">Select</label>
-        <select id="slcOpciones">
-          <option value="1">opcion 1</option>
-          <option value="2">opcion 2</option>
-          <option value="3">opcion 3</option>
-        </select>
-        <input type="button" value="Enviar" /><br />
-        <hr />
+        <div id="divTablaFuncionarios">
 
+        </div>
+        <hr />
       </section>
+
 
       <!-- TABLA DE ROBOTS ASIGNADOS (Ejemplo Perfil Funcionario) -->
       <h3>Robots Asignados</h3>
@@ -224,5 +203,6 @@
   </div>
   <!-- FIN CONTENEDOR -->
 </body>
+<script src="js/script.js"></script>
 
 </html>

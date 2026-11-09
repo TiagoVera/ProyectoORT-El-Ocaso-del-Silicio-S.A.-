@@ -16,7 +16,7 @@ class funcionario {
         this.documento = documento;
         this.nombre = nombre;
         this.telefono = telefono;
-        this.codigoFuncionario = "pass-" + funcionario.documento;
+        this.contraseña = "pass-" + funcionario.documento;
         this.robotsAceptados = 0;
     }
 }
@@ -40,7 +40,7 @@ class actividades {
     }
 }
 
-class sistema {
+class Sistema {
     #administrador = [];
     #funcionario = [];
     #robot = [];
@@ -90,7 +90,7 @@ class sistema {
          // PRECARGA DE DATOS
     precargaDatos(){
         this.registrarAdministrador("Tiago Vera", "Sovera", "1234");
-        this.registrarAdministrador("Alex", "Alexito", "1234");
+        this.registrarAdministrador("Alex Alonzo", "Alexito", "1234");
     
 
         this.registrarFuncionario("53662578","Matias Botero", "092758379");
