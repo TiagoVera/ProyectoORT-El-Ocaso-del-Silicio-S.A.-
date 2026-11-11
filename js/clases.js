@@ -52,6 +52,11 @@ class Sistema {
     #funcionario = [];
     #robot = [];
     #actividades = [];
+    static #dineroTotal = 0;
+    static #dineroRobotsAceptados = 0;
+    static #dineroRobotsVendidos = 0;
+    static #dineroActividades = 0;
+    static #mejorFuncionario = "";
 
 
     iniciarSesion(usuario, contraseña) {
