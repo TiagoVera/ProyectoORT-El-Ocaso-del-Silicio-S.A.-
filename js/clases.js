@@ -10,20 +10,20 @@ class administrador {
 }
 
 class funcionario {
-    static #ultimoId = 0;
+    static #ultimoId = 1;
     constructor(documento, nombre, telefono) {
         this.codigoFuncionario = "TURING-" + funcionario.#ultimoId++;
         this.documento = documento;
         this.nombre = nombre;
         this.telefono = telefono;
-        this.contraseña = "pass-" + funcionario.documento;
+        this.contraseña = "pass-" + documento;
         this.robotsAceptados = 0;
     }
 }
 
 class robot {
-    static #ultimoId = 0;
-    constructor(nombre, numDeSerie, fabricante, modelo, industria, imagen) {
+    static #ultimoId = 1;
+    constructor(nombre, numDeSerie, fabricante, modelo, industria, imagen, registradoPor) {
         this.id = "HAL-" + robot.#ultimoId++;
         this.nombre = nombre;
         this.numDeSerie = numDeSerie;
@@ -33,6 +33,9 @@ class robot {
         this.motivo = "Registro Ingresado";
         this.industria = industria;
         this.imagen = imagen;
+        this.registradoPor = registradoPor;
+        this.asignadoA = null;
+        this.actividades = [];
     }
 }
 
@@ -54,6 +57,13 @@ class Sistema {
     iniciarSesion(usuario, contraseña) {
         if (esFuncionario(usuario)) {
 
+            for (let i = 0; i < this.#funcionario.length; i++) {
+           let unFuncionario = this.#funcionario[i];
+            if (sonIgualesTexto(unFuncionario.codigoFuncionario, usuario) && unFuncionario.contraseña == contraseña) {
+        return unFuncionario;
+        }
+    }
+
         } else {
             for (let i = 0; i < this.#administrador.length; i++) {
                 let administrador = this.#administrador[i];
@@ -69,10 +79,21 @@ class Sistema {
         let nuevoFuncionario = new funcionario(documento, nombre, telefono);
         this.#funcionario.push(nuevoFuncionario);
     }
-    registrarRobot(nombre, numDeSerie, fabricante, modelo, industria, imagen) {
-        let nuevoRobot = new robot(nombre, numDeSerie, fabricante, modelo, industria, imagen);
+    registrarRobot(nombre, numDeSerie, fabricante, modelo, industria, imagen, registradoPor) {
+        let nuevoRobot = new robot(nombre, numDeSerie, fabricante, modelo, industria, imagen, registradoPor);
         this.#robot.push(nuevoRobot);
     }
+
+    existeRobot(numDeSerie, fabricante) {
+    for (let i = 0; i < this.#robot.length; i++) {
+        if (sonIgualesTexto(this.#robot[i].numDeSerie, numDeSerie) &&
+            sonIgualesTexto(this.#robot[i].fabricante, fabricante)) {
+            return true;
+        }
+    }
+    return false;
+    }
+
     registrarAdministrador(nombre, usuario, contraseña) {
         let nuevoAdministrador = new administrador(nombre, usuario, contraseña);
         this.#administrador.push(nuevoAdministrador);
@@ -94,6 +115,16 @@ class Sistema {
         }
         return listaRobots;
     }
+
+    existeRobot(numDeSerie, fabricante) {
+    for (let i = 0; i < this.#robot.length; i++) {
+        if (sonIgualesTexto(this.#robot[i].numDeSerie, numDeSerie) &&
+            sonIgualesTexto(this.#robot[i].fabricante, fabricante)) {
+            return true;
+        }
+    }
+    return false;
+}
 
 
 
@@ -118,8 +149,8 @@ class Sistema {
         this.registrarFuncionario("78590431", "Carlos Gardel", "092453672");
 
         //Robots
-        this.registrarRobot("Atlas V1", "SN-1001", "Boston Dynamics", "HD-2024", "Automotriz", "img/atlas.jpg");
-        this.registrarRobot("Optimus Gen2", "SN-1002", "Tesla", "TS-02", "Logística", "img/optimus.jpg");
+        this.registrarRobot("Atlas V1", "SN-1001", "Boston Dynamics", "HD-2024", "Automotriz", "img/atlas.jpg", "TURING-1");
+        this.registrarRobot("Optimus Gen2", "SN-1002", "Tesla", "TS-02", "Logística", "img/optimus.jpg", "TURING-2");
         this.registrarRobot("KUKA KR-6", "SN-1003", "KUKA Systems", "KR-600", "Metalúrgica", "img/kuka.jpg");
         this.registrarRobot("UR10e Cobot", "SN-1004", "Universal Robots", "UR10e", "Electrónica", "img/ur10e.jpg");
         this.registrarRobot("Spot Explorer", "SN-1005", "Boston Dynamics", "Spot-V2", "Seguridad", "img/spot.jpg");

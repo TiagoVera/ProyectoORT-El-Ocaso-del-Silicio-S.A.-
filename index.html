@@ -5,7 +5,6 @@
   <meta charset="UTF-8">
   <script src="js/clases.js"></script>
   <script src="js/validaciones.js"></script>
-  <script src=""></script>
   <link rel="stylesheet" href="./style.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pen</title>
@@ -23,17 +22,20 @@
       </div>
       <nav>
         <ul id="navPrincipal">
-          <li>
+          <li id="liIniciarSesion">
             <a id="btnIniciarSesion">Iniciar sesion</a>
+          </li>
+          <li id="liRegistrarRobot">
+            <a id="btnRegistrarRobot">Registrar robot</a>
           </li>
           <li>
             <button id="btnTablaFuncionarios">Mostrar Tabla Funcionarios</button>
           </li>
-                    <li>
+          <li>
             <button id="btnTablaEstadosRobots">Mostrar Tabla Estados Robots</button>
           </li>
-          <li>
-            <a>Cerrar sesión</a>
+          <li id="liCerrarSesion">
+            <a id="btnCerrarSesion">Cerrar sesión</a>
           </li>
         </ul>
       </nav>
@@ -46,7 +48,8 @@
         <input type="text" id="usuario" />
         <label for="contraseña">Contraseña</label>
         <input type="password" id="contraseña" />
-        <input type="button" value="Enviar" /><br />
+        <input type="button" id="btnEnviarLogin" value="Enviar" /><br />
+        <p id="pErrorLogin"></p>
         <hr />
 
       </section>
@@ -77,6 +80,33 @@
         <hr>
         <div id="divTablaEstadosDeRobots">
         </div>
+        <hr />
+      </section>
+
+      <section id="secRegistroRobot">
+        <hr>
+        <h3>Registrar Robot</h3>
+        <label for="robotNombre">Nombre</label>
+        <input type="text" id="robotNombre" />
+        <label for="robotSerie">Número de serie</label>
+        <input type="text" id="robotSerie" />
+        <label for="robotFabricante">Fabricante</label>
+        <input type="text" id="robotFabricante" />
+        <label for="robotModelo">Modelo</label>
+        <input type="text" id="robotModelo" />
+        <label for="robotIndustria">Industria</label>
+        <select id="robotIndustria">
+          <option value="">Seleccione una industria</option>
+          <option value="Doméstica">Doméstica</option>
+          <option value="Médica">Médica</option>
+          <option value="Agrícola">Agrícola</option>
+          <option value="Militar">Militar</option>
+          <option value="Genérico">Genérico</option>
+        </select>
+        <label for="robotImagen">Imagen (URL)</label>
+        <input type="text" id="robotImagen" />
+        <input type="button" id="btnRegistrarRobotForm" value="Registrar" /><br />
+        <p id="pMensajeRobot"></p>
         <hr />
       </section>
 
@@ -212,7 +242,7 @@
     <!-- FIN PIE -->
   </div>
   <!-- FIN CONTENEDOR -->
+  <script src="js/script.js"></script>
 </body>
-<script src="js/script.js"></script>
 
 </html>
