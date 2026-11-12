@@ -158,7 +158,13 @@ class Sistema {
         this.#actividades.push(nuevaActividad)
     }
 
-    
+    obtenerActividades() {
+        let listaFuncionarios = [];
+        for (let i = 0; i < this.#funcionario.length; i++) {
+            listaFuncionarios.push(this.#funcionario[i])
+        }
+        return listaFuncionarios;
+    }
 
 
 
