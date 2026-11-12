@@ -1,4 +1,4 @@
-const SECCIONES = ["secIniciarSesion", "secRegistroFuncionario", "secEstadosRobots","secTablaFuncionarios", "secRegistroRobot"];
+const SECCIONES = ["secIniciarSesion", "secRegistroFuncionario", "secEstadosRobots","secTablaFuncionarios", "secRegistroRobot","secRegistrarActividad"];
 
 let usuarioLogueado = null;
 let tipoUsuario = "";
@@ -7,6 +7,9 @@ document.querySelector("#btnTablaFuncionarios").addEventListener("click", mostra
 document.querySelector("#btnTablaEstadosRobots").addEventListener("click", mostrarTablaEstadosDeRobots);
 document.querySelector("#btnIniciarSesion").addEventListener("click", () => {
     mostrarSeccion("secIniciarSesion");
+});
+document.querySelector("#btnRegistrarActividad").addEventListener("click", () => {
+    mostrarSeccion("secRegistrarActividad");
 });
 document.querySelector("#btnEnviarLogin").addEventListener("click", intentarIniciarSesion);
 document.querySelector("#btnCerrarSesion").addEventListener("click", cerrarSesion);

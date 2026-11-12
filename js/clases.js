@@ -115,8 +115,9 @@ class Sistema {
        obtenerRobots() {
         let listaRobots = [];
         for (let i = 0; i < this.#robot.length; i++) {
-            listaRobots.push(this.#robot[i])
-
+              if (this.#robot[i].estado == "PENDIENTE"){
+                listaRobots.push(this.#robot[i])
+            }
         }
         return listaRobots;
     }
