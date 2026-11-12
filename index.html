@@ -28,6 +28,9 @@
           <li id="liRegistrarRobot">
             <a id="btnRegistrarRobot">Registrar robot</a>
           </li>
+          <li id="liRobotsAsignados">
+            <a id="btnRobotsAsignados">Robots asignados</a>
+          </li>
           <li>
             <button id="btnTablaFuncionarios">Mostrar Tabla Funcionarios</button>
           </li>
@@ -126,70 +129,13 @@
         <hr />
       </section>
 
-
-      <!-- TABLA DE ROBOTS ASIGNADOS (Ejemplo Perfil Funcionario) -->
-      <h3>Robots Asignados</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Imagen</th>
-            <th>Nombre</th>
-            <th>Modelo</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>HAL-1</td>
-            <td><img
-                src="https://res.cloudinary.com/tgh2fcit/image/upload/v1789766051/ChatGPT_Image_Sep_18_2026_06_13_26_PM.png"
-                alt="Robot Rust-E"></td>
-            <td>Rust-E</td>
-            <td>RX-90</td>
-            <td>
-              <input type="button" value="Baja" />
-              <input type="button" value="Actividades" />
-            </td>
-          </tr>
-          <tr>
-            <td>HAL-2</td>
-            <td><img
-                src="https://res.cloudinary.com/tgh2fcit/image/upload/v1789766177/ChatGPT_Image_Sep_18_2026_06_15_24_PM.png"
-                alt="Robot BEEP-BO"></td>
-            <td>BEEP-BO</td>
-            <td>MK-III</td>
-            <td>
-              <input type="button" value="Baja" />
-              <input type="button" value="Actividades" />
-            </td>
-          </tr>
-          <tr>
-            <td>HAL-3</td>
-            <td><img
-                src="https://res.cloudinary.com/tgh2fcit/image/upload/v1789767546/ChatGPT_Image_Sep_18_2026_06_36_01_PM.png"
-                alt="RAM-130372"></td>
-            <td>RAF</td>
-            <td>RAM-130372</td>
-            <td>
-              <input type="button" value="Baja" />
-              <input type="button" value="Actividades" />
-            </td>
-          </tr>
-          <tr>
-            <td>HAL-3</td>
-            <td><img
-                src="       https://res.cloudinary.com/tgh2fcit/image/upload/v1789768114/ChatGPT_Image_Sep_18_2026_06_48_13_PM.png"
-                alt="I'm a teapot"></td>
-            <td>Pots</td>
-            <td>IAT-418</td>
-            <td>
-              <input type="button" value="Baja" />
-              <input type="button" value="Actividades" />
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <section id="secRobotsAsignados">
+        <hr>
+        <h3>Robots Asignados</h3>
+        <p id="pMensajeBaja"></p>
+        <div id="divTablaRobotsAsignados"></div>
+        <hr />
+      </section>
 
       <!-- TABLA DE ESTADÍSTICAS POR INDUSTRIA -->
       <h3>Estadísticas por Industria</h3>
