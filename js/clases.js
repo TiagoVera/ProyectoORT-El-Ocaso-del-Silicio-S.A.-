@@ -154,14 +154,14 @@ class Sistema {
     }
 
     registrarActividad(nombre, descripcion, precio) {
-        let nuevaActividad = new actividad(nombre, descripcion, precio)
+        let nuevaActividad = new actividades(nombre, descripcion, precio)
         this.#actividades.push(nuevaActividad)
     }
 
     obtenerActividades() {
         let listaActividades = [];
         for (let i = 0; i < this.#actividades.length; i++) {
-            listaFuncionarios.push(this.#actividades[i])
+            listaActividades.push(this.#actividades[i])
         }
         return listaActividades;
     }
