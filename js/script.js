@@ -147,6 +147,7 @@ function intentarIniciarSesion() {
         return;
     }
 
+
     usuarioLogueado = encontrado;
     if (esFuncionario(usuario)) {
         tipoUsuario = "funcionario";
@@ -163,7 +164,7 @@ function intentarIniciarSesion() {
         document.querySelector("#pMensajeBaja").innerHTML = "";
         mostrarRobotsAsignados();
     }
-
+}
     function cerrarSesion() {
         usuarioLogueado = null;
         tipoUsuario = "";
@@ -278,4 +279,4 @@ function intentarIniciarSesion() {
     }
 
     sistema.precargaDatos()
-}
+
