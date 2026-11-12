@@ -230,6 +230,10 @@ class Sistema {
         unRobot.actividades = nuevaLista;
         return "";
     }
+
+    obtenerDineroActividades() {
+        return Sistema.#dineroActividades;
+    }
     
 
 
