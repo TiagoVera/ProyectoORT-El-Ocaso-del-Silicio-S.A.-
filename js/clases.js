@@ -167,7 +167,7 @@ class Sistema {
     }
 
     buscarActividadPorNombre(nombre) {
-        for(let i = 0; i i < this.#actividades.length; i++) {
+        for(let i = 0; i < this.#actividades.length; i++) {
             if (sonIgualesTexto(this.#actividades[i].nombre, nombre)) {
                 return this.#actividades[i];
             }
@@ -175,7 +175,35 @@ class Sistema {
         return null; 
     }
 
-    
+    robotTieneActividad(unRobot, nombreActividad) {
+        for (let i = 0; i < unRobot.actividades.length; i++) {
+            if (sonIgualesTexto(unRobot.actividades[i].nombre, nombreActividad)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    asignarActividad(idRobot, nombreActividad) {
+        let unRobot = this.buscarRobotPorId(idRobot);
+        let unaActividad = this.buscarActividadPorNombre(nombreActividad);
+
+        if (unRobot == null) {
+            return "El robot no existe";
+        }
+        if (unRobot.estado != "ACEPTADO") {
+            return "Solo los robots ACEPTADOS pueden tener actividades";
+        }
+        if (unaActividad == null) {
+            return "La actividad no existe";
+        }
+        if (this.robotTieneActividad(unRobot, nombreActividad)) {
+            return "El robot ya tiene asignada una actividad";
+        }
+        unRobot.actividades.push(unaActividad);
+        Sistema.#dineroActividades = Sistema.#dineroActividades + unaActividad.precio;
+        return "";
+    }
     
 
 
