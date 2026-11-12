@@ -159,6 +159,16 @@ class Sistema {
         this.registrarRobot("KUKA KR-6", "SN-1003", "KUKA Systems", "KR-600", "Metalúrgica", "img/kuka.jpg");
         this.registrarRobot("UR10e Cobot", "SN-1004", "Universal Robots", "UR10e", "Electrónica", "img/ur10e.jpg");
         this.registrarRobot("Spot Explorer", "SN-1005", "Boston Dynamics", "Spot-V2", "Seguridad", "img/spot.jpg");
+
+        //Robots aceptados y asignados (prueba de funcionario)
+        this.#robot[0].estado = "ACEPTADO";
+        this.#robot[0].asignadoA = "TURING-1";
+        this.#robot[1].estado = "ACEPTADO";
+        this.#robot[1].asignadoA = "TURING-1";
+        this.#robot[2].estado = "ACEPTADO";
+        this.#robot[2].asignadoA = "TURING-1";
+        this.#robot[3].estado = "ACEPTADO";
+        this.#robot[3].asignadoA = "TURING-2";
     }
 
 }
