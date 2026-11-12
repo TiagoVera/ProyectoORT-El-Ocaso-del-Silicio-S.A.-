@@ -59,6 +59,7 @@ class Sistema {
     static #mejorFuncionario = "";
 
 
+    //Usuarios
     iniciarSesion(usuario, contraseña) {
         if (esFuncionario(usuario)) {
 
@@ -80,25 +81,6 @@ class Sistema {
         return null
     }
 
-    registrarFuncionario(documento, nombre, telefono) {
-        let nuevoFuncionario = new funcionario(documento, nombre, telefono);
-        this.#funcionario.push(nuevoFuncionario);
-    }
-    registrarRobot(nombre, numDeSerie, fabricante, modelo, industria, imagen, registradoPor) {
-        let nuevoRobot = new robot(nombre, numDeSerie, fabricante, modelo, industria, imagen, registradoPor);
-        this.#robot.push(nuevoRobot);
-    }
-
-    existeRobot(numDeSerie, fabricante) {
-    for (let i = 0; i < this.#robot.length; i++) {
-        if (sonIgualesTexto(this.#robot[i].numDeSerie, numDeSerie) &&
-            sonIgualesTexto(this.#robot[i].fabricante, fabricante)) {
-            return true;
-        }
-    }
-    return false;
-    }
-
     registrarAdministrador(nombre, usuario, contraseña) {
         let nuevoAdministrador = new administrador(nombre, usuario, contraseña);
         this.#administrador.push(nuevoAdministrador);
@@ -112,6 +94,13 @@ class Sistema {
         }
         return listaFuncionarios;
     }
+    
+        registrarFuncionario(documento, nombre, telefono) {
+        let nuevoFuncionario = new funcionario(documento, nombre, telefono);
+        this.#funcionario.push(nuevoFuncionario);
+    }
+
+    //Robots
        obtenerRobots() {
         let listaRobots = [];
         for (let i = 0; i < this.#robot.length; i++) {
@@ -120,6 +109,21 @@ class Sistema {
             }
         }
         return listaRobots;
+    }
+
+        existeRobot(numDeSerie, fabricante) {
+    for (let i = 0; i < this.#robot.length; i++) {
+        if (sonIgualesTexto(this.#robot[i].numDeSerie, numDeSerie) &&
+            sonIgualesTexto(this.#robot[i].fabricante, fabricante)) {
+            return true;
+        }
+    }
+    return false;
+    }
+
+    registrarRobot(nombre, numDeSerie, fabricante, modelo, industria, imagen, registradoPor) {
+        let nuevoRobot = new robot(nombre, numDeSerie, fabricante, modelo, industria, imagen, registradoPor);
+        this.#robot.push(nuevoRobot);
     }
 
 
@@ -152,6 +156,8 @@ class Sistema {
         unRobot.motivo = "Dado de baja por el funcionario";
         return true;
     }
+
+    //Actividades
 
     registrarActividad(nombre, descripcion, precio) {
         let nuevaActividad = new actividades(nombre, descripcion, precio)
