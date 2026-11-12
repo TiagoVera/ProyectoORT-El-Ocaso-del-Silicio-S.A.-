@@ -134,7 +134,7 @@ class Sistema {
 
     obtenerRobotsAsignados(codigoFuncionario) {
         let lista = [];
-        for (let i=o; i < this.#robot.length; i++) {
+        for (let i=0; i < this.#robot.length; i++) {
             let unRobot = this.#robot[i];
             if (unRobot.estado == "ACEPTADO" && unRobot.asignadoA == codigoFuncionario) {
                 lista.push(unRobot)
