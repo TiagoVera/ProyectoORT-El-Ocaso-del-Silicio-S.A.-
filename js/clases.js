@@ -171,11 +171,11 @@ class Sistema {
         this.registrarFuncionario("78590431", "Carlos Gardel", "092453672");
 
         //Robots
-        this.registrarRobot("Atlas V1", "SN-1001", "Boston Dynamics", "HD-2024", "Automotriz", "https://res.cloudinary.com/tgh2fcit/image/upload/v1789766051/ChatGPT_Image_Sep_18_2026_06_13_26_PM.png", "TURING-1");
-        this.registrarRobot("Optimus Gen2", "SN-1002", "Tesla", "TS-02", "Logística", "https://res.cloudinary.com/tgh2fcit/image/upload/v1789766177/ChatGPT_Image_Sep_18_2026_06_15_24_PM.png", "TURING-2");
-        this.registrarRobot("KUKA KR-6", "SN-1003", "KUKA Systems", "KR-600", "Metalúrgica", "https://res.cloudinary.com/tgh2fcit/image/upload/v1789767546/ChatGPT_Image_Sep_18_2026_06_36_01_PM.png", "TURING-3");
-        this.registrarRobot("UR10e Cobot", "SN-1004", "Universal Robots", "UR10e", "Electrónica", "https://res.cloudinary.com/tgh2fcit/image/upload/v1789768114/ChatGPT_Image_Sep_18_2026_06_48_13_PM.png", "TURING-4");
-        this.registrarRobot("Spot Explorer", "SN-1005", "Boston Dynamics", "Spot-V2", "Seguridad", "img/spot.jpg", "TURING-5");
+        this.registrarRobot("Atlas V1", "SN-1001", "Boston Dynamics", "HD-2024", "Militar", "https://res.cloudinary.com/tgh2fcit/image/upload/v1789766051/ChatGPT_Image_Sep_18_2026_06_13_26_PM.png", "TURING-1");
+        this.registrarRobot("Optimus Gen2", "SN-1002", "Tesla", "TS-02", "Doméstica", "https://res.cloudinary.com/tgh2fcit/image/upload/v1789766177/ChatGPT_Image_Sep_18_2026_06_15_24_PM.png", "TURING-2");
+        this.registrarRobot("KUKA KR-6", "SN-1003", "KUKA Systems", "KR-600", "Genérico", "https://res.cloudinary.com/tgh2fcit/image/upload/v1789767546/ChatGPT_Image_Sep_18_2026_06_36_01_PM.png", "TURING-3");
+        this.registrarRobot("UR10e Cobot", "SN-1004", "Universal Robots", "UR10e", "Médica", "https://res.cloudinary.com/tgh2fcit/image/upload/v1789768114/ChatGPT_Image_Sep_18_2026_06_48_13_PM.png", "TURING-4");
+        this.registrarRobot("Spot Explorer", "SN-1005", "Boston Dynamics", "Spot-V2", "Agrícola", "img/spot.jpg", "TURING-5");
 
         //Robots aceptados y asignados (prueba de funcionario)
         this.#robot[0].estado = "ACEPTADO";
