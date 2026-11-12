@@ -218,4 +218,64 @@ function intentarIniciarSesion() {
     document.querySelector("#robotImagen").value = "";
     }
 
+    function mostrarRobotsAsignados() {
+    mostrarSeccion("secRobotsAsignados");
+    let robots = sistema.obtenerRobotsAsignados(usuarioLogueado.codigoFuncionario);
+    let divTabla = document.querySelector("#divTablaRobotsAsignados");
+
+    if (robots.length == 0) {
+        divTabla.innerHTML = "<p>No tenés robots asignados.</p>";
+        return;
+    }
+
+    let html = `<table border="1">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Imagen</th>
+                        <th>Nombre</th>
+                        <th>Modelo</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+    for (let i = 0; i < robots.length; i++) {
+        html += `<tr>
+                    <td>${robots[i].id}</td>
+                    <td><img src="${robots[i].imagen}" alt="${robots[i].nombre}"></td>
+                    <td>${robots[i].nombre}</td>
+                    <td>${robots[i].modelo}</td>
+                    <td>
+                        <input type="button" value="Baja" class="btnBaja" data-id="${robots[i].id}" />
+                        <input type="button" value="Actividades" class="btnActividades" data-id="${robots[i].id}" />
+                    </td>
+                </tr>`;
+    }
+
+    html += "</tbody></table>";
+    divTabla.innerHTML = html;
+    conectarBotonesBaja();
+    }
+
+    function conectarBotonesBaja() {
+        let botones = document.querySelectorAll(".btnBaja");
+        for (let i = 0; i < botones.length; i++) {
+        botones[i].addEventListener("click", clickDarDeBaja);
+        }
+    }
+
+    function clickDarDeBaja() {
+        let idRobot = this.getAttribute("data-id");
+        let pMensaje = document.querySelector("#pMensajeBaja");
+
+        if (sistema.darDeBajaRobot(idRobot, usuarioLogueado.codigoFuncionario)) {
+        pMensaje.innerHTML = "El robot " + idRobot + " fue dado de baja.";
+        } else {
+            pMensaje.innerHTML = "No se pudo dar de baja el robot " + idRobot + ".";
+        }
+        mostrarRobotsAsignados();
+    }
+
     sistema.precargaDatos()
+}
