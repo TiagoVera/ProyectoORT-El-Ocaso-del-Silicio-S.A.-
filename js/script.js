@@ -160,55 +160,55 @@ function intentarIniciarSesion() {
     actualizarMenu();
 
     if (tipoUsuario == "funcionario") {
-        mostrarSeccion("secRegistroRobot");
+        document.querySelector("#pMensajeBaja").innerHTML = "";
+        mostrarRobotsAsignados();
     }
-}
 
-function cerrarSesion() {
-    usuarioLogueado = null;
-    tipoUsuario = "";
-    actualizarMenu();
-    mostrarSeccion("secIniciarSesion");
-}
+    function cerrarSesion() {
+        usuarioLogueado = null;
+        tipoUsuario = "";
+        actualizarMenu();
+        mostrarSeccion("secIniciarSesion");
+    }
 
-function validarRegistroRobot(nombre, serie, fabricante, modelo, industria, imagen) {
-    if (estaVacio(nombre) || estaVacio(serie) || estaVacio(fabricante) ||
+    function validarRegistroRobot(nombre, serie, fabricante, modelo, industria, imagen) {
+        if (estaVacio(nombre) || estaVacio(serie) || estaVacio(fabricante) ||
         estaVacio(modelo) || estaVacio(industria) || estaVacio(imagen)) {
         return "Todos los campos son obligatorios.";
-    }
-    if (superaLargo(nombre, 20)) {
+        }
+        if (superaLargo(nombre, 20)) {
         return "El nombre no puede superar los 20 caracteres.";
-    }
-    if (tieneEspacios(serie.trim())) {
+        }
+        if (tieneEspacios(serie.trim())) {
         return "El número de serie no puede contener espacios.";
-    }
-    if (!tieneNumero(serie)) {
+        }
+        if (!tieneNumero(serie)) {
         return "El número de serie debe contener al menos un número.";
-    }
-    if (sistema.existeRobot(serie, fabricante)) {
+        }
+        if (sistema.existeRobot(serie, fabricante)) {
         return "Ya existe un robot con ese número de serie y fabricante.";
+        }
+        return "";
     }
-    return "";
-}
 
-function registrarRobotDesdeFormulario() {
-    let nombre = document.querySelector("#robotNombre").value;
-    let serie = document.querySelector("#robotSerie").value;
-    let fabricante = document.querySelector("#robotFabricante").value;
-    let modelo = document.querySelector("#robotModelo").value;
-    let industria = document.querySelector("#robotIndustria").value;
-    let imagen = document.querySelector("#robotImagen").value;
-    let pMensaje = document.querySelector("#pMensajeRobot");
+    function registrarRobotDesdeFormulario() {
+        let nombre = document.querySelector("#robotNombre").value;
+        let serie = document.querySelector("#robotSerie").value;
+        let fabricante = document.querySelector("#robotFabricante").value;
+        let modelo = document.querySelector("#robotModelo").value;
+        let industria = document.querySelector("#robotIndustria").value;
+        let imagen = document.querySelector("#robotImagen").value;
+        let pMensaje = document.querySelector("#pMensajeRobot");
 
-    let error = validarRegistroRobot(nombre, serie, fabricante, modelo, industria, imagen);
-    if (error != "") {
+        let error = validarRegistroRobot(nombre, serie, fabricante, modelo, industria, imagen);
+        if (error != "") {
         pMensaje.innerHTML = error;
         return;
-    }
+        }
 
-    sistema.registrarRobot(nombre.trim(), serie.trim(), fabricante.trim(), modelo.trim(),
+        sistema.registrarRobot(nombre.trim(), serie.trim(), fabricante.trim(), modelo.trim(),
                            industria, imagen.trim(), usuarioLogueado.codigoFuncionario);
-    pMensaje.innerHTML = "Robot registrado correctamente. Queda PENDIENTE de aprobación.";
+        pMensaje.innerHTML = "Robot registrado correctamente. Queda PENDIENTE de aprobación.";
 
     document.querySelector("#robotNombre").value = "";
     document.querySelector("#robotSerie").value = "";
@@ -216,6 +216,6 @@ function registrarRobotDesdeFormulario() {
     document.querySelector("#robotModelo").value = "";
     document.querySelector("#robotIndustria").value = "";
     document.querySelector("#robotImagen").value = "";
-}
+    }
 
-sistema.precargaDatos()
+    sistema.precargaDatos()
