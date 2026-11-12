@@ -153,6 +153,13 @@ class Sistema {
         return true;
     }
 
+    registrarActividad(nombre, descripcion, precio) {
+        let nuevaActividad = new actividad(nombre, descripcion, precio)
+        this.#actividades.push(nuevaActividad)
+    }
+
+    
+
 
 
 
