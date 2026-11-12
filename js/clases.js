@@ -142,6 +142,14 @@ class Sistema {
         return lista;
     }
 
+    buscarRobotPorId(idRobot) {
+        for(let i = 0; i < this.#robot.length; i++) {
+            if (this.#robot[i].id == idRobot) {
+                return this.#robot[i];
+            }
+        }
+        return null;
+    }
 
 
 
