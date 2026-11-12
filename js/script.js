@@ -1,4 +1,4 @@
-const SECCIONES = ["secIniciarSesion", "secRegistroFuncionario", "secEstadosRobots","secTablaFuncionarios", "secRegistroRobot","secRegistrarActividad"];
+const SECCIONES = ["secIniciarSesion", "secRegistroFuncionario", "secEstadosRobots","secTablaFuncionarios", "secRegistroRobot", "secRegistrarActividad", "secRobotsAsignados"];
 
 let usuarioLogueado = null;
 let tipoUsuario = "";
@@ -15,6 +15,11 @@ document.querySelector("#btnEnviarLogin").addEventListener("click", intentarInic
 document.querySelector("#btnCerrarSesion").addEventListener("click", cerrarSesion);
 document.querySelector("#btnRegistrarRobot").addEventListener("click", () => {
     mostrarSeccion("secRegistroRobot");
+});
+
+document.querySelector("#btnRobotsAsignados").addEventListener("click", () => {
+    document.querySelector("#pMensajeBaja").innerHTML = "";
+    mostrarRobotsAsignados();
 });
 
 document.querySelector("#btnRegistrarRobotForm").addEventListener("click", registrarRobotDesdeFormulario);
