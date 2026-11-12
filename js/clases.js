@@ -199,6 +199,18 @@ class Sistema {
         this.#robot[2].asignadoA = "TURING-1";
         this.#robot[3].estado = "ACEPTADO";
         this.#robot[3].asignadoA = "TURING-2";
+
+        //Actividades 
+        this.registrarActividad("Ajedrez", "Partidas de ajedrez contra otros robots", 300);
+        this.registrarActividad("Pintura", "Pintura junto con otros robots ", 400);
+        this.registrarActividad("Música", "Lecciones de instrumentos", 500);
+        this.registrarActividad("Jardinería", "Aprendizaje de cuidado de jardin", 250);
+        this.registrarActividad("Lectura", "Lectura extensa de diferentes generos", 150);
+        this.registrarActividad("Baile", "Clases de baile", 100);
+        this.registrarActividad("Cocina", "Aprendizaje de nuevas recetas", 550);
+        this.registrarActividad("Meditación", "Tiempo de recarga energetica", 350);
+        this.registrarActividad("Videojuegos", "Creacion de videojuegos o recreacion en videojuegos", 200);
+        this.registrarActividad("Senderismo", "Salidas para matener los engranajes en funcionamiento", 450);
     }
 
 }
