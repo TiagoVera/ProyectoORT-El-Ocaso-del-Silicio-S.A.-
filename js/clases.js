@@ -152,7 +152,15 @@ class Sistema {
         return null;
     }
 
-
+    darDeBajaRobot(idRobot, codigoFuncionario) {
+        let unRobot = this.buscarRobotPorId(idRobot);
+        if (unRobot == null || unRobot.estado != "ACEPTADO" || unRobot.asignadoA != codigoFuncionario) {
+            return false;
+        }
+        unRobot.estado = "DE BAJA";
+        unRobot.motivo = "Dado de baja por el funcionario";
+        return true;
+    }
 
 
 
