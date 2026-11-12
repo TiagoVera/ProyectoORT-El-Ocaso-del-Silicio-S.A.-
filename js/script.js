@@ -26,7 +26,7 @@ document.querySelector("#btnRegistrarRobotForm").addEventListener("click", regis
 
 ocultarTodasLasSecciones();
 // Se agrega mostrarSeccion("secIniciarSesion") ;actualizarMenu(); para que podamos ver correctamente el formulario de login sin eso quedaria todo vacio
-actualizarMenu();
+
 mostrarSeccion("secIniciarSesion");
 actualizarMenu();
 
@@ -86,31 +86,6 @@ function mostrarTablaEstadosDeRobots() {
 
     html += '</table>'
     document.querySelector("#divTablaEstadosDeRobots").innerHTML = html;
-}
-
-function validarRegistroRobot(nombre, serie, fabricante, modelo, industria, imagen) {
-    // 1. Obligatorios: si algún campo está vacío, no seguimos
-    if (estaVacio(nombre) || estaVacio(serie) || estaVacio(fabricante) ||
-        estaVacio(modelo) || estaVacio(industria) || estaVacio(imagen)) {
-        return "Todos los campos son obligatorios.";
-    }
-    // 2. Nombre: máximo 20 caracteres
-    if (superaLargo(nombre, 20)) {
-        return "El nombre no puede superar los 20 caracteres.";
-    }
-    // 3. Serie: no puede tener espacios
-    if (tieneEspacios(serie)) {
-        return "El número de serie no puede contener espacios.";
-    }
-    // 4. Serie: debe tener al menos un número
-    if (!tieneNumero(serie)) {
-        return "El número de serie debe contener al menos un número.";
-    }
-    // 5. No puede repetirse la combinación serie + fabricante
-    if (sistema.existeRobot(serie, fabricante)) {
-        return "Ya existe un robot con ese número de serie y fabricante.";
-    }
-    return ""; // Texto vacío = todo correcto
 }
 
 const sistema = new Sistema();

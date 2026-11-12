@@ -122,15 +122,6 @@ class Sistema {
         return listaRobots;
     }
 
-    existeRobot(numDeSerie, fabricante) {
-    for (let i = 0; i < this.#robot.length; i++) {
-        if (sonIgualesTexto(this.#robot[i].numDeSerie, numDeSerie) &&
-            sonIgualesTexto(this.#robot[i].fabricante, fabricante)) {
-            return true;
-        }
-    }
-    return false;
-}
 
     obtenerRobotsAsignados(codigoFuncionario) {
         let lista = [];
@@ -161,7 +152,6 @@ class Sistema {
         unRobot.motivo = "Dado de baja por el funcionario";
         return true;
     }
-
 
 
 
