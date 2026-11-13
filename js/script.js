@@ -1,8 +1,9 @@
-const SECCIONES = ["secIniciarSesion", "secRegistroFuncionario", "secEstadosRobots", "secTablaFuncionarios", "secRegistroRobot", "secRegistrarActividad", "secRobotsAsignados"];
+const SECCIONES = ["secIniciarSesion", "secRegistroFuncionario", "secEstadosRobots","secTablaFuncionarios", "secRegistroRobot", "secRegistrarActividad", "secRobotsAsignados", "secActividadesRobot"];
 
 let usuarioLogueado = null;
 const sistema = new Sistema();
 let tipoUsuario = "";
+let idRobotActual = "";
 
 document.querySelector("#btnTablaFuncionarios").addEventListener("click", mostrarTablaFuncionarios);
 document.querySelector("#btnTablaEstadosRobots").addEventListener("click", mostrarTablaEstadosDeRobots);
@@ -290,7 +291,9 @@ function mostrarRobotsAsignados() {
     html += "</tbody></table>";
     divTabla.innerHTML = html;
     conectarBotonesBaja();
+    conectarBotonesActividades();
 }
+    
 
 function conectarBotonesBaja() {
     let botones = document.querySelectorAll(".btnBaja");
@@ -310,6 +313,25 @@ function clickDarDeBaja() {
     }
     mostrarRobotsAsignados();
 }
+    
+    function conectarBotonesActividades() {
+        let botones = document.querySelectorAll(".btnActividades");
+        for (let i = 0; i < botones.length; i++) {
+        botones[i].addEventListener("click", clickActividades);
+        }
+    }
+
+    function clickActividades() {
+        idRobotActual = this.getAttribute("data-id");
+        document.querySelector("#pMensajeActividad").innerHTML = "";
+        mostrarActividadesRobot();
+    }
+
+    function mostrarActividadesRobot() {
+        mostrarSeccion("secActividadesRobot");
+        let unRobot = sistema.buscarRobotPorId(idRobotActual);
+        document.querySelector("#pDatosRobot").innerHTML = "ID: " + unRobot.id + " | Nombre: " + unRobot.nombre;
+    }
 
 sistema.precargaDatos()
 

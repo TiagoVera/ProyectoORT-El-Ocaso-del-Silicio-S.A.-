@@ -298,6 +298,30 @@ aceptarRobot(idRobot) {
         return "";
     }
 
+    quitarActividad(idRobot, nombreActividad) {
+        let unRobot = this.buscarRobotPorId(idRobot);
+
+        if (unRobot == null) {
+        return "El robot no existe.";
+        }
+        if (!this.robotTieneActividad(unRobot, nombreActividad)) {
+        return "El robot no tiene esa actividad.";
+        }
+
+        let nuevaLista = [];
+        for (let i = 0; i < unRobot.actividades.length; i++) {
+        if (!sonIgualesTexto(unRobot.actividades[i].nombre, nombreActividad)) {
+            nuevaLista.push(unRobot.actividades[i]);
+            }
+        }
+        unRobot.actividades = nuevaLista;
+        return "";
+    }
+
+    obtenerDineroActividades() {
+        return Sistema.#dineroActividades;
+    }
+    
 
 
     // PRECARGA DE DATOS
