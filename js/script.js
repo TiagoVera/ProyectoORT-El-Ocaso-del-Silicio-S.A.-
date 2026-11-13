@@ -256,11 +256,23 @@ function intentarIniciarSesion() {
     }
     
     function conectarBotonesActividades() {
-    let botones = document.querySelectorAll(".btnActividades");
-    for (let i = 0; i < botones.length; i++) {
+        let botones = document.querySelectorAll(".btnActividades");
+        for (let i = 0; i < botones.length; i++) {
         botones[i].addEventListener("click", clickActividades);
+        }
     }
-}
+
+    function clickActividades() {
+        idRobotActual = this.getAttribute("data-id");
+        document.querySelector("#pMensajeActividad").innerHTML = "";
+        mostrarActividadesRobot();
+    }
+
+    function mostrarActividadesRobot() {
+        mostrarSeccion("secActividadesRobot");
+        let unRobot = sistema.buscarRobotPorId(idRobotActual);
+        document.querySelector("#pDatosRobot").innerHTML = "ID: " + unRobot.id + " | Nombre: " + unRobot.nombre;
+    }
 
     sistema.precargaDatos()
 
