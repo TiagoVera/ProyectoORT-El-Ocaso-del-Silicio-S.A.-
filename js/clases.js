@@ -198,9 +198,10 @@ rechazarRobot(idRobot) {
     let robot = this.buscarRobotPorId(idRobot);
     if (robot !== null && robot.estado === "PENDIENTE") {
         robot.estado = "RECHAZADO";
-        return "Robot rechazado correctamente.";
+        robot.motivo="Rechazado por un administrador.";
+        return "Robot rechazado correctamente";
     }
-    return "No se pudo rechazar el robot.";
+    return "No se pudo rechazar el robot, no existe.";
 }
 
 venderRobot(idRobot) {
@@ -209,9 +210,10 @@ venderRobot(idRobot) {
         robot.estado = "VENDIDO";
         Sistema.#dineroRobotsVendidos += 20000;
         Sistema.#dineroTotal += 20000;
+        robot.motivo="Vendido por piezas por un administrador";
         return "Robot vendido por piezas. El establecimiento ganó $20.000.";
     }
-    return "No se pudo vender el robot.";
+    return "No se pudo vender el robot, no existe.";
 }
 
 aceptarRobot(idRobot) {
@@ -224,6 +226,7 @@ aceptarRobot(idRobot) {
             robot.estado = "VENDIDO";
             Sistema.#dineroRobotsVendidos += 20000;
             Sistema.#dineroTotal += 20000;
+            robot.motivo="Vendido automáticamente: Límite de 30 robots en la industria alcanzado";
             return "Límite de 30 robots alcanzado en esta industria. El robot fue vendido automáticamente por $20.000.";
         }
 
@@ -234,13 +237,15 @@ aceptarRobot(idRobot) {
             robot.estado = "ACEPTADO";
             Sistema.#dineroRobotsAceptados += 5000;
             Sistema.#dineroTotal += 5000;
+            robot.motivo="Robot aceptado por un administrador y asignado a un funcionario"
             return "Robot aceptado y asignado. El establecimiento ganó $5.000.";
         } else {
             //No hay funcionarios disponibles -> queda PENDIENTE y avisa
+            robot.motivo="No se pudo aceptar el robot porque no hay funcionarios disponibles"
             return "No se pudo aceptar el robot porque no hay funcionarios disponibles. Se recomienda buscar personal para la instalación.";
         }
     }
-    return "No se pudo procesar el robot.";
+    return "No se pudo procesar el robot, no existe.";
 }
 
 
