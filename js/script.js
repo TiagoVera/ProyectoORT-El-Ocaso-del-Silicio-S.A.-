@@ -2,6 +2,7 @@ const SECCIONES = ["secIniciarSesion", "secRegistroFuncionario", "secEstadosRobo
 
 let usuarioLogueado = null;
 let tipoUsuario = "";
+let idRobotActual = "";
 
 document.querySelector("#btnTablaFuncionarios").addEventListener("click", mostrarTablaFuncionarios);
 document.querySelector("#btnTablaEstadosRobots").addEventListener("click", mostrarTablaEstadosDeRobots);
@@ -232,6 +233,7 @@ function intentarIniciarSesion() {
     html += "</tbody></table>";
     divTabla.innerHTML = html;
     conectarBotonesBaja();
+    conectarBotonesActividades();
     }
 
     function conectarBotonesBaja() {
@@ -252,6 +254,13 @@ function intentarIniciarSesion() {
         }
         mostrarRobotsAsignados();
     }
+    
+    function conectarBotonesActividades() {
+    let botones = document.querySelectorAll(".btnActividades");
+    for (let i = 0; i < botones.length; i++) {
+        botones[i].addEventListener("click", clickActividades);
+    }
+}
 
     sistema.precargaDatos()
 
