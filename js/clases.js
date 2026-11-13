@@ -64,11 +64,11 @@ class Sistema {
         if (esFuncionario(usuario)) {
 
             for (let i = 0; i < this.#funcionario.length; i++) {
-           let unFuncionario = this.#funcionario[i];
-            if (sonIgualesTexto(unFuncionario.codigoFuncionario, usuario) && unFuncionario.contraseña == contraseña) {
-        return unFuncionario;
-        }
-    }
+                let unFuncionario = this.#funcionario[i];
+                if (sonIgualesTexto(unFuncionario.codigoFuncionario, usuario) && unFuncionario.contraseña == contraseña) {
+                    return unFuncionario;
+                }
+            }
 
         } else {
             for (let i = 0; i < this.#administrador.length; i++) {
@@ -94,31 +94,31 @@ class Sistema {
         }
         return listaFuncionarios;
     }
-    
-        registrarFuncionario(documento, nombre, telefono) {
+
+    registrarFuncionario(documento, nombre, telefono) {
         let nuevoFuncionario = new funcionario(documento, nombre, telefono);
         this.#funcionario.push(nuevoFuncionario);
     }
 
     //Robots
-       obtenerRobots() {
+    obtenerRobots() {
         let listaRobots = [];
         for (let i = 0; i < this.#robot.length; i++) {
-              if (this.#robot[i].estado == "PENDIENTE"){
+            if (this.#robot[i].estado == "PENDIENTE") {
                 listaRobots.push(this.#robot[i])
             }
         }
         return listaRobots;
     }
 
-        existeRobot(numDeSerie, fabricante) {
-    for (let i = 0; i < this.#robot.length; i++) {
-        if (sonIgualesTexto(this.#robot[i].numDeSerie, numDeSerie) &&
-            sonIgualesTexto(this.#robot[i].fabricante, fabricante)) {
-            return true;
+    existeRobot(numDeSerie, fabricante) {
+        for (let i = 0; i < this.#robot.length; i++) {
+            if (sonIgualesTexto(this.#robot[i].numDeSerie, numDeSerie) &&
+                sonIgualesTexto(this.#robot[i].fabricante, fabricante)) {
+                return true;
+            }
         }
-    }
-    return false;
+        return false;
     }
 
     registrarRobot(nombre, numDeSerie, fabricante, modelo, industria, imagen, registradoPor) {
@@ -129,7 +129,7 @@ class Sistema {
 
     obtenerRobotsAsignados(codigoFuncionario) {
         let lista = [];
-        for (let i=0; i < this.#robot.length; i++) {
+        for (let i = 0; i < this.#robot.length; i++) {
             let unRobot = this.#robot[i];
             if (unRobot.estado == "ACEPTADO" && unRobot.asignadoA == codigoFuncionario) {
                 lista.push(unRobot)
@@ -138,8 +138,19 @@ class Sistema {
         return lista;
     }
 
+    obtenerRobotsPorIndustria(industria) {
+        let lista = [];
+        for (let i = 0; i < this.#robot.length; i++) {
+            let robot = this.#robot[i];
+            if (robot.estado == "ACEPTADO" && robot.industria == industria) {
+                lista.push(robot)
+            }
+        }
+        return lista;
+    }
+
     buscarRobotPorId(idRobot) {
-        for(let i = 0; i < this.#robot.length; i++) {
+        for (let i = 0; i < this.#robot.length; i++) {
             if (this.#robot[i].id == idRobot) {
                 return this.#robot[i];
             }
@@ -157,6 +168,82 @@ class Sistema {
         return true;
     }
 
+    cambiarEstadoRobot(idRobot, estado) {
+        let robot = this.buscarRobotPorId(idRobot);
+        if (robot) {
+            robot.estado.push(estado);
+            return "ESTADO CAMBIADO A " + estado;
+        }
+        return null
+    }
+
+obtenerFuncionarioDisponible(codigoFuncionarioOriginal) {
+    if (this.obtenerRobotsAsignados(codigoFuncionarioOriginal).length < 10) {
+        return codigoFuncionarioOriginal;
+    }
+
+    //Si ya tiene 10, busca el siguiente funcionario disponible
+    let codigoLibre = null;
+    for (let i = 0; i < this.#funcionario.length; i++) {
+        let codigoActual = this.#funcionario[i].codigoFuncionario;
+        if (this.obtenerRobotsAsignados(codigoActual).length < 10) {
+            codigoLibre = codigoActual;
+            break;
+        }
+    }
+    return codigoLibre; // Devuelve el código disponible o null si están todos llenos
+}
+
+rechazarRobot(idRobot) {
+    let robot = this.buscarRobotPorId(idRobot);
+    if (robot !== null && robot.estado === "PENDIENTE") {
+        robot.estado = "RECHAZADO";
+        return "Robot rechazado correctamente.";
+    }
+    return "No se pudo rechazar el robot.";
+}
+
+venderRobot(idRobot) {
+    let robot = this.buscarRobotPorId(idRobot);
+    if (robot !== null && robot.estado === "PENDIENTE") {
+        robot.estado = "VENDIDO";
+        Sistema.#dineroRobotsVendidos += 20000;
+        Sistema.#dineroTotal += 20000;
+        return "Robot vendido por piezas. El establecimiento ganó $20.000.";
+    }
+    return "No se pudo vender el robot.";
+}
+
+aceptarRobot(idRobot) {
+    let robot = this.buscarRobotPorId(idRobot);
+    if (robot !== null && robot.estado === "PENDIENTE") {
+        
+        //Verifica límite de 30 en la misma industria, y si lo pasa lo vende
+        let aceptadosIndustria = this.obtenerRobotsPorIndustria(robot.industria);
+        if (aceptadosIndustria >= 30) {
+            robot.estado = "VENDIDO";
+            Sistema.#dineroRobotsVendidos += 20000;
+            Sistema.#dineroTotal += 20000;
+            return "Límite de 30 robots alcanzado en esta industria. El robot fue vendido automáticamente por $20.000.";
+        }
+
+        let codigoFuncDisponible = this.obtenerFuncionarioDisponible(robot.asignadoA);
+        
+        if (codigoFuncDisponible !== null) {
+            robot.asignadoA = codigoFuncDisponible; 
+            robot.estado = "ACEPTADO";
+            Sistema.#dineroRobotsAceptados += 5000;
+            Sistema.#dineroTotal += 5000;
+            return "Robot aceptado y asignado. El establecimiento ganó $5.000.";
+        } else {
+            //No hay funcionarios disponibles -> queda PENDIENTE y avisa
+            return "No se pudo aceptar el robot porque no hay funcionarios disponibles. Se recomienda buscar personal para la instalación.";
+        }
+    }
+    return "No se pudo procesar el robot.";
+}
+
+
     //Actividades
 
     registrarActividad(nombre, descripcion, precio) {
@@ -173,17 +260,17 @@ class Sistema {
     }
 
     buscarActividadPorNombre(nombre) {
-        for(let i = 0; i < this.#actividades.length; i++) {
+        for (let i = 0; i < this.#actividades.length; i++) {
             if (sonIgualesTexto(this.#actividades[i].nombre, nombre)) {
                 return this.#actividades[i];
             }
         }
-        return null; 
+        return null;
     }
 
     robotTieneActividad(unRobot, nombreActividad) {
         for (let i = 0; i < unRobot.actividades.length; i++) {
-            if (sonIgualesTexto(unRobot.actividades[i].nombre, nombreActividad)){
+            if (sonIgualesTexto(unRobot.actividades[i].nombre, nombreActividad)) {
                 return true;
             }
         }
@@ -210,7 +297,7 @@ class Sistema {
         Sistema.#dineroActividades = Sistema.#dineroActividades + unaActividad.precio;
         return "";
     }
-    
+
 
 
     // PRECARGA DE DATOS

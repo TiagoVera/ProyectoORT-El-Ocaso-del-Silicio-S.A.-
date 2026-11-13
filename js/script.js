@@ -1,6 +1,7 @@
-const SECCIONES = ["secIniciarSesion", "secRegistroFuncionario", "secEstadosRobots","secTablaFuncionarios", "secRegistroRobot", "secRegistrarActividad", "secRobotsAsignados"];
+const SECCIONES = ["secIniciarSesion", "secRegistroFuncionario", "secEstadosRobots", "secTablaFuncionarios", "secRegistroRobot", "secRegistrarActividad", "secRobotsAsignados"];
 
 let usuarioLogueado = null;
+const sistema = new Sistema();
 let tipoUsuario = "";
 
 document.querySelector("#btnTablaFuncionarios").addEventListener("click", mostrarTablaFuncionarios);
@@ -31,7 +32,7 @@ mostrarSeccion("secIniciarSesion");
 actualizarMenu();
 
 function mostrarSeccion(idSeccion) {
-ocultarTodasLasSecciones();
+    ocultarTodasLasSecciones();
     document.querySelector("#" + idSeccion).style.display = "block";
 }
 
@@ -65,30 +66,87 @@ function mostrarTablaFuncionarios() {
 }
 
 function mostrarTablaEstadosDeRobots() {
-    mostrarSeccion("secEstadosRobots")
-    let robots = sistema.obtenerRobots()
-    let html = `<table border ="1">
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                </tr>`;
+    document.querySelector("#pMensajeEstadoRobot").innerHTML = "";
+    mostrarSeccion("secEstadosRobots");
+    let robots = sistema.obtenerRobots();
+    let divTabla = document.querySelector("#divTablaEstadosDeRobots");
+
+    let html = `<table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>`;
 
     for (let i = 0; i < robots.length; i++) {
-        html += `<tr>
-                    <td>${robots[i].id}</td>
-                    <td>${robots[i].nombre}</td>
-                    <td>${robots[i].estado}</td>
-                    <td><button>Aceptar</button><button>Rechazar</button><button>Vender</button></td>
-                </tr>`;
+        if (robots[i].estado === "PENDIENTE") {
+            html += `<tr>
+                <td>${robots[i].id}</td>
+                <td>${robots[i].nombre}</td>
+                <td>${robots[i].estado}</td>
+                <td>
+                    <input type="button" value="Aceptar" class="btnAceptar" data-id="${robots[i].id}" />
+                    <input type="button" value="Rechazar" class="btnRechazar" data-id="${robots[i].id}" />
+                    <input type="button" value="Vender" class="btnVender" data-id="${robots[i].id}" />
+                </td>
+            </tr>`;
+        } else {
+            html += `<tr>
+                <td>${robots[i].id}</td>
+                <td>${robots[i].nombre}</td>
+                <td>${robots[i].estado}</td>
+                <td></td>
+            </tr>`;
+        }
     }
 
-    html += '</table>'
-    document.querySelector("#divTablaEstadosDeRobots").innerHTML = html;
+    html += `</tbody></table>`;
+    divTabla.innerHTML = html;
+
+    conectarBotonesEstados();
 }
 
-const sistema = new Sistema();
+function conectarBotonesEstados() {
+    let botonesAceptar = document.querySelectorAll(".btnAceptar");
+    for (let i = 0; i < botonesAceptar.length; i++) {
+        botonesAceptar[i].addEventListener("click", aceptarRobot);
+    }
+
+    let botonesRechazar = document.querySelectorAll(".btnRechazar");
+    for (let i = 0; i < botonesRechazar.length; i++) {
+        botonesRechazar[i].addEventListener("click", rechazarRobot);
+    }
+
+    let botonesVender = document.querySelectorAll(".btnVender");
+    for (let i = 0; i < botonesVender.length; i++) {
+        botonesVender[i].addEventListener("click", venderRobot);
+    }
+}
+
+function aceptarRobot() {
+    let idRobot = this.getAttribute("data-id"); 
+    let mensaje = sistema.aceptarRobot(idRobot);
+    mostrarTablaEstadosDeRobots();
+    document.querySelector("#pMensajeEstadoRobot").innerHTML = mensaje;
+}
+
+function rechazarRobot() {
+    let idRobot = this.getAttribute("data-id"); 
+    let mensaje = sistema.rechazarRobot(idRobot);
+    mostrarTablaEstadosDeRobots();
+    document.querySelector("#pMensajeEstadoRobot").innerHTML = mensaje;
+}
+
+function venderRobot() {
+    let idRobot = this.getAttribute("data-id");
+    let mensaje = sistema.venderRobot(idRobot);
+    mostrarTablaEstadosDeRobots();
+    document.querySelector("#pMensajeEstadoRobot").innerHTML = mensaje;
+}
 
 function mostrarElemento(selector, visible) {
     if (visible) {
@@ -140,51 +198,51 @@ function intentarIniciarSesion() {
         mostrarRobotsAsignados();
     }
 }
-    function cerrarSesion() {
-        usuarioLogueado = null;
-        tipoUsuario = "";
-        actualizarMenu();
-        mostrarSeccion("secIniciarSesion");
-    }
+function cerrarSesion() {
+    usuarioLogueado = null;
+    tipoUsuario = "";
+    actualizarMenu();
+    mostrarSeccion("secIniciarSesion");
+}
 
-    function validarRegistroRobot(nombre, serie, fabricante, modelo, industria, imagen) {
-        if (estaVacio(nombre) || estaVacio(serie) || estaVacio(fabricante) ||
+function validarRegistroRobot(nombre, serie, fabricante, modelo, industria, imagen) {
+    if (estaVacio(nombre) || estaVacio(serie) || estaVacio(fabricante) ||
         estaVacio(modelo) || estaVacio(industria) || estaVacio(imagen)) {
         return "Todos los campos son obligatorios.";
-        }
-        if (superaLargo(nombre, 20)) {
-        return "El nombre no puede superar los 20 caracteres.";
-        }
-        if (tieneEspacios(serie.trim())) {
-        return "El número de serie no puede contener espacios.";
-        }
-        if (!tieneNumero(serie)) {
-        return "El número de serie debe contener al menos un número.";
-        }
-        if (sistema.existeRobot(serie, fabricante)) {
-        return "Ya existe un robot con ese número de serie y fabricante.";
-        }
-        return "";
     }
+    if (superaLargo(nombre, 20)) {
+        return "El nombre no puede superar los 20 caracteres.";
+    }
+    if (tieneEspacios(serie.trim())) {
+        return "El número de serie no puede contener espacios.";
+    }
+    if (!tieneNumero(serie)) {
+        return "El número de serie debe contener al menos un número.";
+    }
+    if (sistema.existeRobot(serie, fabricante)) {
+        return "Ya existe un robot con ese número de serie y fabricante.";
+    }
+    return "";
+}
 
-    function registrarRobotDesdeFormulario() {
-        let nombre = document.querySelector("#robotNombre").value;
-        let serie = document.querySelector("#robotSerie").value;
-        let fabricante = document.querySelector("#robotFabricante").value;
-        let modelo = document.querySelector("#robotModelo").value;
-        let industria = document.querySelector("#robotIndustria").value;
-        let imagen = document.querySelector("#robotImagen").value;
-        let pMensaje = document.querySelector("#pMensajeRobot");
+function registrarRobotDesdeFormulario() {
+    let nombre = document.querySelector("#robotNombre").value;
+    let serie = document.querySelector("#robotSerie").value;
+    let fabricante = document.querySelector("#robotFabricante").value;
+    let modelo = document.querySelector("#robotModelo").value;
+    let industria = document.querySelector("#robotIndustria").value;
+    let imagen = document.querySelector("#robotImagen").value;
+    let pMensaje = document.querySelector("#pMensajeRobot");
 
-        let error = validarRegistroRobot(nombre, serie, fabricante, modelo, industria, imagen);
-        if (error != "") {
+    let error = validarRegistroRobot(nombre, serie, fabricante, modelo, industria, imagen);
+    if (error != "") {
         pMensaje.innerHTML = error;
         return;
-        }
+    }
 
-        sistema.registrarRobot(nombre.trim(), serie.trim(), fabricante.trim(), modelo.trim(),
-                           industria, imagen.trim(), usuarioLogueado.codigoFuncionario);
-        pMensaje.innerHTML = "Robot registrado correctamente. Queda PENDIENTE de aprobación.";
+    sistema.registrarRobot(nombre.trim(), serie.trim(), fabricante.trim(), modelo.trim(),
+        industria, imagen.trim(), usuarioLogueado.codigoFuncionario);
+    pMensaje.innerHTML = "Robot registrado correctamente. Queda PENDIENTE de aprobación.";
 
     document.querySelector("#robotNombre").value = "";
     document.querySelector("#robotSerie").value = "";
@@ -192,9 +250,9 @@ function intentarIniciarSesion() {
     document.querySelector("#robotModelo").value = "";
     document.querySelector("#robotIndustria").value = "";
     document.querySelector("#robotImagen").value = "";
-    }
+}
 
-    function mostrarRobotsAsignados() {
+function mostrarRobotsAsignados() {
     mostrarSeccion("secRobotsAsignados");
     let robots = sistema.obtenerRobotsAsignados(usuarioLogueado.codigoFuncionario);
     let divTabla = document.querySelector("#divTablaRobotsAsignados");
@@ -232,26 +290,26 @@ function intentarIniciarSesion() {
     html += "</tbody></table>";
     divTabla.innerHTML = html;
     conectarBotonesBaja();
-    }
+}
 
-    function conectarBotonesBaja() {
-        let botones = document.querySelectorAll(".btnBaja");
-        for (let i = 0; i < botones.length; i++) {
+function conectarBotonesBaja() {
+    let botones = document.querySelectorAll(".btnBaja");
+    for (let i = 0; i < botones.length; i++) {
         botones[i].addEventListener("click", clickDarDeBaja);
-        }
     }
+}
 
-    function clickDarDeBaja() {
-        let idRobot = this.getAttribute("data-id");
-        let pMensaje = document.querySelector("#pMensajeBaja");
+function clickDarDeBaja() {
+    let idRobot = this.getAttribute("data-id");
+    let pMensaje = document.querySelector("#pMensajeBaja");
 
-        if (sistema.darDeBajaRobot(idRobot, usuarioLogueado.codigoFuncionario)) {
+    if (sistema.darDeBajaRobot(idRobot, usuarioLogueado.codigoFuncionario)) {
         pMensaje.innerHTML = "El robot " + idRobot + " fue dado de baja.";
-        } else {
-            pMensaje.innerHTML = "No se pudo dar de baja el robot " + idRobot + ".";
-        }
-        mostrarRobotsAsignados();
+    } else {
+        pMensaje.innerHTML = "No se pudo dar de baja el robot " + idRobot + ".";
     }
+    mostrarRobotsAsignados();
+}
 
-    sistema.precargaDatos()
+sistema.precargaDatos()
 
