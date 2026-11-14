@@ -163,6 +163,11 @@ function actualizarMenu() {
     mostrarElemento("#liCerrarSesion", haySesion);
     mostrarElemento("#liRegistrarRobot", tipoUsuario == "funcionario");
     mostrarElemento("#liRobotsAsignados", tipoUsuario == "funcionario");
+    mostrarElemento("#liTablaFuncionarios", tipoUsuario == "administrador");
+    mostrarElemento("#liTablaEstadosRobots", tipoUsuario == "administrador");
+    mostrarElemento("#liRegistrarActividad", tipoUsuario == "administrador");
+    
+
 }
 
 function intentarIniciarSesion() {
