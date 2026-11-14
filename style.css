@@ -354,6 +354,10 @@ footer a:hover {
   text-shadow: 0 0 5px var(--color-highlight);
 }
 
-#pMensajeEstadoRobot{
-  background-color:#2e3d30;
+p.exito{
+  background-color:#195724;
+}
+
+p.error{
+  background-color:#ff4747;
 }

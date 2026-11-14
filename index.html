@@ -32,16 +32,16 @@
             <a id="btnRobotsAsignados">Robots asignados</a>
           </li>
           <li id="liRegistrarFuncionario">
-            <a id="btnRegistrarFuncionario">Registrar Funcionario</a>
+            <a id="linkRegistrarFuncionario">Registrar Funcionario</a>
           </li>
           <li id="liTablaFuncionarios">
-            <a id="btnTablaFuncionarios">Mostrar Tabla Funcionarios</a>
+            <a id="linkTablaFuncionarios">Mostrar Tabla Funcionarios</a>
           </li>
           <li id="liTablaEstadosRobots">
-            <a id="btnTablaEstadosRobots">Mostrar Tabla Estados Robots</a>
+            <a id="linkTablaEstadosRobots">Mostrar Tabla Estados Robots</a>
           </li>
           <li id="liRegistrarActividad">
-            <a id="btnRegistrarActividad">Registrar Actividad</a>
+            <a id="linkRegistrarActividad">Registrar Actividad</a>
           </li>
           <li id="liCerrarSesion">
             <a id="btnCerrarSesion">Cerrar sesión</a>
@@ -88,13 +88,14 @@
         <section id="secRegistrarFuncionario">
         <hr>
         <h3>Registrar Funcionario</h3>
-        <label for="documento">Numero de documento:</label>
-        <input type="text" id="documento" />
-        <label for="nombreCompleto">Nombre completo:</label>
-        <input type="text" id="nombreCompleto" />
-        <label for="telefono">Telefono de contacto:</label>
-        <input type="number" id="telefono" />
-        <input type="button" value="Registrar" /><br />
+        <label for="documentoFuncionarioRegistro">Numero de documento:</label>
+        <input type="text" id="documentoFuncionarioRegistro" />
+        <label for="nombreFuncionarioRegistro">Nombre completo:</label>
+        <input type="text" id="nombreFuncionarioRegistro" />
+        <label for="telefonoFuncionarioRegistro">Telefono de contacto:</label>
+        <input type="number" id="telefonoFuncionarioRegistro" />
+        <input type="button" id="btnRegistrarFuncionario" value="Registrar" /><br />
+        <p id="pMensajeFuncionario"></p>
         <hr />
       </section>
 
@@ -115,7 +116,7 @@
         <input type="textArea" id="descripcion" />
         <label for="precio">Precio de la actividad</label>
         <input type="number" id="precio" />
-        <input type="button" value="Registrar" /><br />
+        <input type="button" id="btnRegistrarActividad" value="Registrar" /><br />
         <hr />
       </section>
 

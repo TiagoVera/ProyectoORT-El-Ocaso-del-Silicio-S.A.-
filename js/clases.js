@@ -100,6 +100,15 @@ class Sistema {
         this.#funcionario.push(nuevoFuncionario);
     }
 
+    existeFuncionario(documento) {
+        for (let i = 0; i < this.#funcionario.length; i++) {
+            if (sonIgualesTexto(this.#funcionario[i].documento, documento)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     //Robots
     obtenerRobots() {
         let listaRobots = [];
@@ -177,76 +186,76 @@ class Sistema {
         return null
     }
 
-obtenerFuncionarioDisponible(codigoFuncionarioOriginal) {
-    if (this.obtenerRobotsAsignados(codigoFuncionarioOriginal).length < 10) {
-        return codigoFuncionarioOriginal;
-    }
-
-    //Si ya tiene 10, busca el siguiente funcionario disponible
-    let codigoLibre = null;
-    for (let i = 0; i < this.#funcionario.length; i++) {
-        let codigoActual = this.#funcionario[i].codigoFuncionario;
-        if (this.obtenerRobotsAsignados(codigoActual).length < 10) {
-            codigoLibre = codigoActual;
-            break;
+    obtenerFuncionarioDisponible(codigoFuncionarioOriginal) {
+        if (this.obtenerRobotsAsignados(codigoFuncionarioOriginal).length < 10) {
+            return codigoFuncionarioOriginal;
         }
-    }
-    return codigoLibre; // Devuelve el código disponible o null si están todos llenos
-}
 
-rechazarRobot(idRobot) {
-    let robot = this.buscarRobotPorId(idRobot);
-    if (robot !== null && robot.estado === "PENDIENTE") {
-        robot.estado = "RECHAZADO";
-        robot.motivo="Rechazado por un administrador.";
-        return "Robot rechazado correctamente";
+        //Si ya tiene 10, busca el siguiente funcionario disponible
+        let codigoLibre = null;
+        for (let i = 0; i < this.#funcionario.length; i++) {
+            let codigoActual = this.#funcionario[i].codigoFuncionario;
+            if (this.obtenerRobotsAsignados(codigoActual).length < 10) {
+                codigoLibre = codigoActual;
+                break;
+            }
+        }
+        return codigoLibre; // Devuelve el código disponible o null si están todos llenos
     }
-    return "No se pudo rechazar el robot, no existe.";
-}
 
-venderRobot(idRobot) {
-    let robot = this.buscarRobotPorId(idRobot);
-    if (robot !== null && robot.estado === "PENDIENTE") {
-        robot.estado = "VENDIDO";
-        Sistema.#dineroRobotsVendidos += 20000;
-        Sistema.#dineroTotal += 20000;
-        robot.motivo="Vendido por piezas por un administrador";
-        return "Robot vendido por piezas. El establecimiento ganó $20.000.";
+    rechazarRobot(idRobot) {
+        let robot = this.buscarRobotPorId(idRobot);
+        if (robot !== null && robot.estado === "PENDIENTE") {
+            robot.estado = "RECHAZADO";
+            robot.motivo = "Rechazado por un administrador.";
+            return "Robot rechazado correctamente";
+        }
+        return "No se pudo rechazar el robot, no existe.";
     }
-    return "No se pudo vender el robot, no existe.";
-}
 
-aceptarRobot(idRobot) {
-    let robot = this.buscarRobotPorId(idRobot);
-    if (robot !== null && robot.estado === "PENDIENTE") {
-        
-        //Verifica límite de 30 en la misma industria, y si lo pasa lo vende
-        let aceptadosIndustria = this.obtenerRobotsPorIndustria(robot.industria);
-        if (aceptadosIndustria >= 30) {
+    venderRobot(idRobot) {
+        let robot = this.buscarRobotPorId(idRobot);
+        if (robot !== null && robot.estado === "PENDIENTE") {
             robot.estado = "VENDIDO";
             Sistema.#dineroRobotsVendidos += 20000;
             Sistema.#dineroTotal += 20000;
-            robot.motivo="Vendido automáticamente: Límite de 30 robots en la industria alcanzado";
-            return "Límite de 30 robots alcanzado en esta industria. El robot fue vendido automáticamente por $20.000.";
+            robot.motivo = "Vendido por piezas por un administrador";
+            return "Robot vendido por piezas. El establecimiento ganó $20.000.";
         }
-
-        let codigoFuncDisponible = this.obtenerFuncionarioDisponible(robot.asignadoA);
-        
-        if (codigoFuncDisponible !== null) {
-            robot.asignadoA = codigoFuncDisponible; 
-            robot.estado = "ACEPTADO";
-            Sistema.#dineroRobotsAceptados += 5000;
-            Sistema.#dineroTotal += 5000;
-            robot.motivo="Robot aceptado por un administrador y asignado a un funcionario"
-            return "Robot aceptado y asignado. El establecimiento ganó $5.000.";
-        } else {
-            //No hay funcionarios disponibles -> queda PENDIENTE y avisa
-            robot.motivo="No se pudo aceptar el robot porque no hay funcionarios disponibles"
-            return "No se pudo aceptar el robot porque no hay funcionarios disponibles. Se recomienda buscar personal para la instalación.";
-        }
+        return "No se pudo vender el robot, no existe.";
     }
-    return "No se pudo procesar el robot, no existe.";
-}
+
+    aceptarRobot(idRobot) {
+        let robot = this.buscarRobotPorId(idRobot);
+        if (robot !== null && robot.estado === "PENDIENTE") {
+
+            //Verifica límite de 30 en la misma industria, y si lo pasa lo vende
+            let aceptadosIndustria = this.obtenerRobotsPorIndustria(robot.industria);
+            if (aceptadosIndustria >= 30) {
+                robot.estado = "VENDIDO";
+                Sistema.#dineroRobotsVendidos += 20000;
+                Sistema.#dineroTotal += 20000;
+                robot.motivo = "Vendido automáticamente: Límite de 30 robots en la industria alcanzado";
+                return "Límite de 30 robots alcanzado en esta industria. El robot fue vendido automáticamente por $20.000.";
+            }
+
+            let codigoFuncDisponible = this.obtenerFuncionarioDisponible(robot.asignadoA);
+
+            if (codigoFuncDisponible !== null) {
+                robot.asignadoA = codigoFuncDisponible;
+                robot.estado = "ACEPTADO";
+                Sistema.#dineroRobotsAceptados += 5000;
+                Sistema.#dineroTotal += 5000;
+                robot.motivo = "Robot aceptado por un administrador y asignado a un funcionario"
+                return "Robot aceptado y asignado. El establecimiento ganó $5.000.";
+            } else {
+                //No hay funcionarios disponibles -> queda PENDIENTE y avisa
+                robot.motivo = "No se pudo aceptar el robot porque no hay funcionarios disponibles"
+                return "No se pudo aceptar el robot porque no hay funcionarios disponibles. Se recomienda buscar personal para la instalación.";
+            }
+        }
+        return "No se pudo procesar el robot, no existe.";
+    }
 
 
     //Actividades
@@ -307,16 +316,16 @@ aceptarRobot(idRobot) {
         let unRobot = this.buscarRobotPorId(idRobot);
 
         if (unRobot == null) {
-        return "El robot no existe.";
+            return "El robot no existe.";
         }
         if (!this.robotTieneActividad(unRobot, nombreActividad)) {
-        return "El robot no tiene esa actividad.";
+            return "El robot no tiene esa actividad.";
         }
 
         let nuevaLista = [];
         for (let i = 0; i < unRobot.actividades.length; i++) {
-        if (!sonIgualesTexto(unRobot.actividades[i].nombre, nombreActividad)) {
-            nuevaLista.push(unRobot.actividades[i]);
+            if (!sonIgualesTexto(unRobot.actividades[i].nombre, nombreActividad)) {
+                nuevaLista.push(unRobot.actividades[i]);
             }
         }
         unRobot.actividades = nuevaLista;
@@ -326,7 +335,7 @@ aceptarRobot(idRobot) {
     obtenerDineroActividades() {
         return Sistema.#dineroActividades;
     }
-    
+
 
 
     // PRECARGA DE DATOS

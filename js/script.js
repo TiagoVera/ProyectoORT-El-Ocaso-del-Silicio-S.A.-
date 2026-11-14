@@ -1,16 +1,19 @@
-const SECCIONES = ["secIniciarSesion", "secRegistroFuncionario", "secEstadosRobots","secTablaFuncionarios", "secRegistroRobot", "secRegistrarActividad", "secRobotsAsignados", "secActividadesRobot"];
+const SECCIONES = ["secIniciarSesion", "secRegistroFuncionario", "secEstadosRobots","secTablaFuncionarios", "secRegistroRobot", "secRegistrarActividad", "secRobotsAsignados", "secActividadesRobot","secRegistrarFuncionario"];
 
 let usuarioLogueado = null;
 const sistema = new Sistema();
 let tipoUsuario = "";
 let idRobotActual = "";
 
-document.querySelector("#btnTablaFuncionarios").addEventListener("click", mostrarTablaFuncionarios);
-document.querySelector("#btnTablaEstadosRobots").addEventListener("click", mostrarTablaEstadosDeRobots);
+document.querySelector("#linkTablaFuncionarios").addEventListener("click", mostrarTablaFuncionarios);
+document.querySelector("#linkTablaEstadosRobots").addEventListener("click", mostrarTablaEstadosDeRobots);
 document.querySelector("#btnIniciarSesion").addEventListener("click", () => {
     mostrarSeccion("secIniciarSesion");
 });
-document.querySelector("#btnRegistrarActividad").addEventListener("click", () => {
+document.querySelector("#linkRegistrarFuncionario").addEventListener("click", () => {
+    mostrarSeccion("secRegistrarFuncionario");
+});
+document.querySelector("#linkRegistrarActividad").addEventListener("click", () => {
     mostrarSeccion("secRegistrarActividad");
 });
 document.querySelector("#btnEnviarLogin").addEventListener("click", intentarIniciarSesion);
@@ -25,6 +28,7 @@ document.querySelector("#btnRobotsAsignados").addEventListener("click", () => {
 });
 
 document.querySelector("#btnRegistrarRobotForm").addEventListener("click", registrarRobotDesdeFormulario);
+document.querySelector("#btnRegistrarFuncionario").addEventListener("click", registrarFuncionario);
 
 ocultarTodasLasSecciones();
 // Se agrega mostrarSeccion("secIniciarSesion") ;actualizarMenu(); para que podamos ver correctamente el formulario de login sin eso quedaria todo vacio
@@ -166,8 +170,7 @@ function actualizarMenu() {
     mostrarElemento("#liTablaFuncionarios", tipoUsuario == "administrador");
     mostrarElemento("#liTablaEstadosRobots", tipoUsuario == "administrador");
     mostrarElemento("#liRegistrarActividad", tipoUsuario == "administrador");
-    
-
+    mostrarElemento("#liRegistrarFuncionario", tipoUsuario == "administrador");
 }
 
 function intentarIniciarSesion() {
@@ -209,6 +212,52 @@ function cerrarSesion() {
     tipoUsuario = "";
     actualizarMenu();
     mostrarSeccion("secIniciarSesion");
+}
+
+function validarRegistroFuncionario(documento, nombre, telefono) {
+let esValido = true;
+
+    if (documento.trim() == "") {
+        mostrarErrorInput("El documento es obligatorio.", "documentoFuncionarioRegistro","pMensajeFuncionario");
+        mostrarErrorP("Todos los campos son obligatorios","pMensajeFuncionario")
+        esValido = false;
+    }
+    if (nombre.trim() == "") {
+        mostrarErrorInput("El nombre completo es obligatorio.", "nombreFuncionarioRegistro");
+        mostrarErrorP("Todos los campos son obligatorios","pMensajeFuncionario")
+        esValido = false;
+    }
+    if (telefono.trim() == "") {
+        mostrarErrorInput("El teléfono es obligatorio.", "telefonoFuncionarioRegistro","pMensajeFuncionario");
+        mostrarErrorP("Todos los campos son obligatorios","pMensajeFuncionario")
+        esValido = false;
+    }
+    if (sistema.existeFuncionario(documento)) {
+        mostrarErrorInput( "Ya existe un funcionario con ese documento.","documentoFuncionarioRegistro","pMensajeFuncionario");
+        mostrarErrorP("Ya existe un funcionario con ese documento.","pMensajeFuncionario")
+        esValido = false;
+    }
+    return esValido;
+}
+
+function registrarFuncionario() {
+let documento = document.querySelector("#documentoFuncionarioRegistro").value;
+    let nombre = document.querySelector("#nombreFuncionarioRegistro").value;
+    let telefono = document.querySelector("#telefonoFuncionarioRegistro").value;
+    let pMensaje = document.querySelector("#pMensajeFuncionario")
+
+    limpiarErrores();
+
+    if (!validarRegistroFuncionario(documento, nombre, telefono)) {
+        return;
+    }
+
+    sistema.registrarFuncionario(documento.trim(), nombre.trim(), telefono.trim());
+    mostrarExito("Funcionario registrado correctamente","pMensajeFuncionario");
+
+    document.querySelector("#documentoFuncionarioRegistro").value = "";
+    document.querySelector("#nombreFuncionarioRegistro").value = "";
+    document.querySelector("#telefonoFuncionarioRegistro").value = "";
 }
 
 function validarRegistroRobot(nombre, serie, fabricante, modelo, industria, imagen) {
@@ -298,7 +347,35 @@ function mostrarRobotsAsignados() {
     conectarBotonesBaja();
     conectarBotonesActividades();
 }
-    
+
+function mostrarErrorInput(mensaje,idInput){
+const input = document.querySelector("#"+idInput);
+input.setAttribute("class", "error");
+input.setAttribute("placeholder", mensaje);
+} 
+
+function mostrarErrorP(mensaje,idP){
+const p = document.querySelector("#"+idP);
+p.innerHTML = mensaje;
+p.setAttribute("class", "error");
+} 
+
+function mostrarExito(mensaje,idP){
+const p = document.querySelector("#"+idP);
+p.innerHTML = mensaje;
+p.setAttribute("class", "exito");
+} 
+
+function limpiarP(idP){
+idP.innerHTML="";
+}
+
+function limpiarErrores() {
+    let camposConError = document.querySelectorAll(".input-error");
+    for (let i = 0; i < camposConError.length; i++) {
+        camposConError[i].classList.remove("input-error");
+    }
+}
 
 function conectarBotonesBaja() {
     let botones = document.querySelectorAll(".btnBaja");
