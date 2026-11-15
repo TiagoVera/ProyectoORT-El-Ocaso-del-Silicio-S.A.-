@@ -1,4 +1,4 @@
-const SECCIONES = ["secIniciarSesion", "secRegistroFuncionario", "secEstadosRobots", "secTablaFuncionarios", "secRegistroRobot", "secRegistrarActividad", "secRobotsAsignados", "secActividadesRobot", "secRegistrarFuncionario","secEstadisticasGenerales"];
+const SECCIONES = ["secIniciarSesion", "secRegistroFuncionario", "secEstadosRobots", "secTablaFuncionarios", "secRegistroRobot", "secRegistrarActividad", "secRobotsAsignados", "secActividadesRobot", "secRegistrarFuncionario", "secEstadisticasGenerales"];
 
 let usuarioLogueado = null;
 const sistema = new Sistema();
@@ -463,30 +463,30 @@ function mostrarTablaEstadisticas() {
                     <th>% del Total</th>
                 </tr>`;
 
-for (let i = 0; i < datosIndustrias.length; i++) {
-    html += `<tr>
+    for (let i = 0; i < datosIndustrias.length; i++) {
+        html += `<tr>
         <td>${datosIndustrias[i].industria}</td>
         <td>${datosIndustrias[i].aceptados}</td>
         <td>${datosIndustrias[i].vendidos}</td>
         <td>${datosIndustrias[i].rechazados}</td>
         <td>${datosIndustrias[i].porcentaje}%</td>
     </tr>`;
-}
+    }
     html += '</table>'
     document.querySelector("#divEstadisticasGenerales").innerHTML = html;
 
     let totalGeneral = sistema.obtenerTotalDineroGanado();
     document.querySelector("#pTotalDinero").innerHTML = "Total de dinero ganado: $" + totalGeneral;
 
-    document.querySelector("#pDesgloseDinero").innerHTML = 
-        "Ganado por robots ACEPTADOS: $" + sistema.gananciaAceptados + 
-        " | Por robots VENDIDOS: $" + sistema.gananciaVendidos + 
-        " | Por actividades: $" + sistema.gananciaActividades;
+    document.querySelector("#pDesgloseDinero").innerHTML =
+        "Ganado por robots ACEPTADOS: $" + sistema.obtenerDineroAceptados() +
+        " | Por robots VENDIDOS: $" + sistema.obtenerDineroVendidos() +
+        " | Por actividades: $" + sistema.obtenerDineroActividades();
 
     let mejor = sistema.obtenerMejorFuncionario();
     if (mejor != null) {
-        document.querySelector("#pMejorFuncionario").innerHTML = 
-            "El mejor funcionario del momento: " + mejor.nombreCompleto + " (" + mejor.codigo + ")";
+        document.querySelector("#pMejorFuncionario").innerHTML =
+            "El mejor funcionario del momento: " + mejor.nombre + " (" + mejor.codigoFuncionario + ")";
     }
 }
 
