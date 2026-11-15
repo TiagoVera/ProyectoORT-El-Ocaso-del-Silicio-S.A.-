@@ -1,5 +1,15 @@
-const SECCIONES = ["secIniciarSesion", "secEstadosRobots", "secTablaFuncionarios", "secRegistroRobot", "secRegistrarActividad", "secRobotsAsignados", "secActividadesRobot", "secRegistrarFuncionario", "secEstadisticasGenerales"];
-
+const SECCIONES = [
+    "secIniciarSesion", 
+    "secBienvenida",
+    "secEstadosRobots", 
+    "secTablaFuncionarios", 
+    "secRegistroRobot", 
+    "secRegistrarActividad", 
+    "secRobotsAsignados", 
+    "secActividadesRobot", 
+    "secRegistrarFuncionario", 
+    "secEstadisticasGenerales"
+];
 let usuarioLogueado = null;
 const sistema = new Sistema();
 let tipoUsuario = "";
@@ -49,7 +59,18 @@ function ocultarTodasLasSecciones() {
         document.querySelector("#" + SECCIONES[i]).style.display = "none";
     }
 }
+function mostrarBienvenida() {
+    mostrarSeccion("secBienvenida");
+    document.querySelector("#h2Bienvenida").innerHTML = "Bienvenido/a, " + usuarioLogueado.nombre;
 
+    if (tipoUsuario == "administrador") {
+        document.querySelector("#pBienvenidaInfo").innerHTML = 
+            "Has iniciado sesión como <strong>Administrador</strong> (" + usuarioLogueado.usuario + "). Seleccioná una opción del menú superior para gestionar funcionarios, solicitudes de robots, actividades o estadísticas.";
+    } else {
+        document.querySelector("#pBienvenidaInfo").innerHTML = 
+            "Has iniciado sesión como <strong>Funcionario</strong> (" + usuarioLogueado.codigoFuncionario + "). Usá el menú superior para registrar nuevos robots o gestionar los que tenés asignados.";
+    }
+}
 
 function mostrarTablaFuncionarios() {
     mostrarSeccion("secTablaFuncionarios")
@@ -200,11 +221,11 @@ function intentarIniciarSesion() {
     } else {
         tipoUsuario = "administrador";
     }
-
-    document.querySelector("#usuario").value = "";
+document.querySelector("#usuario").value = "";
     document.querySelector("#contraseña").value = "";
     pError.innerHTML = "";
     actualizarMenu();
+    mostrarBienvenida();
 
     if (tipoUsuario == "funcionario") {
         document.querySelector("#pMensajeBaja").innerHTML = "";
