@@ -1,4 +1,4 @@
-const SECCIONES = ["secIniciarSesion", "secRegistroFuncionario", "secEstadosRobots", "secTablaFuncionarios", "secRegistroRobot", "secRegistrarActividad", "secRobotsAsignados", "secActividadesRobot", "secRegistrarFuncionario"];
+const SECCIONES = ["secIniciarSesion", "secRegistroFuncionario", "secEstadosRobots", "secTablaFuncionarios", "secRegistroRobot", "secRegistrarActividad", "secRobotsAsignados", "secActividadesRobot", "secRegistrarFuncionario","secEstadisticasGenerales"];
 
 let usuarioLogueado = null;
 const sistema = new Sistema();
@@ -7,6 +7,7 @@ let idRobotActual = "";
 
 document.querySelector("#linkTablaFuncionarios").addEventListener("click", mostrarTablaFuncionarios);
 document.querySelector("#linkTablaEstadosRobots").addEventListener("click", mostrarTablaEstadosDeRobots);
+document.querySelector("#linkEstadisticasGenerales").addEventListener("click", mostrarTablaEstadisticas);
 document.querySelector("#btnIniciarSesion").addEventListener("click", () => {
     mostrarSeccion("secIniciarSesion");
 });
@@ -30,6 +31,7 @@ document.querySelector("#btnRobotsAsignados").addEventListener("click", () => {
 document.querySelector("#btnRegistrarRobotForm").addEventListener("click", registrarRobotDesdeFormulario);
 document.querySelector("#btnRegistrarFuncionario").addEventListener("click", registrarFuncionario);
 document.querySelector("#btnRegistrarActividad").addEventListener("click", registrarActividad);
+
 
 ocultarTodasLasSecciones();
 // Se agrega mostrarSeccion("secIniciarSesion") ;actualizarMenu(); para que podamos ver correctamente el formulario de login sin eso quedaria todo vacio
@@ -172,6 +174,7 @@ function actualizarMenu() {
     mostrarElemento("#liTablaEstadosRobots", tipoUsuario == "administrador");
     mostrarElemento("#liRegistrarActividad", tipoUsuario == "administrador");
     mostrarElemento("#liRegistrarFuncionario", tipoUsuario == "administrador");
+    mostrarElemento("#liEstadisticasGenerales", tipoUsuario == "administrador");
 }
 
 function intentarIniciarSesion() {
@@ -448,6 +451,44 @@ function mostrarActividadesRobot() {
     document.querySelector("#pDatosRobot").innerHTML = "ID: " + unRobot.id + " | Nombre: " + unRobot.nombre;
 }
 
+function mostrarTablaEstadisticas() {
+    mostrarSeccion("secEstadisticasGenerales")
+    let datosIndustrias = sistema.obtenerEstadisticasPorIndustria();
+    let html = `<table border ="1">
+                <tr>
+                    <th>Industria</th>
+                    <th>Robots Aceptados</th>
+                    <th>Robots Vendidos</th>
+                    <th>Robots Rechazados</th>
+                    <th>% del Total</th>
+                </tr>`;
+
+for (let i = 0; i < datosIndustrias.length; i++) {
+    html += `<tr>
+        <td>${datosIndustrias[i].industria}</td>
+        <td>${datosIndustrias[i].aceptados}</td>
+        <td>${datosIndustrias[i].vendidos}</td>
+        <td>${datosIndustrias[i].rechazados}</td>
+        <td>${datosIndustrias[i].porcentaje}%</td>
+    </tr>`;
+}
+    html += '</table>'
+    document.querySelector("#divEstadisticasGenerales").innerHTML = html;
+
+    let totalGeneral = sistema.obtenerTotalDineroGanado();
+    document.querySelector("#pTotalDinero").innerHTML = "Total de dinero ganado: $" + totalGeneral;
+
+    document.querySelector("#pDesgloseDinero").innerHTML = 
+        "Ganado por robots ACEPTADOS: $" + sistema.gananciaAceptados + 
+        " | Por robots VENDIDOS: $" + sistema.gananciaVendidos + 
+        " | Por actividades: $" + sistema.gananciaActividades;
+
+    let mejor = sistema.obtenerMejorFuncionario();
+    if (mejor != null) {
+        document.querySelector("#pMejorFuncionario").innerHTML = 
+            "El mejor funcionario del momento: " + mejor.nombreCompleto + " (" + mejor.codigo + ")";
+    }
+}
 
 function mostrarErrorP(mensaje, idP) {
     const p = document.querySelector("#" + idP);

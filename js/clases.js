@@ -109,6 +109,31 @@ class Sistema {
         return false;
     }
 
+    obtenerMejorFuncionario() {
+    let mejorFuncionario = null;
+    let maxIngresados = -1;
+
+    for (let i = 0; i < this.funcionarios.length; i++) {
+        let funcActual = this.funcionarios[i];
+        let cantIngresados = 0;
+
+        // Contamos cuántos robots en el array tienen como creador a este funcionario
+        for (let j = 0; j < this.robots.length; j++) {
+            if (this.robots[j].registradoPor.codigo == funcActual.codigo) {
+                cantIngresados++;
+            }
+        }
+
+        // Usamos >= para que en caso de empate se quede con el último encontrado
+        if (cantIngresados >= maxIngresados) {
+            maxIngresados = cantIngresados;
+            mejorFuncionario = funcActual;
+        }
+    }
+
+    return mejorFuncionario;
+}
+
     //Robots
     obtenerRobots() {
         let listaRobots = [];
@@ -257,6 +282,49 @@ class Sistema {
         return "No se pudo procesar el robot, no existe.";
     }
 
+obtenerEstadisticasPorIndustria() {
+    let industrias = ["Doméstica", "Médica", "Agrícola", "Militar", "Genérico"];
+    let resultado = [];
+    let totalRobots = this.#robot.length;
+
+    for (let i = 0; i < industrias.length; i++) {
+        let indActual = industrias[i];
+        let cantAceptados = 0;
+        let cantVendidos = 0;
+        let cantRechazados = 0;
+        let totalDeEstaIndustria = 0;
+
+        for (let j = 0; j < this.#robot.length; j++) {
+            let robot = this.#robot[j];
+            if (robot.industria.toLowerCase() == indActual.toLowerCase()) {
+                totalDeEstaIndustria++;
+                if (robot.estado == "ACEPTADO") {
+                    cantAceptados++;
+                } else if (robot.estado == "VENDIDO") {
+                    cantVendidos++;
+                } else if (robot.estado == "RECHAZADO") {
+                    cantRechazados++;
+                }
+            }
+        }
+
+        let porcentaje = 0;
+        if (totalRobots > 0) {
+            porcentaje = (totalDeEstaIndustria * 100) / totalRobots;
+        }
+
+        resultado.push({
+            industria: indActual,
+            aceptados: cantAceptados,
+            vendidos: cantVendidos,
+            rechazados: cantRechazados,
+            porcentaje: porcentaje.toFixed(1) 
+        });
+    }
+
+    return resultado;
+}
+
 
     //Actividades
 
@@ -344,7 +412,9 @@ class Sistema {
     obtenerDineroActividades() {
         return Sistema.#dineroActividades;
     }
-
+obtenerTotalDineroGanado() {
+    return this.gananciaAceptados + this.gananciaVendidos + this.gananciaActividades;
+}
 
 
     // PRECARGA DE DATOS
@@ -375,7 +445,7 @@ class Sistema {
         this.#robot[2].estado = "ACEPTADO";
         this.#robot[2].asignadoA = "TURING-1";
         this.#robot[3].estado = "ACEPTADO";
-        this.#robot[3].asignadoA = "TURING-2";
+        this.#robot[3].asignadoA = "TURING-2"; 
 
         //Actividades 
         this.registrarActividad("Ajedrez", "Partidas de ajedrez contra otros robots", 300);
