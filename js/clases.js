@@ -425,46 +425,105 @@ obtenerDineroVendidos() {
 
 
     // PRECARGA DE DATOS
-    precargaDatos() {
-        //Administradores
-        this.registrarAdministrador("Tiago Vera", "Sovera", "1234");
-        this.registrarAdministrador("Alex Alonzo", "Alexito", "1234");
+precargaDatos() {
+    // Administradores
+    this.registrarAdministrador("Tiago Vera", "Sovera", "1234");
+    this.registrarAdministrador("Alex Alonzo", "Alexito", "1234");
+    this.registrarAdministrador("Sofia Mendez", "Admin3", "1234");
 
-        //Funcionarios
-        this.registrarFuncionario("53662578", "Matias Botero", "092758379");
-        this.registrarFuncionario("34556589", "Alejandro Montenegro", "094234192");
-        this.registrarFuncionario("47283941", "Anastasia Blanco", "091278382");
-        this.registrarFuncionario("63984234", "Luisa Suarez", "098562974");
-        this.registrarFuncionario("78590431", "Carlos Gardel", "092453672");
+    //Funcionarios
+    this.registrarFuncionario("53662578", "Matias Botero", "092758379");
+    this.registrarFuncionario("34556589", "Alejandro Montenegro", "094234192");
+    this.registrarFuncionario("47283941", "Anastasia Blanco", "091278382");
+    this.registrarFuncionario("63984234", "Luisa Suarez", "098562974");
+    this.registrarFuncionario("78590431", "Carlos Gardel", "092453672");
 
-        //Robots
-        this.registrarRobot("Atlas V1", "SN-1001", "Boston Dynamics", "HD-2024", "Militar", "https://res.cloudinary.com/tgh2fcit/image/upload/v1789766051/ChatGPT_Image_Sep_18_2026_06_13_26_PM.png", "TURING-1");
-        this.registrarRobot("Optimus Gen2", "SN-1002", "Tesla", "TS-02", "Doméstica", "https://res.cloudinary.com/tgh2fcit/image/upload/v1789766177/ChatGPT_Image_Sep_18_2026_06_15_24_PM.png", "TURING-2");
-        this.registrarRobot("KUKA KR-6", "SN-1003", "KUKA Systems", "KR-600", "Genérico", "https://res.cloudinary.com/tgh2fcit/image/upload/v1789767546/ChatGPT_Image_Sep_18_2026_06_36_01_PM.png", "TURING-3");
-        this.registrarRobot("UR10e Cobot", "SN-1004", "Universal Robots", "UR10e", "Médica", "https://res.cloudinary.com/tgh2fcit/image/upload/v1789768114/ChatGPT_Image_Sep_18_2026_06_48_13_PM.png", "TURING-4");
-        this.registrarRobot("Spot Explorer", "SN-1005", "Boston Dynamics", "Spot-V2", "Agrícola", "img/spot.jpg", "TURING-5");
+    // Actividades
+    this.registrarActividad("Ajedrez", "Partidas de ajedrez contra otros robots", 300);
+    this.registrarActividad("Pintura", "Pintura junto con otros robots", 400);
+    this.registrarActividad("Música", "Lecciones de instrumentos", 500);
+    this.registrarActividad("Jardinería", "Aprendizaje de cuidado de jardin", 250);
+    this.registrarActividad("Lectura", "Lectura extensa de diferentes generos", 150);
+    this.registrarActividad("Baile", "Clases de baile", 100);
+    this.registrarActividad("Cocina", "Aprendizaje de nuevas recetas", 550);
+    this.registrarActividad("Meditación", "Tiempo de recarga energetica", 350);
+    this.registrarActividad("Videojuegos", "Creacion o recreacion en videojuegos", 200);
+    this.registrarActividad("Senderismo", "Salidas para mantener los engranajes", 450);
 
-        //Robots aceptados y asignados (prueba de funcionario)
-        this.#robot[0].estado = "ACEPTADO";
-        this.#robot[0].asignadoA = "TURING-1";
-        this.#robot[1].estado = "ACEPTADO";
-        this.#robot[1].asignadoA = "TURING-1";
-        this.#robot[2].estado = "ACEPTADO";
-        this.#robot[2].asignadoA = "TURING-1";
-        this.#robot[3].estado = "ACEPTADO";
-        this.#robot[3].asignadoA = "TURING-2";
+    //Robots (30 en total: HAL-1 a HAL-30) 10 robots para TURING-1 (quedará al tope de 10 aceptados)
+    this.registrarRobot("Atlas 1", "SN-1001", "Boston Dynamics", "HD-24", "Militar", "img/robot1.jpg", "TURING-1");
+    this.registrarRobot("Atlas 2", "SN-1002", "Boston Dynamics", "HD-24", "Militar", "img/robot1.jpg", "TURING-1");
+    this.registrarRobot("Atlas 3", "SN-1003", "Boston Dynamics", "HD-24", "Militar", "img/robot1.jpg", "TURING-1");
+    this.registrarRobot("Atlas 4", "SN-1004", "Boston Dynamics", "HD-24", "Militar", "img/robot1.jpg", "TURING-1");
+    this.registrarRobot("Atlas 5", "SN-1005", "Boston Dynamics", "HD-24", "Militar", "img/robot1.jpg", "TURING-1");
+    this.registrarRobot("Atlas 6", "SN-1006", "Boston Dynamics", "HD-24", "Militar", "img/robot1.jpg", "TURING-1");
+    this.registrarRobot("Atlas 7", "SN-1007", "Boston Dynamics", "HD-24", "Militar", "img/robot1.jpg", "TURING-1");
+    this.registrarRobot("Atlas 8", "SN-1008", "Boston Dynamics", "HD-24", "Militar", "img/robot1.jpg", "TURING-1");
+    this.registrarRobot("Atlas 9", "SN-1009", "Boston Dynamics", "HD-24", "Militar", "img/robot1.jpg", "TURING-1");
+    this.registrarRobot("Atlas 10", "SN-1010", "Boston Dynamics", "HD-24", "Militar", "img/robot1.jpg", "TURING-1");
 
-        //Actividades 
-        this.registrarActividad("Ajedrez", "Partidas de ajedrez contra otros robots", 300);
-        this.registrarActividad("Pintura", "Pintura junto con otros robots ", 400);
-        this.registrarActividad("Música", "Lecciones de instrumentos", 500);
-        this.registrarActividad("Jardinería", "Aprendizaje de cuidado de jardin", 250);
-        this.registrarActividad("Lectura", "Lectura extensa de diferentes generos", 150);
-        this.registrarActividad("Baile", "Clases de baile", 100);
-        this.registrarActividad("Cocina", "Aprendizaje de nuevas recetas", 550);
-        this.registrarActividad("Meditación", "Tiempo de recarga energetica", 350);
-        this.registrarActividad("Videojuegos", "Creacion de videojuegos o recreacion en videojuegos", 200);
-        this.registrarActividad("Senderismo", "Salidas para matener los engranajes en funcionamiento", 450);
-    }
+    // 14 robots más en distintas industrias
+    this.registrarRobot("Optimus 11", "SN-2011", "Tesla", "TS-02", "Doméstica", "img/robot2.jpg", "TURING-2");
+    this.registrarRobot("Optimus 12", "SN-2012", "Tesla", "TS-02", "Doméstica", "img/robot2.jpg", "TURING-2");
+    this.registrarRobot("Optimus 13", "SN-2013", "Tesla", "TS-02", "Doméstica", "img/robot2.jpg", "TURING-2");
+    this.registrarRobot("Optimus 14", "SN-2014", "Tesla", "TS-02", "Doméstica", "img/robot2.jpg", "TURING-2");
+    this.registrarRobot("Optimus 15", "SN-2015", "Tesla", "TS-02", "Doméstica", "img/robot2.jpg", "TURING-2");
+
+    this.registrarRobot("Cobot 16", "SN-3016", "Universal", "UR-10", "Médica", "img/robot3.jpg", "TURING-3");
+    this.registrarRobot("Cobot 17", "SN-3017", "Universal", "UR-10", "Médica", "img/robot3.jpg", "TURING-3");
+    this.registrarRobot("Cobot 18", "SN-3018", "Universal", "UR-10", "Médica", "img/robot3.jpg", "TURING-3");
+    this.registrarRobot("Cobot 19", "SN-3019", "Universal", "UR-10", "Médica", "img/robot3.jpg", "TURING-3");
+    this.registrarRobot("Cobot 20", "SN-3020", "Universal", "UR-10", "Médica", "img/robot3.jpg", "TURING-3");
+
+    this.registrarRobot("Agro 21", "SN-4021", "John Deere", "AD-1", "Agrícola", "img/robot4.jpg", "TURING-4");
+    this.registrarRobot("Kuka 22", "SN-4022", "KUKA", "KR-6", "Genérico", "img/robot5.jpg", "TURING-4");
+    this.registrarRobot("Scrap 23", "SN-4023", "Cyberdyne", "T-800", "Militar", "img/robot1.jpg", "TURING-5");
+    this.registrarRobot("Agro 24", "SN-4024", "John Deere", "AD-2", "Agrícola", "img/robot4.jpg", "TURING-5");
+
+    //robots que quedan PENDIENTES (HAL-25 a HAL-30)
+    this.registrarRobot("Helper 25", "SN-5025", "Tesla", "TS-03", "Doméstica", "img/robot2.jpg", "TURING-1");
+    this.registrarRobot("Medic 26", "SN-5026", "Universal", "UR-12", "Médica", "img/robot3.jpg", "TURING-2");
+    this.registrarRobot("Farm 27", "SN-5027", "John Deere", "AD-3", "Agrícola", "img/robot4.jpg", "TURING-3");
+    this.registrarRobot("Guard 28", "SN-5028", "Boston Dynamics", "GD-1", "Militar", "img/robot1.jpg", "TURING-4");
+    this.registrarRobot("Basic 29", "SN-5029", "KUKA", "KR-9", "Genérico", "img/robot5.jpg", "TURING-5");
+    this.registrarRobot("Home 30", "SN-5030", "Tesla", "TS-04", "Doméstica", "img/robot2.jpg", "TURING-2");
+
+    //Cambios de estado iniciales
+    this.aceptarRobot("HAL-1");
+    this.aceptarRobot("HAL-2");
+    this.aceptarRobot("HAL-3");
+    this.aceptarRobot("HAL-4");
+    this.aceptarRobot("HAL-5");
+    this.aceptarRobot("HAL-6");
+    this.aceptarRobot("HAL-7");
+    this.aceptarRobot("HAL-8");
+    this.aceptarRobot("HAL-9");
+    this.aceptarRobot("HAL-10");
+
+    this.aceptarRobot("HAL-11");
+    this.aceptarRobot("HAL-12");
+    this.aceptarRobot("HAL-13");
+    this.aceptarRobot("HAL-14");
+    this.aceptarRobot("HAL-15");
+
+    this.aceptarRobot("HAL-16");
+    this.aceptarRobot("HAL-17");
+    this.aceptarRobot("HAL-18");
+    this.aceptarRobot("HAL-19");
+    this.aceptarRobot("HAL-20");
+
+    this.aceptarRobot("HAL-21");
+    this.darDeBajaRobot("HAL-21", "TURING-4");
+    this.venderRobot("HAL-22");
+    this.rechazarRobot("HAL-23");
+    this.aceptarRobot("HAL-24");
+
+    //Actividades asignadas a robots aceptados
+    this.asignarActividad("HAL-1", "Ajedrez");
+    this.asignarActividad("HAL-1", "Pintura");
+    this.asignarActividad("HAL-11", "Música");
+    this.asignarActividad("HAL-16", "Jardinería");
+    this.asignarActividad("HAL-24", "Cocina");
+}
 
 }
