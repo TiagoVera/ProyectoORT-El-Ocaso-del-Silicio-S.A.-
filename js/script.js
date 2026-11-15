@@ -105,7 +105,9 @@ function mostrarTablaEstadosDeRobots() {
             <tr>
                 <th>ID</th>
                 <th>Nombre</th>
+                <th>Industria</th>
                 <th>Estado</th>
+                <th>Motivo</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -116,7 +118,9 @@ function mostrarTablaEstadosDeRobots() {
             html += `<tr>
                 <td>${robots[i].id}</td>
                 <td>${robots[i].nombre}</td>
+                <td>${robots[i].industria}</td>
                 <td>${robots[i].estado}</td>
+                <td>${robots[i].motivo}</td>
                 <td>
                     <input type="button" value="Aceptar" class="btnAceptar" data-id="${robots[i].id}" />
                     <input type="button" value="Rechazar" class="btnRechazar" data-id="${robots[i].id}" />
@@ -127,7 +131,9 @@ function mostrarTablaEstadosDeRobots() {
             html += `<tr>
                 <td>${robots[i].id}</td>
                 <td>${robots[i].nombre}</td>
+                <td>${robots[i].industria}</td>
                 <td>${robots[i].estado}</td>
+                <td>${robots[i].motivo}</td>
                 <td></td>
             </tr>`;
         }
