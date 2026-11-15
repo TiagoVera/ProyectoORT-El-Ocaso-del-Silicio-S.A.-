@@ -1,4 +1,4 @@
-const SECCIONES = ["secIniciarSesion", "secRegistroFuncionario", "secEstadosRobots","secTablaFuncionarios", "secRegistroRobot", "secRegistrarActividad", "secRobotsAsignados", "secActividadesRobot","secRegistrarFuncionario"];
+const SECCIONES = ["secIniciarSesion", "secRegistroFuncionario", "secEstadosRobots", "secTablaFuncionarios", "secRegistroRobot", "secRegistrarActividad", "secRobotsAsignados", "secActividadesRobot", "secRegistrarFuncionario"];
 
 let usuarioLogueado = null;
 const sistema = new Sistema();
@@ -29,6 +29,7 @@ document.querySelector("#btnRobotsAsignados").addEventListener("click", () => {
 
 document.querySelector("#btnRegistrarRobotForm").addEventListener("click", registrarRobotDesdeFormulario);
 document.querySelector("#btnRegistrarFuncionario").addEventListener("click", registrarFuncionario);
+document.querySelector("#btnRegistrarActividad").addEventListener("click", registrarActividad);
 
 ocultarTodasLasSecciones();
 // Se agrega mostrarSeccion("secIniciarSesion") ;actualizarMenu(); para que podamos ver correctamente el formulario de login sin eso quedaria todo vacio
@@ -133,14 +134,14 @@ function conectarBotonesEstados() {
 }
 
 function aceptarRobot() {
-    let idRobot = this.getAttribute("data-id"); 
+    let idRobot = this.getAttribute("data-id");
     let mensaje = sistema.aceptarRobot(idRobot);
     mostrarTablaEstadosDeRobots();
     document.querySelector("#pMensajeEstadoRobot").innerHTML = mensaje;
 }
 
 function rechazarRobot() {
-    let idRobot = this.getAttribute("data-id"); 
+    let idRobot = this.getAttribute("data-id");
     let mensaje = sistema.rechazarRobot(idRobot);
     mostrarTablaEstadosDeRobots();
     document.querySelector("#pMensajeEstadoRobot").innerHTML = mensaje;
@@ -215,36 +216,36 @@ function cerrarSesion() {
 }
 
 function validarRegistroFuncionario(documento, nombre, telefono) {
-let esValido = true;
+    let esValido = true;
 
     if (documento.trim() == "") {
-        mostrarErrorInput("El documento es obligatorio.", "documentoFuncionarioRegistro","pMensajeFuncionario");
-        mostrarErrorP("Todos los campos son obligatorios","pMensajeFuncionario")
+        mostrarErrorInput("El documento es obligatorio.", "documentoFuncionarioRegistro", "pMensajeFuncionario");
+        mostrarErrorP("Todos los campos son obligatorios", "pMensajeFuncionario")
         esValido = false;
     }
     if (nombre.trim() == "") {
         mostrarErrorInput("El nombre completo es obligatorio.", "nombreFuncionarioRegistro");
-        mostrarErrorP("Todos los campos son obligatorios","pMensajeFuncionario")
+        mostrarErrorP("Todos los campos son obligatorios", "pMensajeFuncionario")
         esValido = false;
     }
     if (telefono.trim() == "") {
-        mostrarErrorInput("El teléfono es obligatorio.", "telefonoFuncionarioRegistro","pMensajeFuncionario");
-        mostrarErrorP("Todos los campos son obligatorios","pMensajeFuncionario")
+        mostrarErrorInput("El teléfono es obligatorio.", "telefonoFuncionarioRegistro", "pMensajeFuncionario");
+        mostrarErrorP("Todos los campos son obligatorios", "pMensajeFuncionario")
         esValido = false;
     }
     if (sistema.existeFuncionario(documento)) {
-        mostrarErrorInput( "Ya existe un funcionario con ese documento.","documentoFuncionarioRegistro","pMensajeFuncionario");
-        mostrarErrorP("Ya existe un funcionario con ese documento.","pMensajeFuncionario")
+        mostrarErrorInput("Ya existe un funcionario con ese documento.", "documentoFuncionarioRegistro", "pMensajeFuncionario");
+        mostrarErrorP("Ya existe un funcionario con ese documento.", "pMensajeFuncionario")
         esValido = false;
     }
     return esValido;
 }
 
+
 function registrarFuncionario() {
-let documento = document.querySelector("#documentoFuncionarioRegistro").value;
+    let documento = document.querySelector("#documentoFuncionarioRegistro").value;
     let nombre = document.querySelector("#nombreFuncionarioRegistro").value;
     let telefono = document.querySelector("#telefonoFuncionarioRegistro").value;
-    let pMensaje = document.querySelector("#pMensajeFuncionario")
 
     limpiarErrores();
 
@@ -253,7 +254,7 @@ let documento = document.querySelector("#documentoFuncionarioRegistro").value;
     }
 
     sistema.registrarFuncionario(documento.trim(), nombre.trim(), telefono.trim());
-    mostrarExito("Funcionario registrado correctamente","pMensajeFuncionario");
+    mostrarExito("Funcionario registrado correctamente", "pMensajeFuncionario");
 
     document.querySelector("#documentoFuncionarioRegistro").value = "";
     document.querySelector("#nombreFuncionarioRegistro").value = "";
@@ -348,27 +349,8 @@ function mostrarRobotsAsignados() {
     conectarBotonesActividades();
 }
 
-function mostrarErrorInput(mensaje,idInput){
-const input = document.querySelector("#"+idInput);
-input.setAttribute("class", "error");
-input.setAttribute("placeholder", mensaje);
-} 
 
-function mostrarErrorP(mensaje,idP){
-const p = document.querySelector("#"+idP);
-p.innerHTML = mensaje;
-p.setAttribute("class", "error");
-} 
 
-function mostrarExito(mensaje,idP){
-const p = document.querySelector("#"+idP);
-p.innerHTML = mensaje;
-p.setAttribute("class", "exito");
-} 
-
-function limpiarP(idP){
-idP.innerHTML="";
-}
 
 function limpiarErrores() {
     let camposConError = document.querySelectorAll(".input-error");
@@ -395,25 +377,99 @@ function clickDarDeBaja() {
     }
     mostrarRobotsAsignados();
 }
-    
-    function conectarBotonesActividades() {
-        let botones = document.querySelectorAll(".btnActividades");
-        for (let i = 0; i < botones.length; i++) {
+
+function validarRegistroActividad(nombre, descripcion, precio) {
+    let esValido = true;
+
+    if (nombre.trim() == "") {
+        mostrarErrorInput("El nombre es obligatorio.", "nombreRegistroActividad");
+        mostrarErrorP("Todos los campos son obligatorios", "pMensajeActividadRegistro")
+        esValido = false;
+    }
+    if (descripcion.trim() == "") {
+        mostrarErrorInput("La descripcion es obligatoria.", "descripcionRegistroActividad");
+        mostrarErrorP("Todos los campos son obligatorios", "pMensajeActividadRegistro")
+        esValido = false;
+    }
+    if (precio.trim() == "") {
+        mostrarErrorInput("El precio es obligatorio.", "precioRegistroActividad");
+        mostrarErrorP("Todos los campos son obligatorios", "pMensajeActividadRegistro")
+        esValido = false;
+    }
+    if (sistema.existeActividad(nombre.trim())) {
+        mostrarErrorInput("Ya existe una actividad con ese nombre.", "nombreRegistroActividad");
+        mostrarErrorP("Ya existe una actividad con ese nombre.", "pMensajeActividadRegistro")
+        esValido = false;
+    }
+    if (precio.trim() < 0) {
+        mostrarErrorInput("El precio debe ser un numero positivo.", "precioRegistroActividad");
+        mostrarErrorP("El precio debe ser un numero positivo.", "pMensajeActividadRegistro")
+        esValido = false;
+    }
+    return esValido;
+}
+
+
+function registrarActividad() {
+    let nombre = document.querySelector("#nombreRegistroActividad").value;
+    let descripcion = document.querySelector("#descripcionRegistroActividad").value;
+    let precio = document.querySelector("#precioRegistroActividad").value;
+
+    limpiarErrores();
+
+    if (!validarRegistroActividad(nombre, descripcion, precio)) {
+        return;
+    }
+
+    sistema.registrarActividad(nombre.trim(), descripcion.trim(), precio.trim());
+    mostrarExito("Actividad registrada correctamente", "pMensajeActividadRegistro");
+
+    document.querySelector("#nombreRegistroActividad").value = "";
+    document.querySelector("#descripcionRegistroActividad").value = "";
+    document.querySelector("#precioRegistroActividad").value = "";
+}
+
+function conectarBotonesActividades() {
+    let botones = document.querySelectorAll(".btnActividades");
+    for (let i = 0; i < botones.length; i++) {
         botones[i].addEventListener("click", clickActividades);
-        }
     }
+}
 
-    function clickActividades() {
-        idRobotActual = this.getAttribute("data-id");
-        document.querySelector("#pMensajeActividad").innerHTML = "";
-        mostrarActividadesRobot();
-    }
+function clickActividades() {
+    idRobotActual = this.getAttribute("data-id");
+    document.querySelector("#pMensajeActividad").innerHTML = "";
+    mostrarActividadesRobot();
+}
 
-    function mostrarActividadesRobot() {
-        mostrarSeccion("secActividadesRobot");
-        let unRobot = sistema.buscarRobotPorId(idRobotActual);
-        document.querySelector("#pDatosRobot").innerHTML = "ID: " + unRobot.id + " | Nombre: " + unRobot.nombre;
-    }
+function mostrarActividadesRobot() {
+    mostrarSeccion("secActividadesRobot");
+    let unRobot = sistema.buscarRobotPorId(idRobotActual);
+    document.querySelector("#pDatosRobot").innerHTML = "ID: " + unRobot.id + " | Nombre: " + unRobot.nombre;
+}
+
+
+function mostrarErrorP(mensaje, idP) {
+    const p = document.querySelector("#" + idP);
+    p.innerHTML = mensaje;
+    p.setAttribute("class", "error");
+}
+
+function mostrarExito(mensaje, idP) {
+    const p = document.querySelector("#" + idP);
+    p.innerHTML = mensaje;
+    p.setAttribute("class", "exito");
+}
+
+function limpiarP(idP) {
+    idP.innerHTML = "";
+}
+
+function mostrarErrorInput(mensaje, idInput) {
+    const input = document.querySelector("#" + idInput);
+    input.setAttribute("class", "error");
+    input.setAttribute("placeholder", mensaje);
+}
 
 sistema.precargaDatos()
 

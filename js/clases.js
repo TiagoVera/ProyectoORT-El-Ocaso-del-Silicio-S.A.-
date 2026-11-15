@@ -273,6 +273,15 @@ class Sistema {
         return listaActividades;
     }
 
+        existeActividad(nombre) {
+        for (let i = 0; i < this.#actividades.length; i++) {
+            if (sonIgualesTexto(this.#actividades[i].nombre, nombre)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     buscarActividadPorNombre(nombre) {
         for (let i = 0; i < this.#actividades.length; i++) {
             if (sonIgualesTexto(this.#actividades[i].nombre, nombre)) {
