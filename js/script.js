@@ -1,4 +1,4 @@
-const SECCIONES = ["secIniciarSesion", "secRegistroFuncionario", "secEstadosRobots", "secTablaFuncionarios", "secRegistroRobot", "secRegistrarActividad", "secRobotsAsignados", "secActividadesRobot", "secRegistrarFuncionario", "secEstadisticasGenerales"];
+const SECCIONES = ["secIniciarSesion", "secEstadosRobots", "secTablaFuncionarios", "secRegistroRobot", "secRegistrarActividad", "secRobotsAsignados", "secActividadesRobot", "secRegistrarFuncionario", "secEstadisticasGenerales"];
 
 let usuarioLogueado = null;
 const sistema = new Sistema();
@@ -65,7 +65,7 @@ function mostrarTablaFuncionarios() {
         html += `<tr>
                     <td>${funcionarios[i].codigoFuncionario}</td>
                     <td>${funcionarios[i].nombre}</td>
-                    <td>${funcionarios[i].robotsAceptados}</td>
+                    <td>${sistema.obtenerRobotsAsignados(funcionarios[i].codigoFuncionario).length}</td>
                 </tr>`;
     }
 
@@ -355,12 +355,6 @@ function mostrarRobotsAsignados() {
 
 
 
-function limpiarErrores() {
-    let camposConError = document.querySelectorAll(".input-error");
-    for (let i = 0; i < camposConError.length; i++) {
-        camposConError[i].classList.remove("input-error");
-    }
-}
 
 function conectarBotonesBaja() {
     let botones = document.querySelectorAll(".btnBaja");
@@ -394,6 +388,7 @@ function validarRegistroActividad(nombre, descripcion, precio) {
         mostrarErrorP("Todos los campos son obligatorios", "pMensajeActividadRegistro")
         esValido = false;
     }
+    
     if (precio.trim() == "") {
         mostrarErrorInput("El precio es obligatorio.", "precioRegistroActividad");
         mostrarErrorP("Todos los campos son obligatorios", "pMensajeActividadRegistro")
@@ -404,7 +399,7 @@ function validarRegistroActividad(nombre, descripcion, precio) {
         mostrarErrorP("Ya existe una actividad con ese nombre.", "pMensajeActividadRegistro")
         esValido = false;
     }
-    if (precio.trim() < 0) {
+    if (isNaN(precio) || Number(precio) <= 0) {
         mostrarErrorInput("El precio debe ser un numero positivo.", "precioRegistroActividad");
         mostrarErrorP("El precio debe ser un numero positivo.", "pMensajeActividadRegistro")
         esValido = false;
@@ -424,7 +419,7 @@ function registrarActividad() {
         return;
     }
 
-    sistema.registrarActividad(nombre.trim(), descripcion.trim(), precio.trim());
+    sistema.registrarActividad(nombre.trim(), descripcion.trim(), Number(precio));
     mostrarExito("Actividad registrada correctamente", "pMensajeActividadRegistro");
 
     document.querySelector("#nombreRegistroActividad").value = "";
@@ -510,6 +505,16 @@ function mostrarErrorInput(mensaje, idInput) {
     const input = document.querySelector("#" + idInput);
     input.setAttribute("class", "error");
     input.setAttribute("placeholder", mensaje);
+}
+
+function limpiarErrores() {
+    let camposConError = document.querySelectorAll(".error");
+    for (let i = 0; i < camposConError.length; i++) {
+        camposConError[i].classList.remove("error");
+        if (camposConError[i].tagName === "INPUT") {
+            camposConError[i].removeAttribute("placeholder");
+        }
+    }
 }
 
 sistema.precargaDatos()
