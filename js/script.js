@@ -515,6 +515,19 @@ function conectarBotonesQuitar() {
     }
 }
 
+function clickQuitarActividad() {
+    let nombreActividad = this.getAttribute("data-nombre");
+    let pMensaje = document.querySelector("#pMensajeActividad");
+    let resultado = sistema.quitarActividad(idRobotActual, nombreActividad);
+
+    if (resultado == "") {
+        pMensaje.innerHTML = "Se quitó la actividad " + nombreActividad + ".";
+    } else {
+        pMensaje.innerHTML = resultado;
+    }
+    mostrarActividadesRobot();
+}
+
 function mostrarTablaEstadisticas() {
     mostrarSeccion("secEstadisticasGenerales")
     let datosIndustrias = sistema.obtenerEstadisticasPorIndustria();
