@@ -9,7 +9,8 @@ const SECCIONES = [
     "secActividadesRobot", 
     "secRegistrarFuncionario", 
     "secEstadisticasGenerales",
-    "secMisRegistros"
+    "secMisRegistros",
+    "secCambiarContrasena"
 ];
 let usuarioLogueado = null;
 const sistema = new Sistema();
@@ -32,6 +33,8 @@ document.querySelector("#btnVolverRobots").addEventListener("click", irARobotsAs
 document.querySelector("#btnRegistrarFuncionario").addEventListener("click", registrarFuncionario);
 document.querySelector("#btnRegistrarActividad").addEventListener("click", registrarActividad);
 document.querySelector("#btnMisRegistros").addEventListener("click", mostrarMisRegistros);
+document.querySelector("#btnCambiarContrasenaMenu").addEventListener("click", irACambiarContrasena);
+document.querySelector("#btnCambiarContrasena").addEventListener("click", cambiarContrasena);
 
 ocultarTodasLasSecciones();
 // Se agrega mostrarSeccion("secIniciarSesion") ;actualizarMenu(); para que podamos ver correctamente el formulario de login sin eso quedaria todo vacio
@@ -210,6 +213,7 @@ function actualizarMenu() {
     mostrarElemento("#liRegistrarRobot", tipoUsuario == "funcionario");
     mostrarElemento("#liRobotsAsignados", tipoUsuario == "funcionario");
     mostrarElemento("#liMisRegistros", tipoUsuario == "funcionario");
+    mostrarElemento("#liCambiarContrasena", tipoUsuario == "funcionario");
     mostrarElemento("#liTablaFuncionarios", tipoUsuario == "administrador");
     mostrarElemento("#liTablaEstadosRobots", tipoUsuario == "administrador");
     mostrarElemento("#liRegistrarActividad", tipoUsuario == "administrador");
@@ -441,6 +445,56 @@ function mostrarMisRegistros() {
 
     html += "</tbody></table>";
     divTabla.innerHTML = html;
+}
+
+function irACambiarContrasena() {
+    document.querySelector("#contrasenaActual").value = "";
+    document.querySelector("#contrasenaNueva").value = "";
+    document.querySelector("#contrasenaConfirmacion").value = "";
+    document.querySelector("#pMensajeContrasena").innerHTML = "";
+    mostrarSeccion("secCambiarContrasena");
+}
+
+function validarCambioContrasena(actual, nueva, confirmacion) {
+    if (estaVacio(actual) || estaVacio(nueva) || estaVacio(confirmacion)) {
+        return "Todos los campos son obligatorios.";
+    }
+    if (usuarioLogueado.contraseña != actual) {
+        return "La contraseña actual es incorrecta.";
+    }
+    if (nueva == actual) {
+        return "La contraseña nueva no puede ser igual a la actual.";
+    }
+    if (tieneEspacios(nueva)) {
+        return "La contraseña nueva no puede contener espacios.";
+    }
+    if (nueva != confirmacion) {
+        return "La confirmación no coincide con la contraseña nueva.";
+    }
+    return "";
+}
+
+function cambiarContrasena() {
+    let actual = document.querySelector("#contrasenaActual").value;
+    let nueva = document.querySelector("#contrasenaNueva").value;
+    let confirmacion = document.querySelector("#contrasenaConfirmacion").value;
+    let pMensaje = document.querySelector("#pMensajeContrasena");
+
+    let error = validarCambioContrasena(actual, nueva, confirmacion);
+    if (error != "") {
+        pMensaje.innerHTML = error;
+        return;
+    }
+
+    if (sistema.cambiarContrasenaFuncionario(usuarioLogueado.codigoFuncionario, nueva)) {
+        pMensaje.innerHTML = "Contraseña cambiada correctamente.";
+    } else {
+        pMensaje.innerHTML = "No se pudo cambiar la contraseña.";
+    }
+
+    document.querySelector("#contrasenaActual").value = "";
+    document.querySelector("#contrasenaNueva").value = "";
+    document.querySelector("#contrasenaConfirmacion").value = "";
 }
 
 function validarRegistroActividad(nombre, descripcion, precio) {

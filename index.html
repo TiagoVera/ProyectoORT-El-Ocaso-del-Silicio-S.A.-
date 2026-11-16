@@ -34,6 +34,9 @@
           <li id="liMisRegistros">
             <a id="btnMisRegistros">Mis registros</a>
           </li>
+          <li id="liCambiarContrasena">
+            <a id="btnCambiarContrasenaMenu">Cambiar contraseña</a>
+          </li>
           <li id="liRegistrarFuncionario">
             <a id="linkRegistrarFuncionario">Registrar Funcionario</a>
           </li>
@@ -171,6 +174,20 @@
         <hr>
         <h3>Mis Registros</h3>
         <div id="divTablaMisRegistros"></div>
+        <hr />
+      </section>
+
+       <section id="secCambiarContrasena">
+        <hr>
+        <h3>Cambiar Contraseña</h3>
+        <label for="contrasenaActual">Contraseña actual</label>
+        <input type="password" id="contrasenaActual" />
+        <label for="contrasenaNueva">Contraseña nueva</label>
+        <input type="password" id="contrasenaNueva" />
+        <label for="contrasenaConfirmacion">Repetir contraseña nueva</label>
+        <input type="password" id="contrasenaConfirmacion" />
+        <input type="button" id="btnCambiarContrasena" value="Cambiar" /><br />
+        <p id="pMensajeContrasena"></p>
         <hr />
       </section>
 

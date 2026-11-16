@@ -95,6 +95,16 @@ class Sistema {
         return listaFuncionarios;
     }
 
+    cambiarContrasenaFuncionario(codigoFuncionario, contrasenaNueva) {
+    for (let i = 0; i < this.#funcionario.length; i++) {
+        if (this.#funcionario[i].codigoFuncionario == codigoFuncionario) {
+            this.#funcionario[i].contraseña = contrasenaNueva;
+            return true;
+            }
+        }
+        return false;
+    }
+
     registrarFuncionario(documento, nombre, telefono) {
         let nuevoFuncionario = new funcionario(documento, nombre, telefono);
         this.#funcionario.push(nuevoFuncionario);
