@@ -528,6 +528,15 @@ function clickQuitarActividad() {
     mostrarActividadesRobot();
 }
 
+function cargarSelectActividades() {
+    let todas = sistema.obtenerActividades();
+    let html = "";
+    for (let i = 0; i < todas.length; i++) {
+        html += `<option value="${todas[i].nombre}">${todas[i].nombre} - ${todas[i].precio} USD</option>`;
+    }
+    document.querySelector("#selActividad").innerHTML = html;
+}
+
 function mostrarTablaEstadisticas() {
     mostrarSeccion("secEstadisticasGenerales")
     let datosIndustrias = sistema.obtenerEstadisticasPorIndustria();
