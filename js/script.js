@@ -471,6 +471,8 @@ function mostrarActividadesRobot() {
     mostrarSeccion("secActividadesRobot");
     let unRobot = sistema.buscarRobotPorId(idRobotActual);
     document.querySelector("#pDatosRobot").innerHTML = "ID: " + unRobot.id + " | Nombre: " + unRobot.nombre;
+    dibujarTablaActividades(unRobot);
+    cargarSelectActividades();
 }
 
 function mostrarTablaEstadisticas() {
