@@ -508,6 +508,13 @@ function dibujarTablaActividades(unRobot) {
     conectarBotonesQuitar();
 }
 
+function conectarBotonesQuitar() {
+    let botones = document.querySelectorAll(".btnQuitar");
+    for (let i = 0; i < botones.length; i++) {
+        botones[i].addEventListener("click", clickQuitarActividad);
+    }
+}
+
 function mostrarTablaEstadisticas() {
     mostrarSeccion("secEstadisticasGenerales")
     let datosIndustrias = sistema.obtenerEstadisticasPorIndustria();
