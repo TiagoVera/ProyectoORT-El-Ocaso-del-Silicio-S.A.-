@@ -537,6 +537,19 @@ function cargarSelectActividades() {
     document.querySelector("#selActividad").innerHTML = html;
 }
 
+function asignarActividadSeleccionada() {
+    let nombreActividad = document.querySelector("#selActividad").value;
+    let pMensaje = document.querySelector("#pMensajeActividad");
+    let resultado = sistema.asignarActividad(idRobotActual, nombreActividad);
+
+    if (resultado == "") {
+        pMensaje.innerHTML = "Se asignó la actividad " + nombreActividad + ".";
+    } else {
+        pMensaje.innerHTML = resultado;
+    }
+    mostrarActividadesRobot();
+}
+
 function mostrarTablaEstadisticas() {
     mostrarSeccion("secEstadisticasGenerales")
     let datosIndustrias = sistema.obtenerEstadisticasPorIndustria();
