@@ -8,7 +8,8 @@ const SECCIONES = [
     "secRobotsAsignados", 
     "secActividadesRobot", 
     "secRegistrarFuncionario", 
-    "secEstadisticasGenerales"
+    "secEstadisticasGenerales",
+    "secMisRegistros"
 ];
 let usuarioLogueado = null;
 const sistema = new Sistema();
@@ -30,7 +31,7 @@ document.querySelector("#btnAsignarActividad").addEventListener("click", asignar
 document.querySelector("#btnVolverRobots").addEventListener("click", irARobotsAsignados);
 document.querySelector("#btnRegistrarFuncionario").addEventListener("click", registrarFuncionario);
 document.querySelector("#btnRegistrarActividad").addEventListener("click", registrarActividad);
-
+document.querySelector("#btnMisRegistros").addEventListener("click", mostrarMisRegistros);
 
 ocultarTodasLasSecciones();
 // Se agrega mostrarSeccion("secIniciarSesion") ;actualizarMenu(); para que podamos ver correctamente el formulario de login sin eso quedaria todo vacio
@@ -208,6 +209,7 @@ function actualizarMenu() {
     mostrarElemento("#liCerrarSesion", haySesion);
     mostrarElemento("#liRegistrarRobot", tipoUsuario == "funcionario");
     mostrarElemento("#liRobotsAsignados", tipoUsuario == "funcionario");
+    mostrarElemento("#liMisRegistros", tipoUsuario == "funcionario");
     mostrarElemento("#liTablaFuncionarios", tipoUsuario == "administrador");
     mostrarElemento("#liTablaEstadosRobots", tipoUsuario == "administrador");
     mostrarElemento("#liRegistrarActividad", tipoUsuario == "administrador");
@@ -390,10 +392,6 @@ function mostrarRobotsAsignados() {
     conectarBotonesActividades();
 }
 
-
-
-
-
 function conectarBotonesBaja() {
     let botones = document.querySelectorAll(".btnBaja");
     for (let i = 0; i < botones.length; i++) {
@@ -411,6 +409,38 @@ function clickDarDeBaja() {
         pMensaje.innerHTML = "No se pudo dar de baja el robot " + idRobot + ".";
     }
     mostrarRobotsAsignados();
+}
+
+function mostrarMisRegistros() {
+    mostrarSeccion("secMisRegistros");
+    let robots = sistema.obtenerRobotsRegistrados(usuarioLogueado.codigoFuncionario);
+    let divTabla = document.querySelector("#divTablaMisRegistros");
+
+    if (robots.length == 0) {
+        divTabla.innerHTML = "<p>No registraste ningún robot.</p>";
+        return;
+    }
+
+    let html = `<table border="1">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+    for (let i = 0; i < robots.length; i++) {
+        html += `<tr>
+                    <td>${robots[i].id}</td>
+                    <td>${robots[i].nombre}</td>
+                    <td>${robots[i].estado}</td>
+                </tr>`;
+    }
+
+    html += "</tbody></table>";
+    divTabla.innerHTML = html;
 }
 
 function validarRegistroActividad(nombre, descripcion, precio) {
