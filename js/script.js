@@ -475,6 +475,39 @@ function mostrarActividadesRobot() {
     cargarSelectActividades();
 }
 
+function dibujarTablaActividades(unRobot) {
+    let divTabla = document.querySelector("#divTablaActividadesRobot");
+
+    if (unRobot.actividades.length == 0) {
+        divTabla.innerHTML = "<p>El robot no tiene actividades asignadas.</p>";
+        return;
+    }
+
+    let html = `<table border="1">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Precio</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+    for (let i = 0; i < unRobot.actividades.length; i++) {
+        html += `<tr>
+                    <td>${unRobot.actividades[i].nombre}</td>
+                    <td>${unRobot.actividades[i].descripcion}</td>
+                    <td>${unRobot.actividades[i].precio}</td>
+                    <td><input type="button" value="Quitar" class="btnQuitar" data-nombre="${unRobot.actividades[i].nombre}" /></td>
+                </tr>`;
+    }
+
+    html += "</tbody></table>";
+    divTabla.innerHTML = html;
+    conectarBotonesQuitar();
+}
+
 function mostrarTablaEstadisticas() {
     mostrarSeccion("secEstadisticasGenerales")
     let datosIndustrias = sistema.obtenerEstadisticasPorIndustria();
