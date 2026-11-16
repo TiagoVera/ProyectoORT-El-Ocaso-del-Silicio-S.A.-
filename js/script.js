@@ -18,27 +18,16 @@ let idRobotActual = "";
 document.querySelector("#linkTablaFuncionarios").addEventListener("click", mostrarTablaFuncionarios);
 document.querySelector("#linkTablaEstadosRobots").addEventListener("click", mostrarTablaEstadosDeRobots);
 document.querySelector("#linkEstadisticasGenerales").addEventListener("click", mostrarTablaEstadisticas);
-document.querySelector("#btnIniciarSesion").addEventListener("click", () => {
-    mostrarSeccion("secIniciarSesion");
-});
-document.querySelector("#linkRegistrarFuncionario").addEventListener("click", () => {
-    mostrarSeccion("secRegistrarFuncionario");
-});
-document.querySelector("#linkRegistrarActividad").addEventListener("click", () => {
-    mostrarSeccion("secRegistrarActividad");
-});
+document.querySelector("#btnIniciarSesion").addEventListener("click", irAIniciarSesion);
+document.querySelector("#linkRegistrarFuncionario").addEventListener("click", irARegistrarFuncionario);
+document.querySelector("#linkRegistrarActividad").addEventListener("click", irARegistrarActividad);
 document.querySelector("#btnEnviarLogin").addEventListener("click", intentarIniciarSesion);
 document.querySelector("#btnCerrarSesion").addEventListener("click", cerrarSesion);
-document.querySelector("#btnRegistrarRobot").addEventListener("click", () => {
-    mostrarSeccion("secRegistroRobot");
-});
-
-document.querySelector("#btnRobotsAsignados").addEventListener("click", () => {
-    document.querySelector("#pMensajeBaja").innerHTML = "";
-    mostrarRobotsAsignados();
-});
-
+document.querySelector("#btnRegistrarRobot").addEventListener("click", irARegistrarRobot);
+document.querySelector("#btnRobotsAsignados").addEventListener("click", irARobotsAsignados);
 document.querySelector("#btnRegistrarRobotForm").addEventListener("click", registrarRobotDesdeFormulario);
+document.querySelector("#btnAsignarActividad").addEventListener("click", asignarActividadSeleccionada);
+document.querySelector("#btnVolverRobots").addEventListener("click", irARobotsAsignados);
 document.querySelector("#btnRegistrarFuncionario").addEventListener("click", registrarFuncionario);
 document.querySelector("#btnRegistrarActividad").addEventListener("click", registrarActividad);
 
@@ -59,6 +48,28 @@ function ocultarTodasLasSecciones() {
         document.querySelector("#" + SECCIONES[i]).style.display = "none";
     }
 }
+
+function irAIniciarSesion() {
+    mostrarSeccion("secIniciarSesion");
+}
+
+function irARegistrarFuncionario() {
+    mostrarSeccion("secRegistrarFuncionario");
+}
+
+function irARegistrarActividad() {
+    mostrarSeccion("secRegistrarActividad");
+}
+
+function irARegistrarRobot() {
+    mostrarSeccion("secRegistroRobot");
+}
+
+function irARobotsAsignados() {
+    document.querySelector("#pMensajeBaja").innerHTML = "";
+    mostrarRobotsAsignados();
+}
+
 function mostrarBienvenida() {
     mostrarSeccion("secBienvenida");
     document.querySelector("#h2Bienvenida").innerHTML = "Bienvenido/a, " + usuarioLogueado.nombre;
