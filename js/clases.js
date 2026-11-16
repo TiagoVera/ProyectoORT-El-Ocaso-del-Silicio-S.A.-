@@ -172,6 +172,16 @@ class Sistema {
         return lista;
     }
 
+    obtenerRobotsRegistrados(codigoFuncionario) {
+        let lista = [];
+        for (let i = 0; i < this.#robot.length; i++) {
+            if (this.#robot[i].registradoPor == codigoFuncionario) {
+            lista.push(this.#robot[i]);
+            }
+        }
+        return lista;
+    }
+
     obtenerRobotsPorIndustria(industria) {
         let lista = [];
         for (let i = 0; i < this.#robot.length; i++) {
