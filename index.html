@@ -1,74 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>El Ocaso del Silicio S.A.</title>
+  <link rel="stylesheet" href="./style.css">
   <script src="js/clases.js"></script>
   <script src="js/validaciones.js"></script>
-  <link rel="stylesheet" href="./style.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pen</title>
 </head>
 
 <body>
-
   <div id="contenedor">
     <header>
       <div id="marca">
         <img id="logo"
           src="https://res.cloudinary.com/tgh2fcit/image/upload/f_auto,q_auto/ChatGPT_Image_Sep_18_2026_06_01_03_PM"
-          alt="logo" />
+          alt="Logo El Ocaso del Silicio S.A." />
         <span id="nombreMarca">El Ocaso del Silicio S.A.</span>
       </div>
       <nav>
         <ul id="navPrincipal">
-          <li id="liIniciarSesion">
-            <a id="btnIniciarSesion">Iniciar sesion</a>
-          </li>
-          <li id="liRegistrarRobot">
-            <a id="btnRegistrarRobot">Registrar robot</a>
-          </li>
-          <li id="liRobotsAsignados">
-            <a id="btnRobotsAsignados">Robots asignados</a>
-          </li>
-          <li id="liMisRegistros">
-            <a id="btnMisRegistros">Mis registros</a>
-          </li>
-          <li id="liCambiarContrasena">
-            <a id="btnCambiarContrasenaMenu">Cambiar contraseña</a>
-          </li>
-          <li id="liRegistrarFuncionario">
-            <a id="linkRegistrarFuncionario">Registrar Funcionario</a>
-          </li>
-          <li id="liTablaFuncionarios">
-            <a id="linkTablaFuncionarios">Mostrar Tabla Funcionarios</a>
-          </li>
-          <li id="liTablaEstadosRobots">
-            <a id="linkTablaEstadosRobots">Mostrar Tabla Estados Robots</a>
-          </li>
-          <li id="liRegistrarActividad">
-            <a id="linkRegistrarActividad">Registrar Actividad</a>
-          </li>
-          <li id="liEstadisticasGenerales">
-            <a id="linkEstadisticasGenerales">Estadisticas Generales</a>
-          </li>
-          <li id="liCerrarSesion">
-            <a id="btnCerrarSesion">Cerrar sesión</a>
-          </li>
+          <li id="liIniciarSesion"><a id="btnIniciarSesion">Iniciar sesión</a></li>
+
+          <!-- Funcionario -->
+          <li id="liRegistrarRobot"><a id="btnRegistrarRobot">Registrar robot</a></li>
+          <li id="liRobotsAsignados"><a id="btnRobotsAsignados">Robots asignados</a></li>
+          <li id="liMisRegistros"><a id="btnMisRegistros">Mis registros</a></li>
+          <li id="liCambiarContrasena"><a id="btnCambiarContrasenaMenu">Cambiar contraseña</a></li>
+
+          <!-- Administrador -->
+          <li id="liRegistrarFuncionario"><a id="linkRegistrarFuncionario">Registrar Funcionario</a></li>
+          <li id="liTablaFuncionarios"><a id="linkTablaFuncionarios">Mostrar Tabla Funcionarios</a></li>
+          <li id="liTablaEstadosRobots"><a id="linkTablaEstadosRobots">Mostrar Tabla Estados Robots</a></li>
+          <li id="liRegistrarActividad"><a id="linkRegistrarActividad">Registrar Actividad</a></li>
+          <li id="liEstadisticasGenerales"><a id="linkEstadisticasGenerales">Estadísticas Generales</a></li>
+
+          <li id="liCerrarSesion"><a id="btnCerrarSesion">Cerrar sesión</a></li>
         </ul>
       </nav>
     </header>
-    <!-- FIN CABEZAL -->
     <main>
       <section id="secBienvenida">
-  <hr>
-  <h2 id="h2Bienvenida"></h2>
-  <p id="pBienvenidaInfo"></p>
+        <hr />
+        <h2 id="h2Bienvenida"></h2>
+        <p id="pBienvenidaInfo"></p>
+        <hr />
+      </section>
 
-  <hr />
-</section>
       <section id="secIniciarSesion">
-        <h2>Iniciar sesion</h2>
+        <h2>Iniciar sesión</h2>
         <label for="usuario">Usuario</label>
         <input type="text" id="usuario" />
         <label for="contraseña">Contraseña</label>
@@ -78,52 +59,63 @@
         <hr />
       </section>
 
-      <section id="secTablaFuncionarios">
-        <hr>
-        <div id="divTablaFuncionarios">
-
-        </div>
-        <hr />
-      </section>
-
+      <!-- ADMINISTRADOR -->
       <section id="secRegistrarFuncionario">
-        <hr>
+        <hr />
         <h3>Registrar Funcionario</h3>
-        <label for="documentoFuncionarioRegistro">Numero de documento:</label>
+        <label for="documentoFuncionarioRegistro">Número de documento:</label>
         <input type="text" id="documentoFuncionarioRegistro" />
         <label for="nombreFuncionarioRegistro">Nombre completo:</label>
         <input type="text" id="nombreFuncionarioRegistro" />
-        <label for="telefonoFuncionarioRegistro">Telefono de contacto:</label>
+        <label for="telefonoFuncionarioRegistro">Teléfono de contacto:</label>
         <input type="number" id="telefonoFuncionarioRegistro" />
         <input type="button" id="btnRegistrarFuncionario" value="Registrar" /><br />
         <p id="pMensajeFuncionario"></p>
         <hr />
       </section>
 
+      <section id="secTablaFuncionarios">
+        <hr />
+        <h3>Listado de Funcionarios</h3>
+        <div id="divTablaFuncionarios"></div>
+        <hr />
+      </section>
+
       <section id="secEstadosRobots">
-        <hr>
+        <hr />
+        <h3>Gestión de Estados de Robots</h3>
         <p id="pMensajeEstadoRobot"></p>
-        <div id="divTablaEstadosDeRobots">
-        </div>
+        <div id="divTablaEstadosDeRobots"></div>
         <hr />
       </section>
 
       <section id="secRegistrarActividad">
-        <hr>
+        <hr />
         <h3>Registrar Actividad</h3>
         <label for="nombreRegistroActividad">Nombre de la actividad:</label>
         <input type="text" id="nombreRegistroActividad" />
-        <label for="descripcionRegistroActividad">Descripcion</label>
-        <input type="textArea" id="descripcionRegistroActividad" />
-        <label for="precioRegistroActividad">Precio de la actividad</label>
+        <label for="descripcionRegistroActividad">Descripción:</label>
+        <input type="text" id="descripcionRegistroActividad" />
+        <label for="precioRegistroActividad">Precio de la actividad:</label>
         <input type="number" id="precioRegistroActividad" />
         <input type="button" id="btnRegistrarActividad" value="Registrar" /><br />
         <p id="pMensajeActividadRegistro"></p>
         <hr />
       </section>
 
+      <section id="secEstadisticasGenerales">
+        <hr />
+        <h3>Estadísticas Generales</h3>
+        <div id="divEstadisticasGenerales"></div>
+        <p id="pTotalDinero"></p>
+        <p id="pDesgloseDinero"></p>
+        <p id="pMejorFuncionario"></p>
+        <hr />
+      </section>
+
+      <!-- FUNCIONARIO -->
       <section id="secRegistroRobot">
-        <hr>
+        <hr />
         <h3>Registrar Robot</h3>
         <label for="robotNombre">Nombre</label>
         <input type="text" id="robotNombre" />
@@ -150,7 +142,7 @@
       </section>
 
       <section id="secRobotsAsignados">
-        <hr>
+        <hr />
         <h3>Robots Asignados</h3>
         <p id="pMensajeBaja"></p>
         <div id="divTablaRobotsAsignados"></div>
@@ -158,7 +150,7 @@
       </section>
 
       <section id="secActividadesRobot">
-        <hr>
+        <hr />
         <h3>Actividades del Robot</h3>
         <p id="pDatosRobot"></p>
         <div id="divTablaActividadesRobot"></div>
@@ -170,15 +162,15 @@
         <hr />
       </section>
 
-       <section id="secMisRegistros">
-        <hr>
+      <section id="secMisRegistros">
+        <hr />
         <h3>Mis Registros</h3>
         <div id="divTablaMisRegistros"></div>
         <hr />
       </section>
 
-       <section id="secCambiarContrasena">
-        <hr>
+      <section id="secCambiarContrasena">
+        <hr />
         <h3>Cambiar Contraseña</h3>
         <label for="contrasenaActual">Contraseña actual</label>
         <input type="password" id="contrasenaActual" />
@@ -190,26 +182,14 @@
         <p id="pMensajeContrasena"></p>
         <hr />
       </section>
-
-      <section id="secEstadisticasGenerales">
-        <hr>
-        <div id="divEstadisticasGenerales">
-        </div>
-        <p id="pTotalDinero"></p>
-        <p id="pDesgloseDinero"></p>
-        <p id="pMejorFuncionario"></p>
-        <hr />
-      </section>
-
     </main>
-    <!-- FIN CONTENIDO -->
+
+    
     <footer>
-      <a href="https://www.ort.edu.uy">Terminal de Gestión V-84 // El Ocaso del Silicio S.A. - Centro de Retiro
-        Tecnológico</a>
+      <a href="https://www.ort.edu.uy">Terminal de Gestión V-84 // El Ocaso del Silicio S.A. - Centro de Retiro Tecnológico</a>
     </footer>
-    <!-- FIN PIE -->
   </div>
-  <!-- FIN CONTENEDOR -->
+
   <script src="js/script.js"></script>
 </body>
 

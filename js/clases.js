@@ -6,7 +6,6 @@ class administrador {
         this.usuario = usuario;
         this.contraseña = contraseña;
     }
-
 }
 
 class funcionario {
@@ -52,57 +51,36 @@ class Sistema {
     #funcionario = [];
     #robot = [];
     #actividades = [];
+
     static #dineroTotal = 0;
     static #dineroRobotsAceptados = 0;
     static #dineroRobotsVendidos = 0;
     static #dineroActividades = 0;
-    static #mejorFuncionario = "";
 
+    //USUARIOS
 
-    //Usuarios
     iniciarSesion(usuario, contraseña) {
         if (esFuncionario(usuario)) {
-
             for (let i = 0; i < this.#funcionario.length; i++) {
                 let unFuncionario = this.#funcionario[i];
                 if (sonIgualesTexto(unFuncionario.codigoFuncionario, usuario) && unFuncionario.contraseña == contraseña) {
                     return unFuncionario;
                 }
             }
-
         } else {
             for (let i = 0; i < this.#administrador.length; i++) {
-                let administrador = this.#administrador[i];
-                if (sonIgualesTexto(administrador.usuario, usuario) && administrador.contraseña == contraseña) {
-                    return administrador;
+                let unAdmin = this.#administrador[i];
+                if (sonIgualesTexto(unAdmin.usuario, usuario) && unAdmin.contraseña == contraseña) {
+                    return unAdmin;
                 }
             }
         }
-        return null
+        return null;
     }
 
     registrarAdministrador(nombre, usuario, contraseña) {
         let nuevoAdministrador = new administrador(nombre, usuario, contraseña);
         this.#administrador.push(nuevoAdministrador);
-    }
-
-    obtenerFuncionarios() {
-        let listaFuncionarios = [];
-        for (let i = 0; i < this.#funcionario.length; i++) {
-            listaFuncionarios.push(this.#funcionario[i])
-
-        }
-        return listaFuncionarios;
-    }
-
-    cambiarContrasenaFuncionario(codigoFuncionario, contrasenaNueva) {
-    for (let i = 0; i < this.#funcionario.length; i++) {
-        if (this.#funcionario[i].codigoFuncionario == codigoFuncionario) {
-            this.#funcionario[i].contraseña = contrasenaNueva;
-            return true;
-            }
-        }
-        return false;
     }
 
     registrarFuncionario(documento, nombre, telefono) {
@@ -119,6 +97,42 @@ class Sistema {
         return false;
     }
 
+    obtenerFuncionarios() {
+        let listaFuncionarios = [];
+        for (let i = 0; i < this.#funcionario.length; i++) {
+            listaFuncionarios.push(this.#funcionario[i]);
+        }
+        return listaFuncionarios;
+    }
+
+    cambiarContrasenaFuncionario(codigoFuncionario, contrasenaNueva) {
+        for (let i = 0; i < this.#funcionario.length; i++) {
+            if (this.#funcionario[i].codigoFuncionario == codigoFuncionario) {
+                this.#funcionario[i].contraseña = contrasenaNueva;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Busca un funcionario disponible con menos de 10 robots ACEPTADOS
+    obtenerFuncionarioDisponible(codigoFuncionarioOriginal) {
+        if (this.obtenerRobotsAsignados(codigoFuncionarioOriginal).length < 10) {
+            return codigoFuncionarioOriginal;
+        }
+
+        let codigoLibre = null;
+        for (let i = 0; i < this.#funcionario.length; i++) {
+            let codigoActual = this.#funcionario[i].codigoFuncionario;
+            if (this.obtenerRobotsAsignados(codigoActual).length < 10) {
+                codigoLibre = codigoActual;
+                break;
+            }
+        }
+        return codigoLibre;
+    }
+
+    // Retorna el funcionario con mayor cantidad de robots ingresados 
     obtenerMejorFuncionario() {
         let mejorFuncionario = null;
         let maxIngresados = -1;
@@ -127,14 +141,12 @@ class Sistema {
             let funcActual = this.#funcionario[i];
             let cantIngresados = 0;
 
-            // Contamos cuántos robots en el array tienen como creador a este funcionario
             for (let j = 0; j < this.#robot.length; j++) {
                 if (this.#robot[j].registradoPor == funcActual.codigoFuncionario) {
                     cantIngresados++;
                 }
             }
 
-            // Usamos >= para que en caso de empate se quede con el último encontrado
             if (cantIngresados >= maxIngresados) {
                 maxIngresados = cantIngresados;
                 mejorFuncionario = funcActual;
@@ -144,15 +156,11 @@ class Sistema {
         return mejorFuncionario;
     }
 
-    //Robots
-    obtenerRobots() {
-        let listaRobots = [];
-        for (let i = 0; i < this.#robot.length; i++) {
+    // ROBOTS
 
-            listaRobots.push(this.#robot[i])
-
-        }
-        return listaRobots;
+    registrarRobot(nombre, numDeSerie, fabricante, modelo, industria, imagen, registradoPor) {
+        let nuevoRobot = new robot(nombre, numDeSerie, fabricante, modelo, industria, imagen, registradoPor);
+        this.#robot.push(nuevoRobot);
     }
 
     existeRobot(numDeSerie, fabricante) {
@@ -165,18 +173,29 @@ class Sistema {
         return false;
     }
 
-    registrarRobot(nombre, numDeSerie, fabricante, modelo, industria, imagen, registradoPor) {
-        let nuevoRobot = new robot(nombre, numDeSerie, fabricante, modelo, industria, imagen, registradoPor);
-        this.#robot.push(nuevoRobot);
+    buscarRobotPorId(idRobot) {
+        for (let i = 0; i < this.#robot.length; i++) {
+            if (this.#robot[i].id == idRobot) {
+                return this.#robot[i];
+            }
+        }
+        return null;
     }
 
+    obtenerRobots() {
+        let listaRobots = [];
+        for (let i = 0; i < this.#robot.length; i++) {
+            listaRobots.push(this.#robot[i]);
+        }
+        return listaRobots;
+    }
 
     obtenerRobotsAsignados(codigoFuncionario) {
         let lista = [];
         for (let i = 0; i < this.#robot.length; i++) {
             let unRobot = this.#robot[i];
             if (unRobot.estado == "ACEPTADO" && unRobot.asignadoA == codigoFuncionario) {
-                lista.push(unRobot)
+                lista.push(unRobot);
             }
         }
         return lista;
@@ -186,7 +205,7 @@ class Sistema {
         let lista = [];
         for (let i = 0; i < this.#robot.length; i++) {
             if (this.#robot[i].registradoPor == codigoFuncionario) {
-            lista.push(this.#robot[i]);
+                lista.push(this.#robot[i]);
             }
         }
         return lista;
@@ -195,21 +214,64 @@ class Sistema {
     obtenerRobotsPorIndustria(industria) {
         let lista = [];
         for (let i = 0; i < this.#robot.length; i++) {
-            let robot = this.#robot[i];
-            if (robot.estado == "ACEPTADO" && robot.industria == industria) {
-                lista.push(robot)
+            let unRobot = this.#robot[i];
+            if (unRobot.estado == "ACEPTADO" && unRobot.industria == industria) {
+                lista.push(unRobot);
             }
         }
         return lista;
     }
 
-    buscarRobotPorId(idRobot) {
-        for (let i = 0; i < this.#robot.length; i++) {
-            if (this.#robot[i].id == idRobot) {
-                return this.#robot[i];
+    aceptarRobot(idRobot) {
+        let unRobot = this.buscarRobotPorId(idRobot);
+        if (unRobot !== null && unRobot.estado === "PENDIENTE") {
+            // Verifica tope de 30 robots aceptados en la misma industria
+            let aceptadosIndustria = this.obtenerRobotsPorIndustria(unRobot.industria);
+            if (aceptadosIndustria.length >= 30) {
+                unRobot.estado = "VENDIDO";
+                Sistema.#dineroRobotsVendidos += 20000;
+                Sistema.#dineroTotal += 20000;
+                unRobot.motivo = "Vendido automáticamente: Límite de 30 robots en la industria alcanzado";
+                return "Límite de 30 robots alcanzado en esta industria. El robot fue vendido automáticamente por $20.000. Acumulado total: $" + this.obtenerTotalDineroGanado();
+            }
+
+            // Busca funcionario disponible (priorizando al que lo registró)
+            let codigoFuncDisponible = this.obtenerFuncionarioDisponible(unRobot.registradoPor);
+            if (codigoFuncDisponible !== null) {
+                unRobot.asignadoA = codigoFuncDisponible;
+                unRobot.estado = "ACEPTADO";
+                Sistema.#dineroRobotsAceptados += 5000;
+                Sistema.#dineroTotal += 5000;
+                unRobot.motivo = "Robot aceptado por un administrador y asignado a un funcionario";
+                return "Robot aceptado y asignado. El establecimiento ganó $5.000. Acumulado total: $" + this.obtenerTotalDineroGanado();
+            } else {
+                unRobot.motivo = "No se pudo aceptar el robot porque no hay funcionarios disponibles";
+                return "No se pudo aceptar el robot porque no hay funcionarios disponibles. Se recomienda buscar personal para la instalación.";
             }
         }
-        return null;
+        return "No se pudo procesar el robot, no existe.";
+    }
+
+    rechazarRobot(idRobot) {
+        let unRobot = this.buscarRobotPorId(idRobot);
+        if (unRobot !== null && unRobot.estado === "PENDIENTE") {
+            unRobot.estado = "RECHAZADO";
+            unRobot.motivo = "Rechazado por un administrador.";
+            return "Robot rechazado correctamente";
+        }
+        return "No se pudo rechazar el robot, no existe.";
+    }
+
+    venderRobot(idRobot) {
+        let unRobot = this.buscarRobotPorId(idRobot);
+        if (unRobot !== null && unRobot.estado === "PENDIENTE") {
+            unRobot.estado = "VENDIDO";
+            Sistema.#dineroRobotsVendidos += 20000;
+            Sistema.#dineroTotal += 20000;
+            unRobot.motivo = "Vendido por piezas por un administrador";
+            return "Robot vendido por piezas. El establecimiento ganó $20.000. Acumulado total: $" + this.obtenerTotalDineroGanado();
+        }
+        return "No se pudo vender el robot, no existe.";
     }
 
     darDeBajaRobot(idRobot, codigoFuncionario) {
@@ -222,141 +284,17 @@ class Sistema {
         return true;
     }
 
-    cambiarEstadoRobot(idRobot, estado) {
-        let robot = this.buscarRobotPorId(idRobot);
-        if (robot) {
-            robot.estado.push(estado);
-            return "ESTADO CAMBIADO A " + estado;
-        }
-        return null
-    }
-
-    obtenerFuncionarioDisponible(codigoFuncionarioOriginal) {
-        if (this.obtenerRobotsAsignados(codigoFuncionarioOriginal).length < 10) {
-            return codigoFuncionarioOriginal;
-        }
-
-        //Si ya tiene 10, busca el siguiente funcionario disponible
-        let codigoLibre = null;
-        for (let i = 0; i < this.#funcionario.length; i++) {
-            let codigoActual = this.#funcionario[i].codigoFuncionario;
-            if (this.obtenerRobotsAsignados(codigoActual).length < 10) {
-                codigoLibre = codigoActual;
-                break;
-            }
-        }
-        return codigoLibre; // Devuelve el código disponible o null si están todos llenos
-    }
-
-    rechazarRobot(idRobot) {
-        let robot = this.buscarRobotPorId(idRobot);
-        if (robot !== null && robot.estado === "PENDIENTE") {
-            robot.estado = "RECHAZADO";
-            robot.motivo = "Rechazado por un administrador.";
-            return "Robot rechazado correctamente";
-        }
-        return "No se pudo rechazar el robot, no existe.";
-    }
-
-    venderRobot(idRobot) {
-        let robot = this.buscarRobotPorId(idRobot);
-        if (robot !== null && robot.estado === "PENDIENTE") {
-            robot.estado = "VENDIDO";
-            Sistema.#dineroRobotsVendidos += 20000;
-            Sistema.#dineroTotal += 20000;
-            robot.motivo = "Vendido por piezas por un administrador";
-            return "Robot vendido por piezas. El establecimiento ganó $20.000. Acumulado total: $" + this.obtenerTotalDineroGanado();
-        }
-        return "No se pudo vender el robot, no existe.";
-    }
-
-    aceptarRobot(idRobot) {
-        let robot = this.buscarRobotPorId(idRobot);
-        if (robot !== null && robot.estado === "PENDIENTE") {
-
-            //Verifica límite de 30 en la misma industria, y si lo pasa lo vende
-            let aceptadosIndustria = this.obtenerRobotsPorIndustria(robot.industria);
-            if (aceptadosIndustria.length >= 30) {
-                robot.estado = "VENDIDO";
-                Sistema.#dineroRobotsVendidos += 20000;
-                Sistema.#dineroTotal += 20000;
-                robot.motivo = "Vendido automáticamente: Límite de 30 robots en la industria alcanzado";
-                return "Límite de 30 robots alcanzado en esta industria. El robot fue vendido automáticamente por $20.000. Acumulado total: $" + this.obtenerTotalDineroGanado();
-            }
-
-            let codigoFuncDisponible = this.obtenerFuncionarioDisponible(robot.registradoPor);
-
-            if (codigoFuncDisponible !== null) {
-                robot.asignadoA = codigoFuncDisponible;
-                robot.estado = "ACEPTADO";
-                Sistema.#dineroRobotsAceptados += 5000;
-                Sistema.#dineroTotal += 5000;
-                robot.motivo = "Robot aceptado por un administrador y asignado a un funcionario"
-                return "Robot aceptado y asignado. El establecimiento ganó $5.000. Acumulado total: $" + this.obtenerTotalDineroGanado();
-            } else {
-                //No hay funcionarios disponibles -> queda PENDIENTE y avisa
-                robot.motivo = "No se pudo aceptar el robot porque no hay funcionarios disponibles"
-                return "No se pudo aceptar el robot porque no hay funcionarios disponibles. Se recomienda buscar personal para la instalación.";
-            }
-        }
-        return "No se pudo procesar el robot, no existe.";
-    }
-
-    obtenerEstadisticasPorIndustria() {
-        let industrias = ["Doméstica", "Médica", "Agrícola", "Militar", "Genérico"];
-        let resultado = [];
-        let totalRobots = this.#robot.length;
-
-        for (let i = 0; i < industrias.length; i++) {
-            let indActual = industrias[i];
-            let cantAceptados = 0;
-            let cantVendidos = 0;
-            let cantRechazados = 0;
-            let totalDeEstaIndustria = 0;
-
-            for (let j = 0; j < this.#robot.length; j++) {
-                let robot = this.#robot[j];
-                if (robot.industria.toLowerCase() == indActual.toLowerCase()) {
-                    totalDeEstaIndustria++;
-                    if (robot.estado == "ACEPTADO") {
-                        cantAceptados++;
-                    } else if (robot.estado == "VENDIDO") {
-                        cantVendidos++;
-                    } else if (robot.estado == "RECHAZADO") {
-                        cantRechazados++;
-                    }
-                }
-            }
-
-            let porcentaje = 0;
-            if (totalRobots > 0) {
-                porcentaje = (totalDeEstaIndustria * 100) / totalRobots;
-            }
-
-            resultado.push({
-                industria: indActual,
-                aceptados: cantAceptados,
-                vendidos: cantVendidos,
-                rechazados: cantRechazados,
-                porcentaje: porcentaje.toFixed(1)
-            });
-        }
-
-        return resultado;
-    }
-
-
-    //Actividades
+    //ACTIVIDADES
 
     registrarActividad(nombre, descripcion, precio) {
-        let nuevaActividad = new actividades(nombre, descripcion, precio)
-        this.#actividades.push(nuevaActividad)
+        let nuevaActividad = new actividades(nombre, descripcion, precio);
+        this.#actividades.push(nuevaActividad);
     }
 
     obtenerActividades() {
         let listaActividades = [];
         for (let i = 0; i < this.#actividades.length; i++) {
-            listaActividades.push(this.#actividades[i])
+            listaActividades.push(this.#actividades[i]);
         }
         return listaActividades;
     }
@@ -404,6 +342,7 @@ class Sistema {
         if (this.robotTieneActividad(unRobot, nombreActividad)) {
             return "El robot ya tiene asignada una actividad";
         }
+
         unRobot.actividades.push(unaActividad);
         Sistema.#dineroActividades = Sistema.#dineroActividades + unaActividad.precio;
         return "";
@@ -429,12 +368,55 @@ class Sistema {
         return "";
     }
 
+    //ESTADÍSTICAS
+
+    obtenerEstadisticasPorIndustria() {
+        let industrias = ["Doméstica", "Médica", "Agrícola", "Militar", "Genérico"];
+        let resultado = [];
+        let totalRobots = this.#robot.length;
+
+        for (let i = 0; i < industrias.length; i++) {
+            let indActual = industrias[i];
+            let cantAceptados = 0;
+            let cantVendidos = 0;
+            let cantRechazados = 0;
+            let totalDeEstaIndustria = 0;
+
+            for (let j = 0; j < this.#robot.length; j++) {
+                let unRobot = this.#robot[j];
+                if (unRobot.industria.toLowerCase() == indActual.toLowerCase()) {
+                    totalDeEstaIndustria++;
+                    if (unRobot.estado == "ACEPTADO") {
+                        cantAceptados++;
+                    } else if (unRobot.estado == "VENDIDO") {
+                        cantVendidos++;
+                    } else if (unRobot.estado == "RECHAZADO") {
+                        cantRechazados++;
+                    }
+                }
+            }
+
+            let porcentaje = 0;
+            if (totalRobots > 0) {
+                porcentaje = (totalDeEstaIndustria * 100) / totalRobots;
+            }
+
+            resultado.push({
+                industria: indActual,
+                aceptados: cantAceptados,
+                vendidos: cantVendidos,
+                rechazados: cantRechazados,
+                porcentaje: porcentaje.toFixed(1)
+            });
+        }
+
+        return resultado;
+    }
+
     obtenerDineroActividades() {
         return Sistema.#dineroActividades;
     }
-    obtenerTotalDineroGanado() {
-        return Sistema.#dineroRobotsAceptados + Sistema.#dineroRobotsVendidos + Sistema.#dineroActividades;
-    }
+
     obtenerDineroAceptados() {
         return Sistema.#dineroRobotsAceptados;
     }
@@ -443,6 +425,9 @@ class Sistema {
         return Sistema.#dineroRobotsVendidos;
     }
 
+    obtenerTotalDineroGanado() {
+        return Sistema.#dineroRobotsAceptados + Sistema.#dineroRobotsVendidos + Sistema.#dineroActividades;
+    }
 
     // PRECARGA DE DATOS
     precargaDatos() {

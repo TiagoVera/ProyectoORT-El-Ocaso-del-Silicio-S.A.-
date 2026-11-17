@@ -1,46 +1,54 @@
 const SECCIONES = [
-    "secIniciarSesion", 
+    "secIniciarSesion",
     "secBienvenida",
-    "secEstadosRobots", 
-    "secTablaFuncionarios", 
-    "secRegistroRobot", 
-    "secRegistrarActividad", 
-    "secRobotsAsignados", 
-    "secActividadesRobot", 
-    "secRegistrarFuncionario", 
+    "secEstadosRobots",
+    "secTablaFuncionarios",
+    "secRegistroRobot",
+    "secRegistrarActividad",
+    "secRobotsAsignados",
+    "secActividadesRobot",
+    "secRegistrarFuncionario",
     "secEstadisticasGenerales",
     "secMisRegistros",
     "secCambiarContrasena"
 ];
-let usuarioLogueado = null;
+
 const sistema = new Sistema();
+let usuarioLogueado = null;
 let tipoUsuario = "";
 let idRobotActual = "";
 
-document.querySelector("#linkTablaFuncionarios").addEventListener("click", mostrarTablaFuncionarios);
-document.querySelector("#linkTablaEstadosRobots").addEventListener("click", mostrarTablaEstadosDeRobots);
-document.querySelector("#linkEstadisticasGenerales").addEventListener("click", mostrarTablaEstadisticas);
+sistema.precargaDatos();
+ocultarTodasLasSecciones();
+mostrarSeccion("secIniciarSesion");
+actualizarMenu();
+
+
+
+
 document.querySelector("#btnIniciarSesion").addEventListener("click", irAIniciarSesion);
-document.querySelector("#linkRegistrarFuncionario").addEventListener("click", irARegistrarFuncionario);
-document.querySelector("#linkRegistrarActividad").addEventListener("click", irARegistrarActividad);
 document.querySelector("#btnEnviarLogin").addEventListener("click", intentarIniciarSesion);
 document.querySelector("#btnCerrarSesion").addEventListener("click", cerrarSesion);
+
+//Administrador
+document.querySelector("#linkRegistrarFuncionario").addEventListener("click", irARegistrarFuncionario);
+document.querySelector("#btnRegistrarFuncionario").addEventListener("click", registrarFuncionario);
+document.querySelector("#linkTablaFuncionarios").addEventListener("click", mostrarTablaFuncionarios);
+document.querySelector("#linkTablaEstadosRobots").addEventListener("click", mostrarTablaEstadosDeRobots);
+document.querySelector("#linkRegistrarActividad").addEventListener("click", irARegistrarActividad);
+document.querySelector("#btnRegistrarActividad").addEventListener("click", registrarActividad);
+document.querySelector("#linkEstadisticasGenerales").addEventListener("click", mostrarTablaEstadisticas);
+
+//Funcionario
 document.querySelector("#btnRegistrarRobot").addEventListener("click", irARegistrarRobot);
-document.querySelector("#btnRobotsAsignados").addEventListener("click", irARobotsAsignados);
 document.querySelector("#btnRegistrarRobotForm").addEventListener("click", registrarRobotDesdeFormulario);
+document.querySelector("#btnRobotsAsignados").addEventListener("click", irARobotsAsignados);
 document.querySelector("#btnAsignarActividad").addEventListener("click", asignarActividadSeleccionada);
 document.querySelector("#btnVolverRobots").addEventListener("click", irARobotsAsignados);
-document.querySelector("#btnRegistrarFuncionario").addEventListener("click", registrarFuncionario);
-document.querySelector("#btnRegistrarActividad").addEventListener("click", registrarActividad);
 document.querySelector("#btnMisRegistros").addEventListener("click", mostrarMisRegistros);
 document.querySelector("#btnCambiarContrasenaMenu").addEventListener("click", irACambiarContrasena);
 document.querySelector("#btnCambiarContrasena").addEventListener("click", cambiarContrasena);
 
-ocultarTodasLasSecciones();
-// Se agrega mostrarSeccion("secIniciarSesion") ;actualizarMenu(); para que podamos ver correctamente el formulario de login sin eso quedaria todo vacio
-
-mostrarSeccion("secIniciarSesion");
-actualizarMenu();
 
 function mostrarSeccion(idSeccion) {
     ocultarTodasLasSecciones();
@@ -53,25 +61,35 @@ function ocultarTodasLasSecciones() {
     }
 }
 
+function mostrarElemento(selector, visible) {
+    if (visible) {
+        document.querySelector(selector).style.display = "block";
+    } else {
+        document.querySelector(selector).style.display = "none";
+    }
+}
+
+function actualizarMenu() {
+    let haySesion = usuarioLogueado != null;
+    mostrarElemento("#liIniciarSesion", !haySesion);
+    mostrarElemento("#liCerrarSesion", haySesion);
+
+    //Funcionario
+    mostrarElemento("#liRegistrarRobot", tipoUsuario == "funcionario");
+    mostrarElemento("#liRobotsAsignados", tipoUsuario == "funcionario");
+    mostrarElemento("#liMisRegistros", tipoUsuario == "funcionario");
+    mostrarElemento("#liCambiarContrasena", tipoUsuario == "funcionario");
+
+    //Administrador
+    mostrarElemento("#liTablaFuncionarios", tipoUsuario == "administrador");
+    mostrarElemento("#liTablaEstadosRobots", tipoUsuario == "administrador");
+    mostrarElemento("#liRegistrarActividad", tipoUsuario == "administrador");
+    mostrarElemento("#liRegistrarFuncionario", tipoUsuario == "administrador");
+    mostrarElemento("#liEstadisticasGenerales", tipoUsuario == "administrador");
+}
+
 function irAIniciarSesion() {
     mostrarSeccion("secIniciarSesion");
-}
-
-function irARegistrarFuncionario() {
-    mostrarSeccion("secRegistrarFuncionario");
-}
-
-function irARegistrarActividad() {
-    mostrarSeccion("secRegistrarActividad");
-}
-
-function irARegistrarRobot() {
-    mostrarSeccion("secRegistroRobot");
-}
-
-function irARobotsAsignados() {
-    document.querySelector("#pMensajeBaja").innerHTML = "";
-    mostrarRobotsAsignados();
 }
 
 function mostrarBienvenida() {
@@ -79,35 +97,128 @@ function mostrarBienvenida() {
     document.querySelector("#h2Bienvenida").innerHTML = "Bienvenido/a, " + usuarioLogueado.nombre;
 
     if (tipoUsuario == "administrador") {
-        document.querySelector("#pBienvenidaInfo").innerHTML = 
+        document.querySelector("#pBienvenidaInfo").innerHTML =
             "Has iniciado sesión como <strong>Administrador</strong> (" + usuarioLogueado.usuario + "). Seleccioná una opción del menú superior para gestionar funcionarios, solicitudes de robots, actividades o estadísticas.";
     } else {
-        document.querySelector("#pBienvenidaInfo").innerHTML = 
+        document.querySelector("#pBienvenidaInfo").innerHTML =
             "Has iniciado sesión como <strong>Funcionario</strong> (" + usuarioLogueado.codigoFuncionario + "). Usá el menú superior para registrar nuevos robots o gestionar los que tenés asignados.";
     }
 }
 
+function intentarIniciarSesion() {
+    let usuario = document.querySelector("#usuario").value.trim().toUpperCase();
+    let contraseña = document.querySelector("#contraseña").value;
+    let pError = document.querySelector("#pErrorLogin");
+
+    if (estaVacio(usuario) || estaVacio(contraseña)) {
+        pError.innerHTML = "Debe ingresar usuario y contraseña.";
+        return;
+    }
+
+    let encontrado = sistema.iniciarSesion(usuario, contraseña);
+    if (encontrado == null) {
+        pError.innerHTML = "Usuario o contraseña incorrectos.";
+        return;
+    }
+
+    usuarioLogueado = encontrado;
+    if (esFuncionario(usuario)) {
+        tipoUsuario = "funcionario";
+    } else {
+        tipoUsuario = "administrador";
+    }
+
+    document.querySelector("#usuario").value = "";
+    document.querySelector("#contraseña").value = "";
+    pError.innerHTML = "";
+    actualizarMenu();
+    mostrarBienvenida();
+}
+
+function cerrarSesion() {
+    usuarioLogueado = null;
+    tipoUsuario = "";
+    actualizarMenu();
+    mostrarSeccion("secIniciarSesion");
+}
+
+//FUNCIONALIDADES DEL ADMINISTRADOR 
+
+function irARegistrarFuncionario() {
+    mostrarSeccion("secRegistrarFuncionario");
+}
+
+function validarRegistroFuncionario(documento, nombre, telefono) {
+    let esValido = true;
+
+    if (documento.trim() == "") {
+        mostrarErrorInput("El documento es obligatorio.", "documentoFuncionarioRegistro");
+        mostrarErrorP("Todos los campos son obligatorios", "pMensajeFuncionario");
+        esValido = false;
+    }
+    if (nombre.trim() == "") {
+        mostrarErrorInput("El nombre completo es obligatorio.", "nombreFuncionarioRegistro");
+        mostrarErrorP("Todos los campos son obligatorios", "pMensajeFuncionario");
+        esValido = false;
+    }
+    if (telefono.trim() == "") {
+        mostrarErrorInput("El teléfono es obligatorio.", "telefonoFuncionarioRegistro");
+        mostrarErrorP("Todos los campos son obligatorios", "pMensajeFuncionario");
+        esValido = false;
+    }
+    if (sistema.existeFuncionario(documento)) {
+        mostrarErrorInput("Ya existe un funcionario con ese documento.", "documentoFuncionarioRegistro");
+        mostrarErrorP("Ya existe un funcionario con ese documento.", "pMensajeFuncionario");
+        esValido = false;
+    }
+    return esValido;
+}
+
+function registrarFuncionario() {
+    let documento = document.querySelector("#documentoFuncionarioRegistro").value;
+    let nombre = document.querySelector("#nombreFuncionarioRegistro").value;
+    let telefono = document.querySelector("#telefonoFuncionarioRegistro").value;
+
+    limpiarErrores();
+
+    if (!validarRegistroFuncionario(documento, nombre, telefono)) {
+        return;
+    }
+
+    sistema.registrarFuncionario(documento.trim(), nombre.trim(), telefono.trim());
+    mostrarExito("Funcionario registrado correctamente", "pMensajeFuncionario");
+
+    document.querySelector("#documentoFuncionarioRegistro").value = "";
+    document.querySelector("#nombreFuncionarioRegistro").value = "";
+    document.querySelector("#telefonoFuncionarioRegistro").value = "";
+}
+
 function mostrarTablaFuncionarios() {
-    mostrarSeccion("secTablaFuncionarios")
-    let funcionarios = sistema.obtenerFuncionarios()
-    let html = `<table border ="1">
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Robots aceptados</th>
-                </tr>`;
+    mostrarSeccion("secTablaFuncionarios");
+    let funcionarios = sistema.obtenerFuncionarios();
+    let html = `<table border="1">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Robots aceptados</th>
+                    </tr>
+                </thead>
+                <tbody>`;
 
     for (let i = 0; i < funcionarios.length; i++) {
+        let cantAceptados = sistema.obtenerRobotsAsignados(funcionarios[i].codigoFuncionario).length;
         html += `<tr>
                     <td>${funcionarios[i].codigoFuncionario}</td>
                     <td>${funcionarios[i].nombre}</td>
-                    <td>${sistema.obtenerRobotsAsignados(funcionarios[i].codigoFuncionario).length}</td>
+                    <td>${cantAceptados}</td>
                 </tr>`;
     }
 
-    html += '</table>'
+    html += "</tbody></table>";
     document.querySelector("#divTablaFuncionarios").innerHTML = html;
 }
+
 
 function mostrarTablaEstadosDeRobots() {
     document.querySelector("#pMensajeEstadoRobot").innerHTML = "";
@@ -154,7 +265,7 @@ function mostrarTablaEstadosDeRobots() {
         }
     }
 
-    html += `</tbody></table>`;
+    html += "</tbody></table>";
     divTabla.innerHTML = html;
 
     conectarBotonesEstados();
@@ -198,114 +309,106 @@ function venderRobot() {
     document.querySelector("#pMensajeEstadoRobot").innerHTML = mensaje;
 }
 
-function mostrarElemento(selector, visible) {
-    if (visible) {
-        document.querySelector(selector).style.display = "block";
-    } else {
-        document.querySelector(selector).style.display = "none";
-    }
+function irARegistrarActividad() {
+    mostrarSeccion("secRegistrarActividad");
 }
 
-function actualizarMenu() {
-    let haySesion = usuarioLogueado != null;
-    mostrarElemento("#liIniciarSesion", !haySesion);
-    mostrarElemento("#liCerrarSesion", haySesion);
-    mostrarElemento("#liRegistrarRobot", tipoUsuario == "funcionario");
-    mostrarElemento("#liRobotsAsignados", tipoUsuario == "funcionario");
-    mostrarElemento("#liMisRegistros", tipoUsuario == "funcionario");
-    mostrarElemento("#liCambiarContrasena", tipoUsuario == "funcionario");
-    mostrarElemento("#liTablaFuncionarios", tipoUsuario == "administrador");
-    mostrarElemento("#liTablaEstadosRobots", tipoUsuario == "administrador");
-    mostrarElemento("#liRegistrarActividad", tipoUsuario == "administrador");
-    mostrarElemento("#liRegistrarFuncionario", tipoUsuario == "administrador");
-    mostrarElemento("#liEstadisticasGenerales", tipoUsuario == "administrador");
-}
-
-function intentarIniciarSesion() {
-    let usuario = document.querySelector("#usuario").value.trim().toUpperCase();
-    let contraseña = document.querySelector("#contraseña").value;
-    let pError = document.querySelector("#pErrorLogin");
-
-    if (estaVacio(usuario) || estaVacio(contraseña)) {
-        pError.innerHTML = "Debe ingresar usuario y contraseña.";
-        return;
-    }
-
-    let encontrado = sistema.iniciarSesion(usuario, contraseña);
-    if (encontrado == null) {
-        pError.innerHTML = "Usuario o contraseña incorrectos.";
-        return;
-    }
-
-
-    usuarioLogueado = encontrado;
-    if (esFuncionario(usuario)) {
-        tipoUsuario = "funcionario";
-    } else {
-        tipoUsuario = "administrador";
-    }
-document.querySelector("#usuario").value = "";
-    document.querySelector("#contraseña").value = "";
-    pError.innerHTML = "";
-    actualizarMenu();
-    mostrarBienvenida();
-
-    if (tipoUsuario == "funcionario") {
-        document.querySelector("#pMensajeBaja").innerHTML = "";
-        mostrarRobotsAsignados();
-    }
-}
-function cerrarSesion() {
-    usuarioLogueado = null;
-    tipoUsuario = "";
-    actualizarMenu();
-    mostrarSeccion("secIniciarSesion");
-}
-
-function validarRegistroFuncionario(documento, nombre, telefono) {
+function validarRegistroActividad(nombre, descripcion, precio) {
     let esValido = true;
 
-    if (documento.trim() == "") {
-        mostrarErrorInput("El documento es obligatorio.", "documentoFuncionarioRegistro", "pMensajeFuncionario");
-        mostrarErrorP("Todos los campos son obligatorios", "pMensajeFuncionario")
-        esValido = false;
-    }
     if (nombre.trim() == "") {
-        mostrarErrorInput("El nombre completo es obligatorio.", "nombreFuncionarioRegistro");
-        mostrarErrorP("Todos los campos son obligatorios", "pMensajeFuncionario")
+        mostrarErrorInput("El nombre es obligatorio.", "nombreRegistroActividad");
+        mostrarErrorP("Todos los campos son obligatorios", "pMensajeActividadRegistro");
         esValido = false;
     }
-    if (telefono.trim() == "") {
-        mostrarErrorInput("El teléfono es obligatorio.", "telefonoFuncionarioRegistro", "pMensajeFuncionario");
-        mostrarErrorP("Todos los campos son obligatorios", "pMensajeFuncionario")
+    if (descripcion.trim() == "") {
+        mostrarErrorInput("La descripción es obligatoria.", "descripcionRegistroActividad");
+        mostrarErrorP("Todos los campos son obligatorios", "pMensajeActividadRegistro");
         esValido = false;
     }
-    if (sistema.existeFuncionario(documento)) {
-        mostrarErrorInput("Ya existe un funcionario con ese documento.", "documentoFuncionarioRegistro", "pMensajeFuncionario");
-        mostrarErrorP("Ya existe un funcionario con ese documento.", "pMensajeFuncionario")
+    if (precio.trim() == "") {
+        mostrarErrorInput("El precio es obligatorio.", "precioRegistroActividad");
+        mostrarErrorP("Todos los campos son obligatorios", "pMensajeActividadRegistro");
+        esValido = false;
+    }
+    if (sistema.existeActividad(nombre.trim())) {
+        mostrarErrorInput("Ya existe una actividad con ese nombre.", "nombreRegistroActividad");
+        mostrarErrorP("Ya existe una actividad con ese nombre.", "pMensajeActividadRegistro");
+        esValido = false;
+    }
+    if (isNaN(precio) || Number(precio) <= 0) {
+        mostrarErrorInput("El precio debe ser un número positivo.", "precioRegistroActividad");
+        mostrarErrorP("El precio debe ser un número positivo.", "pMensajeActividadRegistro");
         esValido = false;
     }
     return esValido;
 }
 
-
-function registrarFuncionario() {
-    let documento = document.querySelector("#documentoFuncionarioRegistro").value;
-    let nombre = document.querySelector("#nombreFuncionarioRegistro").value;
-    let telefono = document.querySelector("#telefonoFuncionarioRegistro").value;
+function registrarActividad() {
+    let nombre = document.querySelector("#nombreRegistroActividad").value;
+    let descripcion = document.querySelector("#descripcionRegistroActividad").value;
+    let precio = document.querySelector("#precioRegistroActividad").value;
 
     limpiarErrores();
 
-    if (!validarRegistroFuncionario(documento, nombre, telefono)) {
+    if (!validarRegistroActividad(nombre, descripcion, precio)) {
         return;
     }
 
-    sistema.registrarFuncionario(documento.trim(), nombre.trim(), telefono.trim());
-    mostrarExito("Funcionario registrado correctamente", "pMensajeFuncionario");
+    sistema.registrarActividad(nombre.trim(), descripcion.trim(), Number(precio));
+    mostrarExito("Actividad registrada correctamente", "pMensajeActividadRegistro");
 
-    document.querySelector("#documentoFuncionarioRegistro").value = "";
-    document.querySelector("#nombreFuncionarioRegistro").value = "";
-    document.querySelector("#telefonoFuncionarioRegistro").value = "";
+    document.querySelector("#nombreRegistroActividad").value = "";
+    document.querySelector("#descripcionRegistroActividad").value = "";
+    document.querySelector("#precioRegistroActividad").value = "";
+}
+
+function mostrarTablaEstadisticas() {
+    mostrarSeccion("secEstadisticasGenerales");
+    let datosIndustrias = sistema.obtenerEstadisticasPorIndustria();
+    let html = `<table border="1">
+                <thead>
+                    <tr>
+                        <th>Industria</th>
+                        <th>Robots Aceptados</th>
+                        <th>Robots Vendidos</th>
+                        <th>Robots Rechazados</th>
+                        <th>% del Total</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+    for (let i = 0; i < datosIndustrias.length; i++) {
+        html += `<tr>
+            <td>${datosIndustrias[i].industria}</td>
+            <td>${datosIndustrias[i].aceptados}</td>
+            <td>${datosIndustrias[i].vendidos}</td>
+            <td>${datosIndustrias[i].rechazados}</td>
+            <td>${datosIndustrias[i].porcentaje}%</td>
+        </tr>`;
+    }
+    html += "</tbody></table>";
+    document.querySelector("#divEstadisticasGenerales").innerHTML = html;
+
+    let totalGeneral = sistema.obtenerTotalDineroGanado();
+    document.querySelector("#pTotalDinero").innerHTML = "Total de dinero ganado: $" + totalGeneral;
+
+    document.querySelector("#pDesgloseDinero").innerHTML =
+        "Ganado por robots ACEPTADOS: $" + sistema.obtenerDineroAceptados() +
+        " | Por robots VENDIDOS: $" + sistema.obtenerDineroVendidos() +
+        " | Por actividades: $" + sistema.obtenerDineroActividades();
+
+    let mejor = sistema.obtenerMejorFuncionario();
+    if (mejor != null) {
+        document.querySelector("#pMejorFuncionario").innerHTML =
+            "El mejor funcionario del momento: " + mejor.nombre + " (" + mejor.codigoFuncionario + ")";
+    }
+}
+
+// ==================== FUNCIONALIDADES DEL FUNCIONARIO ====================
+
+function irARegistrarRobot() {
+    mostrarSeccion("secRegistroRobot");
 }
 
 function validarRegistroRobot(nombre, serie, fabricante, modelo, industria, imagen) {
@@ -353,6 +456,12 @@ function registrarRobotDesdeFormulario() {
     document.querySelector("#robotModelo").value = "";
     document.querySelector("#robotIndustria").value = "";
     document.querySelector("#robotImagen").value = "";
+}
+
+
+function irARobotsAsignados() {
+    document.querySelector("#pMensajeBaja").innerHTML = "";
+    mostrarRobotsAsignados();
 }
 
 function mostrarRobotsAsignados() {
@@ -413,140 +522,6 @@ function clickDarDeBaja() {
         pMensaje.innerHTML = "No se pudo dar de baja el robot " + idRobot + ".";
     }
     mostrarRobotsAsignados();
-}
-
-function mostrarMisRegistros() {
-    mostrarSeccion("secMisRegistros");
-    let robots = sistema.obtenerRobotsRegistrados(usuarioLogueado.codigoFuncionario);
-    let divTabla = document.querySelector("#divTablaMisRegistros");
-
-    if (robots.length == 0) {
-        divTabla.innerHTML = "<p>No registraste ningún robot.</p>";
-        return;
-    }
-
-    let html = `<table border="1">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody>`;
-
-    for (let i = 0; i < robots.length; i++) {
-        html += `<tr>
-                    <td>${robots[i].id}</td>
-                    <td>${robots[i].nombre}</td>
-                    <td>${robots[i].estado}</td>
-                </tr>`;
-    }
-
-    html += "</tbody></table>";
-    divTabla.innerHTML = html;
-}
-
-function irACambiarContrasena() {
-    document.querySelector("#contrasenaActual").value = "";
-    document.querySelector("#contrasenaNueva").value = "";
-    document.querySelector("#contrasenaConfirmacion").value = "";
-    document.querySelector("#pMensajeContrasena").innerHTML = "";
-    mostrarSeccion("secCambiarContrasena");
-}
-
-function validarCambioContrasena(actual, nueva, confirmacion) {
-    if (estaVacio(actual) || estaVacio(nueva) || estaVacio(confirmacion)) {
-        return "Todos los campos son obligatorios.";
-    }
-    if (usuarioLogueado.contraseña != actual) {
-        return "La contraseña actual es incorrecta.";
-    }
-    if (nueva == actual) {
-        return "La contraseña nueva no puede ser igual a la actual.";
-    }
-    if (tieneEspacios(nueva)) {
-        return "La contraseña nueva no puede contener espacios.";
-    }
-    if (nueva != confirmacion) {
-        return "La confirmación no coincide con la contraseña nueva.";
-    }
-    return "";
-}
-
-function cambiarContrasena() {
-    let actual = document.querySelector("#contrasenaActual").value;
-    let nueva = document.querySelector("#contrasenaNueva").value;
-    let confirmacion = document.querySelector("#contrasenaConfirmacion").value;
-    let pMensaje = document.querySelector("#pMensajeContrasena");
-
-    let error = validarCambioContrasena(actual, nueva, confirmacion);
-    if (error != "") {
-        pMensaje.innerHTML = error;
-        return;
-    }
-
-    if (sistema.cambiarContrasenaFuncionario(usuarioLogueado.codigoFuncionario, nueva)) {
-        pMensaje.innerHTML = "Contraseña cambiada correctamente.";
-    } else {
-        pMensaje.innerHTML = "No se pudo cambiar la contraseña.";
-    }
-
-    document.querySelector("#contrasenaActual").value = "";
-    document.querySelector("#contrasenaNueva").value = "";
-    document.querySelector("#contrasenaConfirmacion").value = "";
-}
-
-function validarRegistroActividad(nombre, descripcion, precio) {
-    let esValido = true;
-
-    if (nombre.trim() == "") {
-        mostrarErrorInput("El nombre es obligatorio.", "nombreRegistroActividad");
-        mostrarErrorP("Todos los campos son obligatorios", "pMensajeActividadRegistro")
-        esValido = false;
-    }
-    if (descripcion.trim() == "") {
-        mostrarErrorInput("La descripcion es obligatoria.", "descripcionRegistroActividad");
-        mostrarErrorP("Todos los campos son obligatorios", "pMensajeActividadRegistro")
-        esValido = false;
-    }
-    
-    if (precio.trim() == "") {
-        mostrarErrorInput("El precio es obligatorio.", "precioRegistroActividad");
-        mostrarErrorP("Todos los campos son obligatorios", "pMensajeActividadRegistro")
-        esValido = false;
-    }
-    if (sistema.existeActividad(nombre.trim())) {
-        mostrarErrorInput("Ya existe una actividad con ese nombre.", "nombreRegistroActividad");
-        mostrarErrorP("Ya existe una actividad con ese nombre.", "pMensajeActividadRegistro")
-        esValido = false;
-    }
-    if (isNaN(precio) || Number(precio) <= 0) {
-        mostrarErrorInput("El precio debe ser un numero positivo.", "precioRegistroActividad");
-        mostrarErrorP("El precio debe ser un numero positivo.", "pMensajeActividadRegistro")
-        esValido = false;
-    }
-    return esValido;
-}
-
-
-function registrarActividad() {
-    let nombre = document.querySelector("#nombreRegistroActividad").value;
-    let descripcion = document.querySelector("#descripcionRegistroActividad").value;
-    let precio = document.querySelector("#precioRegistroActividad").value;
-
-    limpiarErrores();
-
-    if (!validarRegistroActividad(nombre, descripcion, precio)) {
-        return;
-    }
-
-    sistema.registrarActividad(nombre.trim(), descripcion.trim(), Number(precio));
-    mostrarExito("Actividad registrada correctamente", "pMensajeActividadRegistro");
-
-    document.querySelector("#nombreRegistroActividad").value = "";
-    document.querySelector("#descripcionRegistroActividad").value = "";
-    document.querySelector("#precioRegistroActividad").value = "";
 }
 
 function conectarBotonesActividades() {
@@ -645,44 +620,89 @@ function asignarActividadSeleccionada() {
     mostrarActividadesRobot();
 }
 
-function mostrarTablaEstadisticas() {
-    mostrarSeccion("secEstadisticasGenerales")
-    let datosIndustrias = sistema.obtenerEstadisticasPorIndustria();
-    let html = `<table border ="1">
-                <tr>
-                    <th>Industria</th>
-                    <th>Robots Aceptados</th>
-                    <th>Robots Vendidos</th>
-                    <th>Robots Rechazados</th>
-                    <th>% del Total</th>
-                </tr>`;
+function mostrarMisRegistros() {
+    mostrarSeccion("secMisRegistros");
+    let robots = sistema.obtenerRobotsRegistrados(usuarioLogueado.codigoFuncionario);
+    let divTabla = document.querySelector("#divTablaMisRegistros");
 
-    for (let i = 0; i < datosIndustrias.length; i++) {
+    if (robots.length == 0) {
+        divTabla.innerHTML = "<p>No registraste ningún robot.</p>";
+        return;
+    }
+
+    let html = `<table border="1">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+    for (let i = 0; i < robots.length; i++) {
         html += `<tr>
-        <td>${datosIndustrias[i].industria}</td>
-        <td>${datosIndustrias[i].aceptados}</td>
-        <td>${datosIndustrias[i].vendidos}</td>
-        <td>${datosIndustrias[i].rechazados}</td>
-        <td>${datosIndustrias[i].porcentaje}%</td>
-    </tr>`;
+                    <td>${robots[i].id}</td>
+                    <td>${robots[i].nombre}</td>
+                    <td>${robots[i].estado}</td>
+                </tr>`;
     }
-    html += '</table>'
-    document.querySelector("#divEstadisticasGenerales").innerHTML = html;
 
-    let totalGeneral = sistema.obtenerTotalDineroGanado();
-    document.querySelector("#pTotalDinero").innerHTML = "Total de dinero ganado: $" + totalGeneral;
-
-    document.querySelector("#pDesgloseDinero").innerHTML =
-        "Ganado por robots ACEPTADOS: $" + sistema.obtenerDineroAceptados() +
-        " | Por robots VENDIDOS: $" + sistema.obtenerDineroVendidos() +
-        " | Por actividades: $" + sistema.obtenerDineroActividades();
-
-    let mejor = sistema.obtenerMejorFuncionario();
-    if (mejor != null) {
-        document.querySelector("#pMejorFuncionario").innerHTML =
-            "El mejor funcionario del momento: " + mejor.nombre + " (" + mejor.codigoFuncionario + ")";
-    }
+    html += "</tbody></table>";
+    divTabla.innerHTML = html;
 }
+
+function irACambiarContrasena() {
+    document.querySelector("#contrasenaActual").value = "";
+    document.querySelector("#contrasenaNueva").value = "";
+    document.querySelector("#contrasenaConfirmacion").value = "";
+    document.querySelector("#pMensajeContrasena").innerHTML = "";
+    mostrarSeccion("secCambiarContrasena");
+}
+
+function validarCambioContrasena(actual, nueva, confirmacion) {
+    if (estaVacio(actual) || estaVacio(nueva) || estaVacio(confirmacion)) {
+        return "Todos los campos son obligatorios.";
+    }
+    if (usuarioLogueado.contraseña != actual) {
+        return "La contraseña actual es incorrecta.";
+    }
+    if (nueva == actual) {
+        return "La contraseña nueva no puede ser igual a la actual.";
+    }
+    if (tieneEspacios(nueva)) {
+        return "La contraseña nueva no puede contener espacios.";
+    }
+    if (nueva != confirmacion) {
+        return "La confirmación no coincide con la contraseña nueva.";
+    }
+    return "";
+}
+
+function cambiarContrasena() {
+    let actual = document.querySelector("#contrasenaActual").value;
+    let nueva = document.querySelector("#contrasenaNueva").value;
+    let confirmacion = document.querySelector("#contrasenaConfirmacion").value;
+    let pMensaje = document.querySelector("#pMensajeContrasena");
+
+    let error = validarCambioContrasena(actual, nueva, confirmacion);
+    if (error != "") {
+        pMensaje.innerHTML = error;
+        return;
+    }
+
+    if (sistema.cambiarContrasenaFuncionario(usuarioLogueado.codigoFuncionario, nueva)) {
+        pMensaje.innerHTML = "Contraseña cambiada correctamente.";
+    } else {
+        pMensaje.innerHTML = "No se pudo cambiar la contraseña.";
+    }
+
+    document.querySelector("#contrasenaActual").value = "";
+    document.querySelector("#contrasenaNueva").value = "";
+    document.querySelector("#contrasenaConfirmacion").value = "";
+}
+
+// MENSAJES DE ERRORES 
 
 function mostrarErrorP(mensaje, idP) {
     const p = document.querySelector("#" + idP);
@@ -694,10 +714,6 @@ function mostrarExito(mensaje, idP) {
     const p = document.querySelector("#" + idP);
     p.innerHTML = mensaje;
     p.setAttribute("class", "exito");
-}
-
-function limpiarP(idP) {
-    idP.innerHTML = "";
 }
 
 function mostrarErrorInput(mensaje, idInput) {
@@ -715,6 +731,3 @@ function limpiarErrores() {
         }
     }
 }
-
-sistema.precargaDatos()
-
